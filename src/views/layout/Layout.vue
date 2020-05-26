@@ -25,6 +25,10 @@
 
 <style lang='scss' scoped>
     .Layout {
-
+        background-image: url(../../assets/imgs/bg.jpg);
+        background-repeat: repeat;
+        background-position: top center;
+        background-attachment: scroll;
+        background-color: #fff;
     }
 </style>

@@ -5,7 +5,7 @@
 </template>
 
 <style lang="scss">
-    #app {
+    html, body, #app {
         height: 100vh;
     }
 </style>

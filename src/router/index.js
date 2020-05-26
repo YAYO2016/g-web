@@ -1,8 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 const Layout = () => import('@/views/layout/Layout');
 
 Vue.use(VueRouter);
+
+/**
+ * hidden: true                   如果hidden为true则在左侧菜单栏不展示
+ * name:'router-name'             路由名称，必须填写
+ * meta : {
+    title: 'title'               对应路由在左侧菜单栏的标题名称
+    icon: 'icon-class'           对应路由在左侧菜单栏的图标样式，样式使用fontawesome图标库
+    roles:[xxx,xxx]              可以访问该路由的用户权限，没有该属性的话就是谁都可以访问
+  }
+ **/
 
 const routes = [
     //重定向路由必须放在第一位
@@ -20,6 +31,11 @@ const routes = [
     {
         path: '/login',
         component: () => import('@/views/login/Login'),
+        hidden: true
+    },
+    {
+        path: '/register',
+        component: () => import('@/views/register/Register'),
         hidden: true
     },
     {

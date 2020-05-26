@@ -61,15 +61,6 @@ html, body {
     font-family: 'PingFangSC-Light', 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', 'Arial', 'sans-serif';
 }
 
-
-/*icon图标如果想设置宽高的话必须设置成block*/
-.icon-changfangxing-fill, .icon-changfangxing-empty {
-    /*将icon图标设置为block的时候，就可以调节宽高*/
-    display: inline-block;
-    width: 10px;
-    color: #ff9700;
-}
-
 /*el-switch如果文字要显示在颜色条中的话 加上demo*/
 .switchStyle .el-switch__label {
     position: absolute;
@@ -235,7 +226,7 @@ html, body {
 ::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background: #f9c297;
+    background: #8e8e8e;
 }
 
 ::-webkit-scrollbar-thumb:hover { /*滚动条里面小方块*/
