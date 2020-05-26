@@ -17,7 +17,17 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 //设置elementUI的全局size
 Vue.prototype.$ELEMENT = {size: 'mini'};
+//导入自定义校验数据
+import rules from './common/js/rules';
+Vue.prototype.$rules = rules;
 
+//导入api接口
+import api from './api/index';
+Vue.prototype.$api = api;
+
+//在全局注册一些自定义方法
+import globalFun from './common/js/global-fun';
+Vue.use(globalFun);
 
 //导入babel-polyfill，解决ie9和一些低版本的高级浏览器对es6新语法并不支持
 import "babel-polyfill";

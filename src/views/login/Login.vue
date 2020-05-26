@@ -6,31 +6,39 @@
                     <div class="switch">
                         <h1 id="login">登录</h1>
                     </div>
+                    <el-form ref="loginForm" :model="loginForm">
+                        <div class="login-form">
+                            <div class="txtb">
+                                <!--<input type="text" v-model="loginForm.username"/>-->
+                                <el-form-item prop="username" :rules="$rules.NotEmpty">
+                                    <el-input type="text" v-model="loginForm.username" clearable ref="username-input"/>
+                                    <span data-placeholder="用户名"></span>
+                                </el-form-item>
 
-                    <div class="login-form">
-                        <div class="txtb">
-                            <!--<input type="text" v-model="loginForm.username"/>-->
-                            <el-input type="text" v-model="loginForm.username" clearable/>
-                            <span data-placeholder="用户名"></span>
+
+                            </div>
+
+                            <div class="txtb">
+                                <el-form-item prop="password" :rules="$rules.NotEmpty">
+                                    <el-input type="password" v-model="loginForm.password" clearable show-password/>
+                                    <span data-placeholder="密码"></span>
+                                </el-form-item>
+
+                            </div>
+
+                            <div class="buttons">
+                                <span class="signUp">跳转注册</span>
+                                <span class="split">|</span>
+                                <span class="forget">忘记密码？</span>
+                            </div>
+
+                            <button class="login-button" v-if="!loading" @click="handleLogin('loginForm')">登录</button>
+                            <button class="login-button loading" v-else>
+                                <i class="el-icon-loading" style="font-size: 25px"></i>
+                            </button>
                         </div>
+                    </el-form>
 
-                        <div class="txtb">
-                            <el-input type="password" v-model="loginForm.password" clearable show-password/>
-                            <span data-placeholder="密码"></span>
-
-                        </div>
-
-                        <div class="buttons">
-                            <span class="signUp">跳转注册</span>
-                            <span class="split">|</span>
-                            <span class="forget">忘记密码？</span>
-                        </div>
-
-                        <button class="login-button" v-if="!loading" @click="handleLogin">登录</button>
-                        <button class="login-button loading" v-else>
-                            <i class="el-icon-loading" style="font-size: 25px"></i>
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -54,6 +62,16 @@
                 loading: false
             }
         },
+        created() {
+            //login页面的enter事件
+            let vm = this;
+            document.onkeydown = function (e) {
+                let key = window.event.keyCode;
+                if (key == 13) {
+                    vm.handleLogin("loginForm");
+                }
+            }
+        },
         mounted() {
             $(".txtb input").on("focus", function () {
                 //$(this).addClass("focus")
@@ -65,12 +83,21 @@
                     //$(this).removeClass("focus");
                 }
             })
+            this.$refs['username-input'].focus();
         },
         methods: {
-            handleLogin() {
+            handleLogin(formName) {
                 let vm = this;
-                vm.loading = true;
-
+                if (vm.validateRules(formName, vm)) {
+                    vm.loading = true;
+                    vm.$api.login(vm.loginForm).then(res => {
+                        vm.$message.success("登录成功");
+                        vm.$router.push("/home");
+                        vm.loading = false;
+                    }).catch((err) => {
+                        vm.loading = false;
+                    })
+                }
             }
         }
     }
@@ -115,6 +142,15 @@
                         border-bottom: 2px solid rgba(125, 116, 255, .8);
                         position: relative;
                         margin: 30px 0;
+
+                        .el-form-item {
+                            margin-bottom: 0;
+                        }
+
+                        /deep/ .el-form-item__error {
+                            margin-top: 2px;
+                            color: #3498db;
+                        }
 
                         /deep/ i {
                             line-height: 40px;
