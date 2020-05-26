@@ -5,6 +5,10 @@ import store from './store'
 
 Vue.config.productionTip = false;
 
+//导入normalize.css：Normalize的作用就是统一浏览器的初始样式
+//import 'normalize.css'
+import "@/common/style/reset.css"
+
 //安装使用elementUI
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
