@@ -9,13 +9,15 @@
 
                     <div class="login-form">
                         <div class="txtb">
-                            <input type="text" v-model="loginForm.username"/>
+                            <!--<input type="text" v-model="loginForm.username"/>-->
+                            <el-input type="text" v-model="loginForm.username" clearable/>
                             <span data-placeholder="用户名"></span>
                         </div>
 
                         <div class="txtb">
-                            <input type="password" v-model="loginForm.password"/>
+                            <el-input type="password" v-model="loginForm.password" clearable show-password/>
                             <span data-placeholder="密码"></span>
+
                         </div>
 
                         <div class="buttons">
@@ -24,7 +26,10 @@
                             <span class="forget">忘记密码？</span>
                         </div>
 
-                        <button class="login-button">登录</button>
+                        <button class="login-button" v-if="!loading" @click="handleLogin">登录</button>
+                        <button class="login-button loading" v-else>
+                            <i class="el-icon-loading" style="font-size: 25px"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -45,22 +50,27 @@
                 loginForm: {
                     username: "",
                     password: ""
-                }
+                },
+                loading: false
             }
         },
         mounted() {
             $(".txtb input").on("focus", function () {
-                $(this).addClass("focus")
+                //$(this).addClass("focus")
+                $(this).parent(".el-input").addClass("focus")
             })
             $(".txtb input").on("blur", function () {
                 if ($(this).val() == "") {
-                    $(this).removeClass("focus");
+                    $(this).parent(".el-input").removeClass("focus")
+                    //$(this).removeClass("focus");
                 }
             })
         },
         methods: {
             handleLogin() {
                 let vm = this;
+                vm.loading = true;
+
             }
         }
     }
@@ -106,7 +116,12 @@
                         position: relative;
                         margin: 30px 0;
 
-                        input {
+                        /deep/ i {
+                            line-height: 40px;
+                            color: rgba(37, 215, 202, 0.84);
+                        }
+
+                        /deep/ input {
                             font-size: 15px;
                             color: rgba(37, 215, 202, 0.84);
                             border: none;
@@ -115,6 +130,7 @@
                             background: none;
                             padding: 0 5px;
                             height: 40px;
+                            line-height: 40px;
                         }
 
                         span {
@@ -139,8 +155,6 @@
                                 background: linear-gradient(120deg, #3498db, #8e44ad);
                                 transition: .5s;
                             }
-
-
                         }
 
                         .focus + span::before {
@@ -201,7 +215,7 @@
                         cursor: pointer;
                         transition: .4s;
 
-                        &:hover {
+                        &:not(.loading):hover {
                             border: none;
                             outline: none;
                             margin: 2rem -7px 0;
