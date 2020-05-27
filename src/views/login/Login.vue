@@ -10,16 +10,14 @@
                         <div class="login-form">
                             <div class="txtb">
                                 <!--<input type="text" v-model="loginForm.username"/>-->
-                                <el-form-item prop="username" :rules="$rules.NotEmpty">
+                                <el-form-item prop="username" :rules="[{...$rules.NotEmpty[0],message:'用户名不能为空'}]">
                                     <el-input type="text" v-model="loginForm.username" clearable ref="username-input"/>
                                     <span data-placeholder="用户名"></span>
                                 </el-form-item>
-
-
                             </div>
 
                             <div class="txtb">
-                                <el-form-item prop="password" :rules="$rules.NotEmpty">
+                                <el-form-item prop="password" :rules="[{...$rules.NotEmpty[0],message:'密码不能为空'}]">
                                     <el-input type="password" v-model="loginForm.password" clearable show-password/>
                                     <span data-placeholder="密码"></span>
                                 </el-form-item>
@@ -27,7 +25,7 @@
                             </div>
 
                             <div class="buttons">
-                                <span class="signUp">跳转注册</span>
+                                <span class="signUp" @click="$router.push('/register')">跳转注册</span>
                                 <span class="split">|</span>
                                 <span class="forget">忘记密码？</span>
                             </div>
@@ -83,7 +81,7 @@
                     //$(this).removeClass("focus");
                 }
             })
-            this.$refs['username-input'].focus();
+            //this.$refs['username-input'].focus();
         },
         methods: {
             handleLogin(formName) {
@@ -106,9 +104,11 @@
 <style lang='scss' scoped>
     .Login {
         height: 100%;
+        /*水平处置居中*/
         display: flex;
         align-items: center;
         justify-content: center;
+
         background: url(../../assets/imgs/star.jpg) no-repeat;
 
         .container {
@@ -179,6 +179,7 @@
                                 transform: translateY(-50%);
                                 z-index: -1;
                                 transition: .5s;
+                                font-size: 1.1rem;
                             }
 
                             &::after {
@@ -195,6 +196,7 @@
 
                         .focus + span::before {
                             top: -5px;
+                            font-size: 1rem;
                         }
 
                         .focus + span::after {
