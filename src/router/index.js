@@ -15,7 +15,7 @@ Vue.use(VueRouter);
   }
  **/
 
-const routes = [
+const constantRoutes = [
     //重定向路由必须放在第一位
     {
         path: '/redirect',
@@ -59,8 +59,25 @@ const routes = [
 
 ];
 
+const asyncRoutes = [
+    {
+        path: '/user',
+        component: Layout,
+        redirect: '/user/userManager',
+        children: [
+            {
+                path: '/user/userManager',
+                component: () => import('@/views/userManager/UserManager'),
+                name: 'UserManager',
+                meta: {title: '用户管理', icon: 'el-icon-s-custom',roles: ["admin"]}
+            }
+        ]
+    },
+
+];
+
 const router = new VueRouter({
-    routes
+    routes:new Set([...constantRoutes,...asyncRoutes])
 });
 
 export default router

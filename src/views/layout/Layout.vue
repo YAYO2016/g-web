@@ -25,6 +25,7 @@
 
 <style lang='scss' scoped>
     .Layout {
+        height: 100%;
         background-image: url(../../assets/imgs/bg.jpg);
         background-repeat: repeat;
         background-position: top center;
