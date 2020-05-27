@@ -1,83 +1,75 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from "@/store"
+import {constantRoutes, asyncRoutes} from "./routes";
+import {getToken} from "@/common/js/auth";
+import api from "@/api"
+import util from "@/common/js/util"
 
-const Layout = () => import('@/views/layout/Layout');
+// 解决控制台 在使用ElementUi时点击同一个路由，页面报错
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+};
 
 Vue.use(VueRouter);
 
-/**
- * hidden: true                   如果hidden为true则在左侧菜单栏不展示
- * name:'router-name'             路由名称，必须填写
- * meta : {
-    title: 'title'               对应路由在左侧菜单栏的标题名称
-    icon: 'icon-class'           对应路由在左侧菜单栏的图标样式，样式使用fontawesome图标库
-    roles:[xxx,xxx]              可以访问该路由的用户权限，没有该属性的话就是谁都可以访问
-  }
- **/
-
-const constantRoutes = [
-    //重定向路由必须放在第一位
-    {
-        path: '/redirect',
-        component: Layout,
-        hidden: true,
-        children: [
-            {
-                path: '/redirect/:path(.*)',  //*代表匹配0个或者多个路由
-                component: () => import('@/views/redirect/Redirect')
-            }
-        ]
-    },
-    {
-        path: '/login',
-        component: () => import('@/views/login/Login'),
-        hidden: true
-    },
-    {
-        path: '/register',
-        component: () => import('@/views/register/Register'),
-        hidden: true
-    },
-    {
-        path: '/forgetPassword',
-        component: () => import('@/views/forgetPassword/ForgetPassword'),
-        hidden: true
-    },
-    {
-        path: '/',
-        component: Layout,
-        redirect: '/home',
-        children: [
-            {
-                path: '/home',
-                component: () => import('@/views/home/Home'),
-                name: 'Home',
-                meta: {title: '首页', icon: 'el-icon-s-home'}
-            }
-        ]
-    },
-
-];
-
-const asyncRoutes = [
-    {
-        path: '/user',
-        component: Layout,
-        redirect: '/user/userManager',
-        children: [
-            {
-                path: '/user/userManager',
-                component: () => import('@/views/userManager/UserManager'),
-                name: 'UserManager',
-                meta: {title: '用户管理', icon: 'el-icon-s-custom',roles: ["admin"]}
-            }
-        ]
-    },
-
-];
-
 const router = new VueRouter({
-    routes:new Set([...constantRoutes,...asyncRoutes])
+    routes: constantRoutes
+});
+
+//白名单
+const whiteList = ["/login", "/register", "/forgetPassword"];
+// 路由守卫,进行拦截，可以拦截用户设置的权限是路由requireAuth:true的（但是可能token失效了，但是本地还是保存着，所以需要axios拦截配合）
+router.beforeEach(async (to, from, next) => {
+    //判断cookie中是否有token来判断是否登录
+    const token = getToken();
+    if (util.TypeFn.isTrue(token)) {
+        console.log(token);
+        console.log(!!token);
+        console.log(11);
+        // token存在，说明登录了
+        if (to.path === '/login') {
+            //跳转到login页面的话，直接跳转到/主页去，然后重新执行了一次beforeEach
+            next({path: '/'});
+        } else {
+            //根据store中的userInfo信息是否存在，来判断页面是否刷新了
+            const userInfo = store.state.user.userInfo;
+            if (userInfo) {
+                next();
+            } else {
+                try {
+                    //如果roles不存在的时候，就去调用接口获取用户的roles
+                    await store.dispatch("user/getUserInfo");
+                    //根据用户的roles去过滤出可以访问的路由
+                    const accessRoutes = await store.dispatch('permission/generateRoutes', store.getters.userRoles);
+                    //将获取到路由参数添加到路由中
+                    router.addRoutes(accessRoutes);
+                    next({...to, replace: true})
+                } catch (e) {
+                    store.dispatch("user/clearCurrentState");
+                    // 用户没有登录
+                    next(`/login?redirect=${to.path}`);
+                }
+            }
+        }
+    } else {
+        //token不存在，说明没有登录
+        //没有token,然后判断是否在白名单中
+        if (whiteList.indexOf(to.path) !== -1) {
+            //在白名单可以访问
+            next();
+        } else {
+            //不在白名单中就跳转到login,并且清除用户信息
+            store.dispatch("user/clearCurrentState");
+            // 用户没有登录
+            next(`/login?redirect=${to.path}`);
+        }
+    }
+});
+
+router.afterEach((to, from, next) => {
+    window.scrollTo(0, 0);
 });
 
 export default router

@@ -18,6 +18,9 @@ const userApi = {
    forgetPassword(params) {
        return post('/user/forgetPassword', params)
    },
+    getUserInfo(params) {
+        return post('/user/getUserInfo', params)
+    },
 
 };
 

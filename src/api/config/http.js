@@ -2,6 +2,7 @@ import axios from 'axios';
 import router from '@/router';
 import store from "@/store"
 import {Message, Loading} from "element-ui"
+import {getToken} from "../../common/js/auth";
 
 let loadingInstance;
 let loadingCount = 0;
@@ -53,9 +54,8 @@ http.interceptors.request.use(config => {
 
     //请求拦截器中给所有的请求header中添加token
     if (store.getters.token) {
-        //config.headers['token'] = getToken();
-        //因为后台是express-jwt验证，所以必须写这样的格式
-        //config.headers['Authorization'] = `Bearer ${getToken()}`;
+        //将cookie中的token添加到header中的Authorization，后台根据Authorization去获取请求中返回的token
+        config.headers['Authorization'] = getToken();
     }
 
     if (config.method === 'post') {
@@ -105,9 +105,7 @@ http.interceptors.response.use(
             switch (error.response.status) {
                 case 401:
                     console.log(401);
-                    //localStorage.removeItem('token');
-                    //removeToken();
-                    //store.dispatch("user/clearCurrentState");
+                    store.dispatch("user/clearCurrentState");
                     router.push({path: '/login'});
                     errorMessage = "token值无效，请重新登录";
                     break;

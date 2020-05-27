@@ -2,11 +2,11 @@
  * Created by yanyue on 2020/4/24 11:37
  * 数据库的初始化操作：连接数据库
  */
+const {dbUrl} = require( "../utils/constant");
 
 //引入mongoose
 const mongoose = require("mongoose");
 //数据库的的地址(如果没有改数据库的话，会自动创建的)
-const dbUrl = "mongodb://localhost:27017/g-web";
 
 //node的glob模块，允许使用*等符号，来写一个glob规则，像在shell中一样，获取匹配对应的规则文件
 const glob = require("glob");

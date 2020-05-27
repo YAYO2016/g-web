@@ -48,6 +48,7 @@
      * Created by yanyue on 2020/5/26 15:44
      */
     import $ from "jquery";
+    import {setToken} from "@/common/js/auth.js"
 
     export default {
         name: "Login",
@@ -57,7 +58,9 @@
                     username: "",
                     password: ""
                 },
-                loading: false
+                loading: false,
+                redirect: undefined,
+                otherQuery: {},
             }
         },
         created() {
@@ -88,18 +91,40 @@
                 let vm = this;
                 if (vm.validateRules(formName, vm)) {
                     vm.loading = true;
-                    vm.$api.login(vm.loginForm).then(res => {
-                        //将用户数据保持到store中
-                        vm.$store.dispatch("user/set_userInfo", res.data);
-                        vm.$message.success("登录成功");
-                        vm.$router.push("/home");
-                        vm.loading = false;
-                    }).catch((err) => {
-                        vm.loading = false;
-                    })
+                    vm.$store.dispatch('user/login', vm.loginForm)
+                        .then((res) => {
+                            //登录成功，跳转到路由query中redirect参数的路由地址，并且带上剩余的其他路由参数otherQuery
+                            vm.$router.push({path: vm.redirect || '/', query: vm.otherQuery});
+                            vm.$message.success(res.message);
+                            vm.loading = false
+                        })
+                        .catch(() => {
+                            vm.loading = false
+                        })
                 }
+            },
+            getOtherQuery(query) {
+                return Object.keys(query).reduce((acc, cur) => {
+                    if (cur !== 'redirect') {
+                        acc[cur] = query[cur]
+                    }
+                    return acc
+                }, {})
+            },
+        },
+        watch: {
+            $route: {
+                handler: function (route) {
+                    const query = route.query;  //获取路由参数 ?后面的
+                    if (query) {
+                        //提取出路由参数中的redirect 和剩余的其他参数otherQuery
+                        this.redirect = query.redirect;
+                        this.otherQuery = this.getOtherQuery(query)
+                    }
+                },
+                immediate: true  //会在create的时候就进行调用
             }
-        }
+        },
     }
 </script>
 
