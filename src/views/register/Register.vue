@@ -101,8 +101,8 @@
                 if (vm.validateRules(formName, vm)) {
                     vm.loading = true;
                     vm.$api.register(vm.registerForm).then(res => {
-                        vm.$message.success("登录成功");
-                        vm.$router.push("/home");
+                        vm.$message.success("注册成功");
+                        vm.$router.push("/login");
                         vm.loading = false;
                     }).catch((err) => {
                         vm.loading = false;

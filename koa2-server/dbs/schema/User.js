@@ -18,6 +18,8 @@ const userSchema = new Schema({
     },
     //用户密码
     password: String,
+    //email
+    email:String,
     //创建时间
     createDate: {type: Date, default: Date.now()},
     //最后登录时间
