@@ -20,6 +20,9 @@ Vue.prototype.$ELEMENT = {size: 'mini'};
 //导入自定义校验数据
 import rules from './common/js/rules';
 Vue.prototype.$rules = rules;
+//全局使用自定义的UI的组件
+import GUI from './components/plugins';
+Vue.use(GUI);
 
 //导入api接口
 import api from './api/index';
