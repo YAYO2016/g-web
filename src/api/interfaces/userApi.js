@@ -15,15 +15,9 @@ const userApi = {
     login(params) {
         return post('/user/login', params)
     },
-    getUserInfo(params){
-        return post('/user/getUserInfo', params)
-    },
-    getUsers(params) {
-        return post('/user/getUsers', params,{loading:true})
-    },
-    getSingleUser(params) {
-        return get('/user/getSingleUser', params)
-    },
+   forgetPassword(params) {
+       return post('/user/forgetPassword', params)
+   },
 
 };
 

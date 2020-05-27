@@ -58,9 +58,35 @@ router.post("/login", async (ctx) => {
             message: error.errmsg
         }
     })
-
 });
 
+
+//用户忘记密码  更新密码
+router.post("/forgetPassword", async (ctx) => {
+    let {email, password} = ctx.request.body;
+    const User = mongoose.model("User");
+    await User.updateOne(
+        {email}, //查询
+        {password},
+    ).then(result => {
+        if (result) {
+            ctx.body = {
+                code: 200,
+                message: "修改密码成功"
+            }
+        } else {
+            ctx.body = {
+                code: 500,
+                message: "修改密码失败"
+            }
+        }
+    }).catch(error => {
+        ctx.body = {
+            code: 500,
+            message: error.errmsg
+        }
+    })
+});
 
 module.exports = router;
 

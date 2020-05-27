@@ -97,7 +97,17 @@
         },
         methods: {
             handleEdit(formName) {
-
+                let vm = this;
+                if (vm.validateRules(formName, vm)) {
+                    vm.loading = true;
+                    vm.$api.forgetPassword(vm.editForm).then(res => {
+                        vm.$message.success("密码修改成功");
+                        vm.$router.push("/login");
+                        vm.loading = false;
+                    }).catch((err) => {
+                        vm.loading = false;
+                    })
+                }
             }
         }
     }
@@ -155,6 +165,7 @@
                             color: rgba(211, 194, 255, 0.7);
                         }
                     }
+
                     .txtb {
                         border-bottom: 2px solid rgba(125, 116, 255, .8);
                         position: relative;
