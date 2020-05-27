@@ -1,49 +1,51 @@
 <template>
-    <div class='Register'>
+    <div class='ForgetPassword'>
         <div class="container">
             <div class="panel">
                 <div class="content">
                     <div class="switch">
-                        <h1 id="signUp">注册</h1>
+                        <h1 id="signUp">忘记密码</h1>
                     </div>
-                    <el-form ref="registerForm" :model="registerForm">
-                        <div class="register-form">
+
+                    <el-form ref="editForm" :model="editForm">
+                        <div class="forget-password-form">
                             <div class="txtb">
-                                <el-form-item prop="username" :rules="[{...$rules.NotEmpty[0],message:'用户名不能为空'}]">
-                                    <el-input type="text" v-model="registerForm.username" clearable/>
-                                    <span data-placeholder="用户名"></span>
+                                <el-form-item prop="email" :rules="$rules.EmailRule">
+                                    <el-input type="text" v-model="editForm.email" clearable/>
+                                    <span data-placeholder="邮箱"></span>
                                 </el-form-item>
                             </div>
 
+                            <button class="getEmailCode">点击获取验证码</button>
+
                             <div class="txtb">
-                                <el-form-item prop="email" :rules="$rules.EmailRule">
-                                    <el-input type="email" v-model="registerForm.email" clearable/>
-                                    <span data-placeholder="邮箱"></span>
+                                <el-form-item prop="verifyCode" :rules="[{...$rules.NotEmpty[0],message:'邮箱验证码不能为空'}]">
+                                    <el-input v-model="editForm.verifyCode" clearable/>
+                                    <span data-placeholder="邮箱验证码"></span>
                                 </el-form-item>
                             </div>
 
                             <div class="txtb">
                                 <el-form-item prop="password" :rules="$rules.PasswordRule">
-                                    <el-input type="password" v-model="registerForm.password" clearable/>
-                                    <span data-placeholder="密码"></span>
+                                    <el-input type="password" v-model="editForm.password" clearable/>
+                                    <span data-placeholder="新密码"></span>
                                 </el-form-item>
                             </div>
 
                             <div class="txtb">
                                 <el-form-item prop="repeatPassword"
                                               :rules="[...$rules.PasswordRule,{validator: validatePassWord, trigger: 'blur'}]">
-                                    <el-input type="password" v-model="registerForm.repeatPassword" clearable/>
+                                    <el-input type="password" v-model="editForm.repeatPassword" clearable/>
                                     <span data-placeholder="确认密码"></span>
                                 </el-form-item>
                             </div>
 
                             <div class="buttons">
-                                <span class="signUp" @click="$router.push('/login')">已有账户？点击登录</span>
+                                <span class="signUp" @click="$router.push('/login')">点击跳转登录</span>
                             </div>
 
-                            <button class="register-button" v-if="!loading" @click="handleRegister('registerForm')">注册
-                            </button>
-                            <button class="register-button loading" v-else>
+                            <button class="submit-button" v-if="!loading" @click="handleEdit('editForm')">提交更改</button>
+                            <button class="submit-button loading" v-else>
                                 <i class="el-icon-loading" style="font-size: 25px"></i>
                             </button>
                         </div>
@@ -56,27 +58,26 @@
 
 <script>
     /**
-     * Created by yanyue on 2020/5/26 20:31
+     * Created by yanyue on 2020/5/27 13:07
      */
     import $ from "jquery";
 
     export default {
-        name: "Register",
+        name: "ForgetPassword",
         data() {
-            //两次输入的密码一致校验
             const validatePassWord = (rule, value, callback) => {
-                if (value !== this.registerForm.password) {
+                if (value !== this.editForm.password) {
                     callback(new Error('两次输入的密码不一致'));
                 } else {
                     callback()
                 }
             };
             return {
-                registerForm: {
-                    username: "",
+                editForm: {
                     email: "",
+                    verifyCode: "",
                     password: "",
-                    repeatPassword: ""
+                    repeatPassword: "",
                 },
                 validatePassWord: validatePassWord,
                 loading: false
@@ -95,25 +96,15 @@
             })
         },
         methods: {
-            handleRegister(formName) {
-                let vm = this;
-                if (vm.validateRules(formName, vm)) {
-                    vm.loading = true;
-                    vm.$api.register(vm.registerForm).then(res => {
-                        vm.$message.success("注册成功");
-                        vm.$router.push("/login");
-                        vm.loading = false;
-                    }).catch((err) => {
-                        vm.loading = false;
-                    })
-                }
+            handleEdit(formName) {
+
             }
         }
     }
 </script>
 
 <style lang='scss' scoped>
-    .Register {
+    .ForgetPassword {
         height: 100%;
         display: flex;
         align-items: center;
@@ -146,7 +137,24 @@
                     cursor: default;
                 }
 
-                .register-form {
+                .forget-password-form {
+                    button.getEmailCode {
+                        margin-top: -10px;
+                        display: block;
+                        border: none;
+                        outline: none;
+                        width: 7rem;
+                        border-radius: 5%;
+                        background: linear-gradient(90deg, rgba(138, 143, 255, 0.76), rgba(182, 130, 255, 0.76));
+                        box-shadow: 0 0 8px #8a8fff;
+                        cursor: pointer;
+                        color: #d3c2ff;
+
+                        &:hover {
+                            background: linear-gradient(90deg, rgba(138, 143, 255, 0.5), rgba(182, 130, 255, 0.51));
+                            color: rgba(211, 194, 255, 0.7);
+                        }
+                    }
                     .txtb {
                         border-bottom: 2px solid rgba(125, 116, 255, .8);
                         position: relative;
@@ -246,13 +254,13 @@
                         }
                     }
 
-                    .register-button {
+                    .submit-button {
                         display: block;
                         border: none;
                         outline: none;
-                        margin: 2rem 61px 0;
-                        width: 56px;
-                        height: 56px;
+                        margin: 2rem 56px 0;
+                        width: 66px;
+                        height: 66px;
                         border-radius: 50%;
                         background: linear-gradient(90deg, #8a8fff, rgb(216, 174, 255));
                         box-shadow: 0 0 8px #8a8fff;

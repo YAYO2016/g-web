@@ -39,6 +39,11 @@ const routes = [
         hidden: true
     },
     {
+        path: '/forgetPassword',
+        component: () => import('@/views/forgetPassword/ForgetPassword'),
+        hidden: true
+    },
+    {
         path: '/',
         component: Layout,
         redirect: '/home',

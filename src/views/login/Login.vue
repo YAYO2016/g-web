@@ -27,7 +27,7 @@
                             <div class="buttons">
                                 <span class="signUp" @click="$router.push('/register')">跳转注册</span>
                                 <span class="split">|</span>
-                                <span class="forget">忘记密码？</span>
+                                <span class="forget" @click="$router.push('/forgetPassword')">忘记密码？</span>
                             </div>
 
                             <button class="login-button" v-if="!loading" @click="handleLogin('loginForm')">登录</button>
