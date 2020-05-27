@@ -25,9 +25,6 @@ router.beforeEach(async (to, from, next) => {
     //判断cookie中是否有token来判断是否登录
     const token = getToken();
     if (util.TypeFn.isTrue(token)) {
-        console.log(token);
-        console.log(!!token);
-        console.log(11);
         // token存在，说明登录了
         if (to.path === '/login') {
             //跳转到login页面的话，直接跳转到/主页去，然后重新执行了一次beforeEach

@@ -48,7 +48,7 @@ router.post("/login", async (ctx) => {
 
                 ctx.body = {
                     code: 200,
-                    data: token,
+                    data: {token},
                     message: "登录成功"
                 }
             } else {
@@ -109,7 +109,6 @@ router.post("/getUserInfo", async (ctx) => {
     }
     let result = null;
     //jsonwebtoken解析请求返回的token
-
     await jwt.verify(token, PRIVATE_KEY, (err, decoded) => {
         if (err) {
             ctx.body = {

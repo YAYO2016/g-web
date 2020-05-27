@@ -20,7 +20,7 @@ const user = {
             const {username, password} = loginForm;
             return new Promise((resolve, reject) => {
                 api.login({username: username, password: password}).then(res => {
-                    setToken(res.data);
+                    setToken(res.data.token);
                     resolve(res)
                 }).catch(error => {
                     reject(error)
@@ -30,7 +30,8 @@ const user = {
         //获取当前登录用户的信息--通过token获取用户的相关信息
         getUserInfo: ({commit, state}, userInfo) => {
             return new Promise((resolve, reject) => {
-                api.getUserInfo({token: getToken()}).then(res => {
+                let token = getToken();
+                api.getUserInfo({token}).then(res => {
                     let userInfo = res.data;
                     if (!userInfo) {
                         reject('校验失败，请重新登录')

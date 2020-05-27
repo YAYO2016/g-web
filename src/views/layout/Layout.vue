@@ -1,5 +1,5 @@
 <template>
-    <div class="Layout">
+    <el-container  class="Layout">
         <el-aside width="auto" class="aside-container">
             <Aside/>
         </el-aside>
@@ -12,7 +12,7 @@
                 <router-view/>
             </el-main>
         </el-container>
-    </div>
+    </el-container >
 </template>
 
 <script>
@@ -42,5 +42,18 @@
         background-position: top center;
         background-attachment: scroll;
         background-color: #fff;
+
+        .el-header {
+            position: relative;
+            opacity:0.9;
+            box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+
+        }
+
+        .el-main {
+            opacity:0.9;
+            padding: 32px;
+            position: relative;
+        }
     }
 </style>

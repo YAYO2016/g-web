@@ -42,9 +42,9 @@ module.exports = {
             //安装sass-resources-loader，然后配置这里，可以全局使用scss的变量和方法
             // npm i sass-resources-loader -D
             // ,不然的话只能使用样式，而无法使用方法和变量
-            //sass: {
-            //    prependData: `@import "@/common/style/common.scss";`
-            //}
+            sass: {
+                prependData: `@import "@/common/style/common.scss";`
+            }
         }
     },
     parallel: require('os').cpus().length > 1, // 构建时开启多进程处理babel编译

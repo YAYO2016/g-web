@@ -1,0 +1,33 @@
+@import "variables.scss";
+
+
+//声明混合宏
+@mixin  content-box {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  //规定背景的绘制区域： border-box背景被裁剪到边框盒。	padding-box	背景被裁剪到内边距框。	content-box	背景被裁剪到内容框。
+  background-clip: padding-box;
+  padding: 35px;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
+
+  ////滚动条的宽度 -- 这边交给全局reset.css中去设置了
+  //::-webkit-scrollbar {
+  //  width: 10px;
+  //  height: 10px;
+  //}
+  ////滚动条的滑块
+  //::-webkit-scrollbar-thumb {
+  //  background-color: #dddee0;
+  //  border-radius: 5px;
+  //}
+
+  .first-title {
+    color: #303133;
+    font-size: 20px;
+    margin: 20px;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  }
+}
