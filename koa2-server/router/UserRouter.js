@@ -36,7 +36,7 @@ router.post("/login", async (ctx) => {
             if (result.password === password) {
                 ctx.body = {
                     code: 200,
-                    data: {token: 'token'},
+                    data: result,
                     message: "登录成功"
                 }
             } else {

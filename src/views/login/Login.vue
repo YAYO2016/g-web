@@ -89,6 +89,8 @@
                 if (vm.validateRules(formName, vm)) {
                     vm.loading = true;
                     vm.$api.login(vm.loginForm).then(res => {
+                        //将用户数据保持到store中
+                        vm.$store.dispatch("user/set_userInfo", res.data);
                         vm.$message.success("登录成功");
                         vm.$router.push("/home");
                         vm.loading = false;
