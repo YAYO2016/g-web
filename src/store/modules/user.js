@@ -28,7 +28,7 @@ const user = {
             })
         },
         //获取当前登录用户的信息--通过token获取用户的相关信息
-        getUserInfo: ({commit, state}, userInfo) => {
+        getUserInfo: ({commit, state}) => {
             return new Promise((resolve, reject) => {
                 let token = getToken();
                 api.getUserInfo({token}).then(res => {

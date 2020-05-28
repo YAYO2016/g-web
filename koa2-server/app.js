@@ -11,7 +11,10 @@ const Router = require("koa-router");
 const router = new Router();
 //数据库的连接
 const {connect, initSchemas} = require("./dbs/init");
-
+//引入jwt认证中间件
+const jwtutil = require("./utils/jwt.js");
+//使用jwt中间件
+app.use(jwtutil.jwtAuth);
 
 //引入koa-bodyparser来解析post请求的body数据，也就是将post请求参数封装成对象
 const bodyParser = require("koa-bodyparser");

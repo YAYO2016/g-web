@@ -3,6 +3,7 @@ import router from '@/router';
 import store from "@/store"
 import {Message, Loading} from "element-ui"
 import {getToken} from "../../common/js/auth";
+import util from "@/common/js/util"
 
 let loadingInstance;
 let loadingCount = 0;
@@ -53,9 +54,9 @@ http.interceptors.request.use(config => {
     }
 
     //请求拦截器中给所有的请求header中添加token
-    if (store.getters.token) {
+    if (util.TypeFn.isTrue(getToken())) {
         //将cookie中的token添加到header中的Authorization，后台根据Authorization去获取请求中返回的token
-        config.headers['Authorization'] = getToken();
+        config.headers['Authorization'] = `${getToken()}`;
     }
 
     if (config.method === 'post') {
