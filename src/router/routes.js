@@ -2,6 +2,7 @@
  * Created by yanyue on 2020/5/27 21:47
  */
 const Layout = () => import('@/views/layout/Layout');
+const NoFound = () => import('@/views/errorPages/NoFound');
 
 /**
  * hidden: true                   如果hidden为true则在左侧菜单栏不展示
@@ -41,6 +42,12 @@ export const constantRoutes = [
         component: () => import('@/views/forgetPassword/ForgetPassword'),
         hidden: true
     },
+    //404错误页面
+    {
+        path: '/404',
+        name: 'noFound',
+        component: NoFound,
+    },
     {
         path: '/',
         component: Layout,
@@ -71,6 +78,9 @@ export const asyncRoutes = [
             }
         ]
     },
+
+    // 404一定要放到最后面，不然会被之前的拦截掉
+    {path: '*', redirect: '/404', hidden: true}
 
 ];
 

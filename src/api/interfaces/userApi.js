@@ -21,6 +21,9 @@ const userApi = {
     getUserInfo(params) {
         return post('/user/getUserInfo', params)
     },
+    getAllUsers(params) {
+        return post('/user/getAllUsers', params)
+    },
 
 };
 

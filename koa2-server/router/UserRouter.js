@@ -34,6 +34,10 @@ router.post("/login", async (ctx) => {
     let {username, password} = ctx.request.body;
 
     const User = mongoose.model("User");
+    await User.updateOne(
+        {username}, //查询
+        {lastLoginDate:new Date()}
+    );
     await User.findOne({username: username}).exec().then(async result => {
         if (result) {
             //请求中的密码和查询到的用户中的密码进行比较
@@ -152,6 +156,34 @@ router.post("/getUserInfo", async (ctx) => {
     }
 });
 
+//获取所有用户的信息
+router.post('/getAllUsers', async (ctx) => {
+    let {username, pageNum, pageSize} = ctx.request.body;
+    const User = mongoose.model("User");
+    let allUser = await User.find();
+    await User.find(username ? {username} : {}).limit(pageSize).skip((pageNum - 1) * pageSize).then(users => {
+        if (users) {
+            let result = {
+                list: users,
+                pageInfo: {
+                    pageNum: pageNum,
+                    pageSize: pageSize,
+                    total: allUser.length
+                }
+            };
+            ctx.body = {
+                code: 200,
+                data: result,
+                message: "查询成功"
+            };
+        } else {
+            ctx.body = {
+                code: 500,
+                message: "查询用户信息失败",
+            };
+        }
+    })
+});
 
 module.exports = router;
 

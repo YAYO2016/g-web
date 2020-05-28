@@ -59,22 +59,21 @@ const install = function (Vue, options) {
         }
     };
 
-    Vue.prototype.gRowDateFormat = (row, column) => {
+    Vue.prototype.gRowTimeFormat = (row, column) => {
         let date = row[column.property];
-        if (!date && typeof (date) != "undefined" && date != 0) {
+        if ((!date && typeof (date) != "undefined" && date != 0) || date == '') {
             return "";
         } else {
-            return moment(date).format("YYYY-MM-DD");
+            return moment(date).format("YYYY-MM-DD HH:mm:ss");
         }
     };
 
-    Vue.prototype.gRoleFormat = (roleArr) => {
-        if (roleArr) {
-            return roleArr.map(role => {
-                return role.roleName
-            }).join(',');
+    Vue.prototype.gRowDateFormat = (row, column) => {
+        let date = row[column.property];
+        if ((!date && typeof (date) != "undefined" && date != 0) || date == '') {
+            return "";
         } else {
-            return ''
+            return moment(date).format("YYYY-MM-DD");
         }
     };
 
@@ -95,7 +94,7 @@ const install = function (Vue, options) {
                 result = true;
             } else {
                 _this.$message({
-                    message: '输入有误',
+                    message: '输入有误，请重新输入',
                     type: 'error'
                 });
                 result = false;
