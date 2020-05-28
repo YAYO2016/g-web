@@ -17,11 +17,22 @@ const jwtutil = require("./utils/jwt.js");
 app.use(jwtutil.jwtAuth);
 
 //引入koa-bodyparser来解析post请求的body数据，也就是将post请求参数封装成对象
-const bodyParser = require("koa-bodyparser");
-app.use(bodyParser());
+//const bodyParser = require("koa-bodyparser");
+//app.use(bodyParser());
+
+//koa-body获取body中的参数，并且可以上传文件，不能和koa-bodyparser共用，会冲突
+const koaBody = require('koa-body');
+app.use(koaBody({
+    multipart: true,
+    formidable: {
+        maxFileSize: 200*1024*1024    // 设置上传文件大小最大限制，默认2M
+    }
+}));
 
 const user = require("./router/UserRouter");
+const file = require("./router/FileRouter");
 router.use("/user", user.routes());
+router.use("/file", file.routes());
 //加载路由中间件
 app.use(router.routes()).use(router.allowedMethods());
 

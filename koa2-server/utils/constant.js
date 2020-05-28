@@ -10,6 +10,7 @@ module.exports = {
     JWT_EXPIRED: 60 * 60 * 2, //单位s token失效时间
     //mongodb数据库的url地址
     dbUrl: "mongodb://localhost:27017/g-web",
+    FileUploadPath: "D:\\YAYO-WEB\\upload"
 };
 
 

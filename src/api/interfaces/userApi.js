@@ -6,6 +6,7 @@ import Http from '@/api/config/http.js';
 
 const post = Http.post;
 const get = Http.get;
+const upload = Http.upload;
 
 const userApi = {
     //注册接口
@@ -26,6 +27,12 @@ const userApi = {
     },
     getSingleUser(params) {
         return post('/user/getSingleUser', params)
+    },
+    avatarUpload(params) {
+        return upload('/file/uploadfile', params)
+    },
+    editUser(params) {
+        return upload('/user/editUser', params)
     },
 
 };

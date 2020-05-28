@@ -11,10 +11,12 @@
             <el-form-item label="头像：" class="upload">
                 <el-upload
                         class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
-                        :show-file-list="false"
-                        :on-success="handleAvatarSuccess"
-                        :before-upload="beforeAvatarUpload">
+                        action=""
+                        :multiple="false"
+                        :auto-upload="true"
+                        :before-upload="(file)=>beforeUpload(file,fileList)"
+                        :http-request="httpRequest"
+                        :show-file-list="false">
                     <img v-if="formData.avatar" :src="formData.avatar" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
@@ -37,6 +39,7 @@
     /**
      * Created by yanyue on 2020/5/28 16:21
      */
+    import axios from "axios"
 
     export default {
         name: "EditForm",
@@ -48,33 +51,46 @@
                 }
             }
         },
-        computed: {
-
-        },
+        computed: {},
         data() {
             return {
                 imageUrl: "",
                 roleOptions: [
                     {label: "管理员", value: "admin"},
                     {label: "游客", value: "visitor"}
-                ]
+                ],
+                fileMaxSize: 50,
+                fileList: []
             }
         },
         methods: {
-            handleAvatarSuccess(res, file) {
-                this.imageUrl = URL.createObjectURL(file.raw);
+            beforeUpload(file, fileList) {
+                let vm = this;
+                const isLtMax = file.size / 1024 / 1024 < vm.fileMaxSize;
+                const regexFlag = /(^((?![\\/:*?“<>|`!@#$%&()]).)*$)/.test(file.name);
+                if (!isLtMax) {
+                    vm.$messgae.error(`上传文件不能超过${vm.fileMaxSize}MB`);
+                    return;
+                }
+                if (!regexFlag) {
+                    vm.$messgae.error("附件名称不能包含特殊字符");
+                    return;
+                }
+                if (isLtMax && regexFlag) {
+                    fileList.push({...file})
+                }
+                return isLtMax && regexFlag;
             },
-            beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
-                const isLt2M = file.size / 1024 / 1024 < 2;
-
-                if (!isJPG) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
-                }
-                if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 2MB!');
-                }
-                return isJPG && isLt2M;
+            httpRequest(e) {
+                let vm = this;
+                let file = e.file;
+                let formData = new FormData();
+                formData.append("file", file);
+                vm.$api.avatarUpload(formData).then(res => {
+                    vm.formData.avatar = vm.iobsUrl + res.data.name;
+                    vm.$forceUpdate();
+                    vm.$message.success("上传成功");
+                })
             }
         }
     }

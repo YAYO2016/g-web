@@ -32,7 +32,6 @@ router.post("/register", async (ctx) => {
 //用户登录/user/login
 router.post("/login", async (ctx) => {
     let {username, password} = ctx.request.body;
-
     const User = mongoose.model("User");
     await User.updateOne(
         {username}, //查询
@@ -127,7 +126,7 @@ router.post("/getUserInfo", async (ctx) => {
     //});
     const User = mongoose.model("User");
     let decode = jwtutil.decode(ctx.request);
-    console.log(decode);
+    //console.log(decode);
     if (decode && decode.email) {
         await User.findOne({email: decode.email}).then(result => {
             if (result) {

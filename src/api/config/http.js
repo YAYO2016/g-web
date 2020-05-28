@@ -59,18 +59,19 @@ http.interceptors.request.use(config => {
         config.headers['Authorization'] = `${getToken()}`;
     }
 
-    if (config.method === 'post') {
-        config.data = {
-            ...config.data,
-            _t: Date.parse(new Date()) / 1000,
-        }
-    } else if (config.method === 'get') {
-        config.params = {
-            _t: Date.parse(new Date()) / 1000,
-            ...config.params
+    if(config.headers['Content-Type'] === 'application/json;charset=UTF-8' ){
+        if (config.method === 'post') {
+            config.data = {
+                ...config.data,
+                _t: Date.parse(new Date()) / 1000,
+            }
+        } else if (config.method === 'get') {
+            config.params = {
+                _t: Date.parse(new Date()) / 1000,
+                ...config.params
+            }
         }
     }
-
     return config
 }, error => {
 
@@ -142,13 +143,26 @@ function get(url, params = {}, options = {}) {
 }
 
 //封装post请求
-function post(url, data = {}, options = {}, callback = () => {}) {
+function post(url, data = {}, options = {}, callback = () => {
+}) {
     return http({
         url,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            //'Authorization': localStorage.getItem('token')
+        },
+        data,
+        options
+    })
+}
+
+function upload(url, data = {}, options = {}, callback = () => {
+}) {
+    return http({
+        url,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'multipart/form-data'
         },
         data,
         options,
@@ -162,5 +176,5 @@ function post(url, data = {}, options = {}, callback = () => {}) {
 }
 
 export default {
-    get, post
+    get, post, upload
 };
