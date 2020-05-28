@@ -69,13 +69,21 @@ export const asyncRoutes = [
         path: '/user',
         component: Layout,
         redirect: '/user/userManager',
+        meta: {title: '用户模块', icon: 'el-icon-s-custom', roles: ["editor", "admin"]},
         children: [
             {
                 path: '/user/userManager',
                 component: () => import('@/views/userManager/UserManager'),
                 name: 'UserManager',
                 meta: {title: '用户管理', icon: 'el-icon-s-custom', roles: ["admin"]}
-            }
+            },
+            {
+                path: '/user/userInfo',
+                component: () => import('@/views/userManager/UserInfo'),
+                hidden: true,
+                name: 'UserInfo',
+                meta: {title: '用户信息', icon: 'el-icon-s-custom', roles: ["admin", "visitor"]}
+            },
         ]
     },
 
