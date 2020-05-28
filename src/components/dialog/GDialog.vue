@@ -58,26 +58,12 @@
                 //immediate: true,
                 handler(newVal, oldVal) {
                     if (newVal) {
-                        //打开弹窗时候执行的操作
-                        //console.log("open dialog");
                         this.$emit('openDialog');
                     } else {
-                        //关闭弹窗的时候执行的操作
-                        //console.log("close dialog");
                         this.$emit('closedDialog');
                     }
                 }
             }
-        },
-        methods: {
-            //closedDialog() {
-            //    let vm = this;
-            //    //vm.$emit('closedDialog');
-            //},
-            //openDialog() {
-            //    let vm = this;
-            //    //vm.$emit('openDialog');
-            //}
         }
     }
 </script>

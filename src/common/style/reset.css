@@ -273,6 +273,9 @@ html, body {
 
 
 /*公共样式*/
+.textCenter{
+    text-align: center;
+}
 .fl {
     float: left;
 }
@@ -315,6 +318,31 @@ html, body {
     /*//子元素应该被水平或垂直排列*/
     -webkit-line-clamp: 2;
     /*2行后显示省略号*/
+}
+
+.upload  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+.upload .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+}
+.upload .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
 }
 
 

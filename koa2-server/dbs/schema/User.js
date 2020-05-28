@@ -28,7 +28,9 @@ const userSchema = new Schema({
     //最后登录时间
     lastLoginDate: {type: Date, default: Date.now()},
     //头像地址
-    avatar: String
+    avatar: String,
+    //用户角色
+    roles: String
 }, {
     collection: "user"  //避免创建的表名变为users
 });

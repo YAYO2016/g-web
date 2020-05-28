@@ -106,7 +106,7 @@ router.post("/forgetPassword", async (ctx) => {
     })
 });
 
-//查询单个用户信息
+//查询当前登录用户信息
 router.post("/getUserInfo", async (ctx) => {
     //解析js中的token
     //let {token} = ctx.request.body;
@@ -182,6 +182,26 @@ router.post('/getAllUsers', async (ctx) => {
                 code: 200,
                 data: result,
                 message: "查询成功"
+            };
+        } else {
+            ctx.body = {
+                code: 500,
+                message: "查询用户信息失败",
+            };
+        }
+    })
+});
+
+//查询单个用户的信息
+router.post('/getSingleUser', async (ctx) => {
+    let {_id} = ctx.request.body;
+    const User = mongoose.model("User");
+    await User.findOne({_id}).then(user => {
+        if (user) {
+            ctx.body = {
+                code: 200,
+                data: user,
+                message: "查询用户信息成功",
             };
         } else {
             ctx.body = {
