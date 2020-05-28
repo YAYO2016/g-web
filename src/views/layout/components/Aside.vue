@@ -76,12 +76,31 @@
                 return variables;
             }
         },
+        mounted() {
+            let vm = this;
+            //刷新的时候将当前路由的对应的tab添加到tabs中去
+            let currentRoute = vm.$router.currentRoute;
+            vm.$store.dispatch('common/selectMenu', {
+                path: currentRoute.path,
+                name: currentRoute.name,
+                meta: currentRoute.meta
+            })
+        },
         methods: {
             clickMenu(item) {
                 let vm = this;
                 vm.$store.dispatch('common/selectMenu', item)
             }
-        }
+        },
+        watch: {
+            //'$route': {
+            //    handler(route) {
+            //        console.log(route);
+            //        this.$store.dispatch('common/selectMenu', route)
+            //    },
+            //    immediate: true  //会在create的时候就进行调用
+            //}
+        },
     }
 </script>
 
@@ -91,7 +110,7 @@
             height: 100%;
             border-right: 1px solid $menuBg;
             background: $menuBg;
-            opacity:0.9;
+            opacity: 0.9;
 
             /deep/ .el-scrollbar__wrap {
                 overflow-x: hidden;
