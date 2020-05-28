@@ -1,5 +1,11 @@
 <template>
     <div class='UserManager'>
+        <div>
+            <el-input v-model="search.input" placeholder="用户名查询" style="width: 250px" clearable></el-input>
+            <g-split-v></g-split-v>
+            <el-button type="primary" @click="handleSearch">查询</el-button>
+        </div>
+        <g-split-l></g-split-l>
         <g-table :table-data="tableData">
             <el-table-column type="index" label="序号">
                 <template slot-scope="scope">{{(pageInfo.pageNum-1)*pageInfo.pageSize+scope.$index+1}}</template>
@@ -68,6 +74,12 @@
                     vm.tableData = res.data.list;
                     vm.pageInfo = res.data.pageInfo;
                 })
+            },
+            handleSearch() {
+                let vm = this;
+                //只有点击查询按钮的时候，关键字才会进行接口查询，不然只是个临时的数据而已
+                vm.searchKey.input = vm.search.input;
+                vm.getData();
             }
         }
     }

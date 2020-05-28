@@ -36,7 +36,7 @@ router.post("/login", async (ctx) => {
     const User = mongoose.model("User");
     await User.updateOne(
         {username}, //查询
-        {lastLoginDate:new Date()}
+        {lastLoginDate: new Date()}
     );
     await User.findOne({username: username}).exec().then(async result => {
         if (result) {
@@ -160,7 +160,14 @@ router.post("/getUserInfo", async (ctx) => {
 router.post('/getAllUsers', async (ctx) => {
     let {username, pageNum, pageSize} = ctx.request.body;
     const User = mongoose.model("User");
-    let allUser = await User.find();
+    let total = 0;
+    if (username) {
+        let allUser = await User.find({username});
+        total = allUser.length;
+    } else {
+        let allUser = await User.find();
+        total = allUser.length;
+    }
     await User.find(username ? {username} : {}).limit(pageSize).skip((pageNum - 1) * pageSize).then(users => {
         if (users) {
             let result = {
@@ -168,7 +175,7 @@ router.post('/getAllUsers', async (ctx) => {
                 pageInfo: {
                     pageNum: pageNum,
                     pageSize: pageSize,
-                    total: allUser.length
+                    total: total
                 }
             };
             ctx.body = {
