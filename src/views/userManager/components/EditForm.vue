@@ -17,7 +17,7 @@
                         :before-upload="(file)=>beforeUpload(file,fileList)"
                         :http-request="httpRequest"
                         :show-file-list="false">
-                    <img v-if="formData.avatar" :src="formData.avatar" class="avatar">
+                    <img v-if="formData.avatar" :src="iobsUrl+formData.avatar" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
@@ -87,7 +87,7 @@
                 let formData = new FormData();
                 formData.append("file", file);
                 vm.$api.avatarUpload(formData).then(res => {
-                    vm.formData.avatar = vm.iobsUrl + res.data.name;
+                    vm.formData.avatar = res.data.name;
                     vm.$forceUpdate();
                     vm.$message.success("上传成功");
                 })

@@ -211,5 +211,28 @@ router.post('/getSingleUser', async (ctx) => {
     })
 });
 
+//用户修改
+router.post('/editUser', async (ctx) => {
+    let user = ctx.request.body;
+    const User = mongoose.model("User");
+    await User.updateOne(
+        {_id: user._id}, //查询
+        {avatar:user.avatar,roles:user.roles},
+    ).then(user => {
+        if (user) {
+            ctx.body = {
+                code: 200,
+                data: user,
+                message: "修改用户信息成功",
+            };
+        } else {
+            ctx.body = {
+                code: 500,
+                message: "修改用户信息失败",
+            };
+        }
+    })
+});
+
 module.exports = router;
 

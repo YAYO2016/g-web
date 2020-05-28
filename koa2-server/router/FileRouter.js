@@ -28,17 +28,17 @@ router.post('/uploadfile', async (ctx, next) => {
     await reader.pipe(upStream);
 
     //获取当前登录用户
-    const User = mongoose.model("User");
-    let decode = jwtutil.decode(ctx.request);
-    let user = null;
-    if (decode && decode.email) {
-        user = await User.findOne({email: decode.email})
-    }
-    //修改用户的头像图片名
-    await User.updateOne(
-        {email: user.email}, //查询
-        {avatar: `${randomFileName}.${fileSuffix}`}
-    );
+    //const User = mongoose.model("User");
+    //let decode = jwtutil.decode(ctx.request);
+    //let user = null;
+    //if (decode && decode.email) {
+    //    user = await User.findOne({email: decode.email})
+    //}
+    ////修改用户的头像图片名
+    //await User.updateOne(
+    //    {email: user.email}, //查询
+    //    {avatar: `${randomFileName}.${fileSuffix}`}
+    //);
     return ctx.body = {
         code: 200,
         message: "上传成功",

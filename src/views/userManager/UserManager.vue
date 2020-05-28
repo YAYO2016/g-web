@@ -104,12 +104,18 @@
                     vm.editFormVisible = true;
                 })
             },
-            editSure(){
-
+            editSure() {
+                let vm = this;
+                vm.editForm.roles = vm.editForm.roles.join(",");
+                vm.$api.editUser(vm.editForm).then(res => {
+                    vm.editFormVisible = false;
+                    vm.$message.success("用户信息编辑成功");
+                    vm.getData();
+                })
             },
             initForm() {
                 return {
-                    userId: "",
+                    _id: "",
                     username: "",
                     email: "",
                     avatar: "",

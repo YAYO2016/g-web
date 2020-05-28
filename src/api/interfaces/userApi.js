@@ -16,9 +16,9 @@ const userApi = {
     login(params) {
         return post('/user/login', params)
     },
-   forgetPassword(params) {
-       return post('/user/forgetPassword', params)
-   },
+    forgetPassword(params) {
+        return post('/user/forgetPassword', params)
+    },
     getUserInfo(params) {
         return post('/user/getUserInfo', params)
     },
@@ -32,7 +32,7 @@ const userApi = {
         return upload('/file/uploadfile', params)
     },
     editUser(params) {
-        return upload('/user/editUser', params)
+        return post('/user/editUser', params, {loading: true})
     },
 
 };

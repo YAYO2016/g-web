@@ -16,7 +16,7 @@
             <div class="content-item">
                 <!--用户相关-->
                 <el-dropdown trigger="click">
-                    <span class="el-dropdown-link"><img :src="userImg" class="user"/></span>
+                    <span class="el-dropdown-link"><img :src="iobsUrl+$store.state.user.userInfo.avatar" class="user"/></span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>个人中心</el-dropdown-item>
                         <el-dropdown-item @click.native="logOut">退出</el-dropdown-item>
