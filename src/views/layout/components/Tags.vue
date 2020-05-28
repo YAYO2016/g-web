@@ -5,10 +5,10 @@
             <el-tag
                     :key="tag.name"
                     size="small"
-                    v-for="tag in tags"
+                    v-for="(tag,index) in tags"
                     :closable="tag.name !== 'Home'"
                     :disable-transitions="false"
-                    @close="handleClose(tag)"
+                    @close="handleClose(tag,tags[index-1])"
                     @click="clickMenu(tag)"
                     :effect="$route.name === tag.name ? 'dark' : 'plain'"
             >
@@ -36,9 +36,10 @@
             })
         },
         methods: {
-            handleClose(tag) {
+            handleClose(tag,beforeTag) {
                 let vm = this;
                 vm.$store.dispatch("common/closeTab", tag);
+                vm.$router.push(beforeTag.path)
             },
             clickMenu(item) {
                 let vm = this;
