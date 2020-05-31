@@ -24,6 +24,9 @@ Vue.prototype.$rules = rules;
 import GUI from './components/plugins';
 Vue.use(GUI);
 
+//导入font-awesome，font-awesome图标
+import 'font-awesome/css/font-awesome.min.css'
+
 //导入api接口
 import api from './api/index';
 Vue.prototype.$api = api;

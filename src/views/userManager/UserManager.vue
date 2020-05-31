@@ -14,7 +14,9 @@
             <el-table-column prop="email" label="邮箱地址"></el-table-column>
             <el-table-column prop="createDate" label="创建日期" :formatter="gRowTimeFormat"></el-table-column>
             <el-table-column prop="lastLoginDate" label="最后登录日期" :formatter="gRowTimeFormat"></el-table-column>
-            <el-table-column prop="roles" label="角色"></el-table-column>
+            <el-table-column prop="roles" label="角色" :formatter="(row,column)=>{
+            return  row[column.property].replace('visitor','游客').replace('admin','管理员');
+            }"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button type="text">查看</el-button>
@@ -128,6 +130,6 @@
 
 <style lang='scss' scoped>
     .UserManager {
-
+        @include content-box;
     }
 </style>

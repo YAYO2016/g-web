@@ -27,7 +27,6 @@ const install = function (Vue, options) {
         return fmt;
     };
 
-
     //备注格式处理
     Vue.prototype.gRemarkFormat = (row, column) => {
         let content = row[column.property];

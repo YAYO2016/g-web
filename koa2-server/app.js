@@ -31,8 +31,10 @@ app.use(koaBody({
 
 const user = require("./router/UserRouter");
 const file = require("./router/FileRouter");
+const bank = require("./router/BankRouter");
 router.use("/user", user.routes());
 router.use("/file", file.routes());
+router.use("/bank", bank.routes());
 //加载路由中间件
 app.use(router.routes()).use(router.allowedMethods());
 

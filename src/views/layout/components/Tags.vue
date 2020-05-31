@@ -8,7 +8,7 @@
                     v-for="(tag,index) in tags"
                     :closable="tag.name !== 'Home'"
                     :disable-transitions="false"
-                    @close="handleClose(tag,tags[index-1])"
+                    @close="handleClose(tag)"
                     @click="clickMenu(tag)"
                     :effect="$route.name === tag.name ? 'dark' : 'plain'"
             >
@@ -36,10 +36,16 @@
             })
         },
         methods: {
-            handleClose(tag,beforeTag) {
+            handleClose(tag) {
                 let vm = this;
+                //获取当前的路由地址
+                let currentPath = vm.$route.path;
+                //点击关闭tags
                 vm.$store.dispatch("common/closeTab", tag);
-                vm.$router.push(beforeTag.path)
+                if (currentPath === tag.path) {
+                    //关闭的当前的路由，需要跳转到其他路由去，我这边定义跳转到到最后一个存在的tags里面去
+                    vm.$router.push(vm.tags[vm.tags.length-1].path)
+                }
             },
             clickMenu(item) {
                 let vm = this;

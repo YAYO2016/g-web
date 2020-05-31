@@ -622,6 +622,23 @@ const util = {
                 return new_tmp;
             },
 
+            //判断数组中是否包含某个属性值的对象
+            containsObjArr(arr, value, key) {
+                let index = null;
+                let result = false;
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i][key] == value) {
+                        index = i;
+                        result = true;
+                    }
+                }
+                //if (index === null) {
+                //    return;
+                //}
+                //return arr[index];
+                return result;
+            },
+
             //删除数组中的包含某个属性值的对象
             delObjArr(arr, value, key) {
                 let index = null;
