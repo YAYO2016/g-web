@@ -6,7 +6,8 @@ import GSplitLevel from './split/SplitLevel';
 import GSplitVertical from './split/SplitVertical';
 import GTable from './table/Table'
 import GPagination from './pagination/Pagination'
-import GInputView from './form/InputView'
+import GAutoComplete from './form/GAutoComplete'
+import GInput from './form/GInput'
 
 export default {
     install(Vue, options) {
@@ -15,6 +16,7 @@ export default {
         Vue.component('g-split-v', GSplitVertical);
         Vue.component('g-table', GTable);
         Vue.component('g-pagination', GPagination);
-        Vue.component('g-input-view', GInputView);
+        Vue.component('g-auto-complete', GAutoComplete);
+        Vue.component('g-input', GInput);
     }
 };

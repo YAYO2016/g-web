@@ -66,6 +66,36 @@ export const constantRoutes = [
 
 export const asyncRoutes = [
     {
+        path: '/bank',
+        component: Layout,
+        name: 'Bank',
+        redirect: '/bank/banklist',
+        meta: {title: '银行', icon: 'fa fa-university', roles: ["editor", "admin"]},
+        children: [
+            {
+                path: '/bank/banklist',
+                component: () => import('@/views/bank/BankList'),
+                name: 'BankList',
+                meta: {title: '银行列表', icon: 'fa fa-university', roles: ["visitor", "admin"]}
+            },
+        ]
+    },
+    {
+        path: '/form',
+        component: Layout,
+        name: 'Bank',
+        redirect: '/form/formTest',
+        meta: {title: '表单管理', icon: 'fa fa-fort-awesome', roles: ["editor", "admin"]},
+        children: [
+            {
+                path: '/form/formTest',
+                component: () => import('@/views/formManager/FormTest'),
+                name: 'FormTest',
+                meta: {title: '自定义表单元素测试', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+            },
+        ]
+    },
+    {
         path: '/user',
         component: Layout,
         redirect: '/user/userManager',
@@ -75,7 +105,7 @@ export const asyncRoutes = [
                 path: '/user/userManager',
                 component: () => import('@/views/userManager/UserManager'),
                 name: 'UserManager',
-                meta: {title: '用户管理', icon: 'el-icon-s-custom', roles: ["admin"]}
+                meta: {title: '用户列表', icon: 'el-icon-s-custom', roles: ["admin"]}
             },
             {
                 path: '/user/userInfo',
