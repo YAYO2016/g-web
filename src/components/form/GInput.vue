@@ -112,6 +112,10 @@
                 type: [Number, String],
                 default: -Infinity
             },
+            disabled: {
+                type: Boolean,
+                default: null
+            },
         },
         data() {
             return {
@@ -137,6 +141,13 @@
             viewValue(newVal) {
                 if (this.isTrue(newVal)) {
                     this.$emit("update:value", newVal);
+                } else {
+                    //如果值是0的话，也会是false，但是有时候数据本身就是0，这是需要的
+                    if (newVal === 0) {
+                        this.$emit("update:value", 0);
+                    } else {
+                        this.$emit("update:value", "");
+                    }
                 }
             }
         }

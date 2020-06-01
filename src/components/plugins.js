@@ -8,6 +8,7 @@ import GTable from './table/Table'
 import GPagination from './pagination/Pagination'
 import GAutoComplete from './form/GAutoComplete'
 import GInput from './form/GInput'
+import GDate from './form/GDate'
 
 export default {
     install(Vue, options) {
@@ -18,5 +19,6 @@ export default {
         Vue.component('g-pagination', GPagination);
         Vue.component('g-auto-complete', GAutoComplete);
         Vue.component('g-input', GInput);
+        Vue.component('g-date', GDate);
     }
 };
