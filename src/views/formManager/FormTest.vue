@@ -65,6 +65,10 @@
                 <g-select :value.sync="testForm.selectItems" :options="options" optionKey="label"
                           optionValue="value" :multiple="true" :allSelect="true"></g-select>
             </el-form-item>
+            <el-form-item label="普通选择框（多选，全选，checkbox）：" class="fl" label-width="290px">
+                <g-select type="select-checkbox" :value.sync="testForm.selectItems" :options="options" optionKey="label"
+                          optionValue="value" :multiple="true" :allSelect="true"></g-select>
+            </el-form-item>
             <div class="clearfix"></div>
             <el-divider></el-divider>
         </el-form>
