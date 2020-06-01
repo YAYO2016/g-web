@@ -10,6 +10,7 @@ import GAutoComplete from './form/GAutoComplete'
 import GInput from './form/GInput'
 import GDate from './form/GDate'
 import GSelect from './form/GSelect'
+import GArea from './form/GArea'
 
 export default {
     install(Vue, options) {
@@ -22,5 +23,6 @@ export default {
         Vue.component('g-input', GInput);
         Vue.component('g-date', GDate);
         Vue.component('g-select', GSelect);
+        Vue.component('g-area', GArea);
     }
 };

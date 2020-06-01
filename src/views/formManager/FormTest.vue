@@ -71,6 +71,11 @@
             </el-form-item>
             <div class="clearfix"></div>
             <el-divider></el-divider>
+            <el-form-item label="地址选择：" class="fl">
+                <g-area :value.sync="testForm.area" width="200px"></g-area>
+            </el-form-item>
+            <div class="clearfix"></div>
+            <el-divider></el-divider>
         </el-form>
     </div>
 </template>
@@ -100,7 +105,8 @@
                     startDate2: new Date(),
                     endDate2: new Date(),
                     selectItem: "admin",
-                    selectItems:["admin","visitor"],
+                    selectItems: ["admin", "visitor"],
+                    area: "150421"
                 },
                 options: [{label: "管理员", value: "admin"}, {label: "游客", value: "visitor"}],
             }
