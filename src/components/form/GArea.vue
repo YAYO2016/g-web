@@ -59,13 +59,10 @@
             //回显数据
             if (this.type === 'areas') {
                 this.areaOptions = this.getAreaList();
-                this.viewValue = this.value;
+                this.viewValue = this.getArea(this.value);
             }
         },
         watch: {
-            //value(newVal){
-            //    this.viewValue = newVal;
-            //},
             viewValue(newVal) {
                 //区域选择
                 if (this.type === 'areas') {
@@ -78,25 +75,6 @@
             }
         },
         methods: {
-            //选择框里面的全选按钮的操作
-            selectAll() {
-                let vm = this;
-                //子组件通过update更改父组件中的属性值，父组件通过sync来修饰属性名
-                //可以实现子组件修改父组件的值，并且不会报错
-                //vm.$emit('update:value', []);
-                vm.viewValue = [];
-                if (vm.checked) {
-                    let result = [];
-                    vm.options.map((item) => {
-                        result.push(item[vm.optionValue])
-                    });
-                    vm.viewValue = result;
-                    //vm.$emit('update:value', result)
-                } else {
-                    vm.viewValue = [];
-                    //vm.$emit('update:value', []);
-                }
-            },
             isTrue(o) {  //是否是true
                 return !this.isFalse(o)
             },
@@ -190,7 +168,8 @@
                     return area;
                 }
             },
-            setArea(code) {//获取地区名 
+            //获取地区名 
+            setArea(code) {
                 if (!code) {
                     return;
                 }
@@ -246,57 +225,7 @@
                     }
                 }
                 return aName;
-            },
-            //把扁平数据转成树形数据
-            /**
-             * 该方法用于将有父子关系的数组转换成树形结构的数组
-             * 接收一个具有父子关系的数组作为参数
-             * 返回一个树形结构的数组
-             * data 待过滤的数组
-             * id 唯一性id
-             * parentId 所属于的父级的id
-             * children 子类的键名
-             */
-            translateDataToTree(data, id = 'id', parentId = 'parentId', children = 'children') {
-                //console.log("data", data);
-                //没有父节点的数据(parentId不存在或者是0的一般是最高级别的节点)
-                let parents = data.filter(value => value[parentId] == 'undefined' || value[parentId] == null || value[parentId] == 0);
-                //有父节点的数据
-                let childrens = data.filter(value => value[parentId] !== 'undefined' && value[parentId] != null && value[parentId] != 0);
-                //定义转换方法的具体实现
-                let translator = (parents, childrens) => {
-                    //遍历父节点数据
-                    parents.forEach((parent) => {
-                            //遍历子节点数据
-                            childrens.forEach((current, index) => {
-                                    //此时找到父节点对应的一个子节点
-                                    if (current[parentId] === parent[id]) {
-                                        //对子节点数据进行深复制，这里只支持部分类型的数据深复制，对深复制不了解的童靴可以先去了解下深复制
-                                        let temp = JSON.parse(JSON.stringify(childrens));
-                                        //让当前子节点从temp中移除，temp作为新的子节点数据，这里是为了让递归时，子节点的遍历次数更少，如果父子关系的层级越多，越有利
-                                        temp.splice(index, 1);
-                                        //让当前子节点作为唯一的父节点，去递归查找其对应的子节点
-                                        translator([current], temp);
-                                        //把找到子节点放入父节点的childrens属性中
-                                        typeof parent[children] !== 'undefined' ? parent[children].push(current) : parent[children] = [current]
-                                    }
-                                }
-                            )
-                        }
-                    )
-                };
-                //调用转换方法
-                translator(parents, childrens);
-                //返回最终的结果
-                //console.log(parents);
-                return parents;
-            },
-            checkTree() {
-                //树形接口选择节点，  返回key的集合，一般就是option的id集合
-                this.viewValue = this.$refs.tree.getCheckedKeys();
-                //返回node 节点本身对象的数组集合
-                //this.viewValue = this.$refs.tree.getCheckedNodes();
-            },
+            }
         }
 
     }
