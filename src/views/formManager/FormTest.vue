@@ -43,6 +43,30 @@
             </el-form-item>
             <div class="clearfix"></div>
             <el-divider></el-divider>
+            <el-form-item label="普通选择框：" class="fl">
+                <el-select v-model="testForm.selectItem" placeholder="请选择" clearable>
+                    <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="普通选择框2：" class="fl">
+                <g-select :value.sync="testForm.selectItem" :options="options" optionKey="label"
+                          optionValue="value"></g-select>
+            </el-form-item>
+            <el-form-item label="普通选择框（多选）：" class="fl" label-width="160px">
+                <g-select :value.sync="testForm.selectItems" :options="options" optionKey="label"
+                          optionValue="value" :multiple="true"></g-select>
+            </el-form-item>
+            <el-form-item label="普通选择框（多选，全选）：" class="fl" label-width="200px">
+                <g-select :value.sync="testForm.selectItems" :options="options" optionKey="label"
+                          optionValue="value" :multiple="true" :allSelect="true"></g-select>
+            </el-form-item>
+            <div class="clearfix"></div>
+            <el-divider></el-divider>
         </el-form>
     </div>
 </template>
@@ -71,8 +95,10 @@
                     endDate: "",
                     startDate2: new Date(),
                     endDate2: new Date(),
-
-                }
+                    selectItem: "admin",
+                    selectItems:["admin","visitor"],
+                },
+                options: [{label: "管理员", value: "admin"}, {label: "游客", value: "visitor"}],
             }
         },
         methods: {}
