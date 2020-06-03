@@ -11,6 +11,7 @@ import GInput from './form/GInput'
 import GDate from './form/GDate'
 import GSelect from './form/GSelect'
 import GArea from './form/GArea'
+import GTree from './form/GTree'
 
 export default {
     install(Vue, options) {
@@ -24,5 +25,6 @@ export default {
         Vue.component('g-date', GDate);
         Vue.component('g-select', GSelect);
         Vue.component('g-area', GArea);
+        Vue.component('g-tree', GTree);
     }
 };
