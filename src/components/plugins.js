@@ -12,6 +12,7 @@ import GDate from './form/GDate'
 import GSelect from './form/GSelect'
 import GArea from './form/GArea'
 import GTree from './form/GTree'
+import GFileUpload from './form/GFileUpload'
 
 export default {
     install(Vue, options) {
@@ -26,5 +27,6 @@ export default {
         Vue.component('g-select', GSelect);
         Vue.component('g-area', GArea);
         Vue.component('g-tree', GTree);
+        Vue.component('g-file-upload', GFileUpload);
     }
 };

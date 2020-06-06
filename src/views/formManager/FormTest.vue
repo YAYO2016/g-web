@@ -87,6 +87,11 @@
             </el-form-item>
             <div class="clearfix"></div>
             <el-divider></el-divider>
+            <el-form-item label="文件上传">
+                <g-file-upload :file-list.sync="fileList"></g-file-upload>
+            </el-form-item>
+            <div class="clearfix"></div>
+            <el-divider></el-divider>
         </el-form>
     </div>
 </template>
@@ -137,6 +142,19 @@
                     {id: 13, parentId: 12, name: "九级菜单A-A-A-A-A-A-A-A-A", rank: 9},
                     {id: 14, parentId: 13, name: "十级菜单A-A-A-A-A-A-A-A-A-A", rank: 10},
                 ],
+                //文件上传的资料id
+                taskId: "001",
+                fileList: [{
+                    "_events": {},
+                    "size": 55436,
+                    "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\upload_53a50d90002143cd362589b594749f3c",
+                    "name": "79E2759562A127CA.png",
+                    "type": "image/png",
+                    "lastModifiedDate": "2020-06-06T13:24:33.080Z",
+                    "fileName": "avatar.png",
+                    "uploadTime": "2020-06-06T13:24:33.085Z",
+                    "progress": 100
+                }]
             }
         },
         methods: {}

@@ -59,7 +59,7 @@ http.interceptors.request.use(config => {
         config.headers['Authorization'] = `${getToken()}`;
     }
 
-    if(config.headers['Content-Type'] === 'application/json;charset=UTF-8' ){
+    if (config.headers['Content-Type'] === 'application/json;charset=UTF-8') {
         if (config.method === 'post') {
             config.data = {
                 ...config.data,
@@ -156,6 +156,7 @@ function post(url, data = {}, options = {}, callback = () => {
     })
 }
 
+//上传文件
 function upload(url, data = {}, options = {}, callback = () => {
 }) {
     return http({

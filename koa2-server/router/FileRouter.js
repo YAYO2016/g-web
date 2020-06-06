@@ -14,6 +14,8 @@ const util = require("../utils/util");
 router.post('/uploadfile', async (ctx, next) => {
     // 上传单个文件
     const file = ctx.request.files.file; // 获取上传文件
+    //获取文件的原始名称
+    let fileName = file.name;
     // 创建可读流
     const reader = fs.createReadStream(file.path);
     //let filePath = path.join(__dirname, 'public/upload/') + `/${file.name}`;
@@ -42,7 +44,7 @@ router.post('/uploadfile', async (ctx, next) => {
     return ctx.body = {
         code: 200,
         message: "上传成功",
-        data: {...file, name: `${randomFileName}.${fileSuffix}`}
+        data: {...file, name: `${randomFileName}.${fileSuffix}`, fileName, uploadTime: new Date()}
     };
 });
 

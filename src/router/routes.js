@@ -85,13 +85,19 @@ export const asyncRoutes = [
         component: Layout,
         name: 'Bank',
         redirect: '/form/formTest',
-        meta: {title: '表单管理', icon: 'fa fa-fort-awesome', roles: ["editor", "admin"]},
+        meta: {title: '自定义控件', icon: 'fa fa-fort-awesome', roles: ["editor", "admin"]},
         children: [
             {
                 path: '/form/formTest',
                 component: () => import('@/views/formManager/FormTest'),
                 name: 'FormTest',
                 meta: {title: '自定义表单元素测试', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+            },
+            {
+                path: '/form/formTable',
+                component: () => import('@/views/formManager/FormTable'),
+                name: 'FormTable',
+                meta: {title: '自定义表格控件', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
             },
         ]
     },
