@@ -67,50 +67,16 @@ router.post('/uploadfiles', async (ctx, next) => {
     return ctx.body = "上传成功！";
 });
 
-//文件下载（分段下载）
+//文件下载 -- 普通下载
 router.get('/downloadFile', async (ctx, next) => {
     try {
         const filename = ctx.query.filename;
         const filePath = `D:\\YAYO-WEB\\upload\\${filename}`;
-        console.log(filePath);
-        //ctx.attachment(filePath);
-        //await send(ctx, filePath);
         // 判断文件是否存在
         if (!fs.existsSync(filePath)) {
             ctx.status = 404;
             return
         }
-        //// 1、404检查
-        //try {
-        //    fs.accessSync(filePath);
-        //} catch (e) {
-        //    return (ctx.response.status = 404);
-        //}
-        ////ctx.set('content-encoding', 'gzip');
-        //const method = ctx.request.method;
-        //const { size } = fs.statSync(filePath);
-        //// 2、响应head请求，返回文件大小
-        //if ("HEAD" == method) {
-        //    return ctx.set("Content-Length", size);
-        //}
-        //const range = ctx.headers["range"];
-        //if (!range) {
-        //    //这里如果客户端不是分段请求就返回整个文件
-        //    ctx.body = fs.createReadStream(filePath);
-        //    return ctx.set("Accept-Ranges", "bytes");
-        //} else {
-        //    const { start, end } = getRange(range);
-        //    // 4、检查请求范围
-        //    if (start >= size) {
-        //        ctx.response.status = 416;
-        //        return ctx.set("Content-Range", `bytes */${size}`);
-        //    }
-        //    // 5、206分部分响应
-        //    ctx.response.status = 206;
-        //    ctx.set("Accept-Ranges", "bytes");
-        //    ctx.set("Content-Range", `bytes ${start}-${end ? end : size - 1}/${size}`);
-        //    ctx.body = fs.createReadStream(filePath, { start, end });
-        //}
         let result = fs.createReadStream(filePath);
         ctx.body = result; // koa做了针对stream类型的处理，详情可以看之前的koa篇
     } catch (err) {
@@ -118,13 +84,5 @@ router.get('/downloadFile', async (ctx, next) => {
     }
 });
 
-function getRange(range) {
-    const match = /bytes=([0-9]*)-([0-9]*)/.exec(range);
-    const requestRange = {};
-    if (match) {
-        if (match[1]) requestRange.start = Number(match[1]);
-        if (match[2]) requestRange.end = Number(match[2]);
-    }
-    return requestRange;
-}
+
 module.exports = router;

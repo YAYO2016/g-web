@@ -58,8 +58,10 @@
                         :disabled="disabled"
                         :data="{fileList}">
                     <el-button type="primary" icon="el-icon-upload2">继续添加</el-button>
+                    <el-button type="primary" @click.stop="downloadBatch">批量下载</el-button>
                     <div slot="tip" class="el-upload__tip">{{fileUploadText}}}，且不超过{{fileMaxSize}}M</div>
                 </el-upload>
+
             </ul>
         </div>
     </div>
@@ -166,6 +168,15 @@
             showDownloadProgress(file, downloadProgress, fileList) {
                 let vm = this;
                 vm.$set(fileList.filter(_file => _file.uid === file.uid)[0], "downloadProgress", downloadProgress);
+            },
+            //文件批量下载
+            downloadBatch() {
+                let vm = this;
+                vm.$api.downloadBatch([
+                    {filename: "2C5140AB28C21C4D.jpg", name: "yanyue.jpg"},
+                    {filename: "43D6D4047C66FEC2.jpeg", name: "avatar.jpg"},
+                    {filename: "58D60C09F72C5CDC.docx", name: "0.前端.docx"}
+                ], "file.zip")
             }
         }
 

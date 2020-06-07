@@ -5,6 +5,11 @@ import {Message, Loading} from "element-ui"
 import {getToken} from "../../common/js/auth";
 import util from "@/common/js/util"
 
+//批量下载文件打包
+import JSZip from 'jszip'
+import FileSaver from 'file-saver'
+
+
 let loadingInstance;
 let loadingCount = 0;
 
@@ -139,7 +144,6 @@ function download(url, params = {}, options = {}, callback = () => {
         method: 'GET',
         headers: {
             //'Content-Type': 'multipart/form-data'，
-            "Range": "bytes=0-20"   //分段下载
         },
         responseType: 'blob',
         params,
@@ -156,7 +160,47 @@ function download(url, params = {}, options = {}, callback = () => {
     })
 }
 
+/**
+ * 本质上还是单独下载文件，只不过将单独下载的文件进行打包，然后输出成一个zip
+ * @param url
+ * @param fileList
+ * @param zipName
+ * @returns {Promise<void>}
+ */
+const downloadBatch = async (url, fileList, zipName) => {
+    console.log(fileList);
+    const zip = new JSZip();
+    const cache = {};
+    const promises = [];
+    await fileList.forEach(item => {
+        //下载单个文件
+        const promise = download(url, item).then(res => { // 下载文件, 并存成ArrayBuffer对象
+            let file_name = item.name; // 获取文件名
+            // if (file_name.indexOf('.png') == -1) {
+            //    file_name = file_name + '.png'
+            // }
+            zip.file(file_name, res, {
+                binary: true
+            }); // 逐个添加文件
+            cache[file_name] = res
+        }).catch(err => {
+            Message.error("文件下载失败");
+        });
+        promises.push(promise)
+    });
+    //所有文件都下载完成，进行打包zip输出
+    Promise.all(promises).then(() => {
+        zip.generateAsync({
+            type: "blob"
+        }).then(content => { // 生成二进制流
+            FileSaver.saveAs(content, zipName) // 利用file-saver保存文件
+        }).catch(err => {
+            Message.error("文件下载失败");
+        })
+    })
+
+};
 
 export default {
-    download
+    download, downloadBatch
 };
