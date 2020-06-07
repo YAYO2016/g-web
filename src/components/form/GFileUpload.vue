@@ -18,9 +18,10 @@
             </el-upload>
         </div>
         <div v-else>
-            <ul>
-                <li v-for="(item,index) in fileList" :key="index">
-                    <div>
+            <el-checkbox-group v-model="checkList">
+                <el-checkbox v-for="(item,index) in fileList" :key="index" :label="item">
+                    <!--label 就是会选中时候放置到checkList值-->
+                    <div class="li">
                         <span class="num">{{index+1}}.</span>
                         <span class="file-name" :title="item.fileName">{{item.fileName}}</span>
                         <span class="progress">
@@ -44,7 +45,7 @@
                             上传中......
                         </span>
                     </div>
-                </li>
+                </el-checkbox>
                 <el-upload
                         class="uploaded-demo"
                         action=""
@@ -62,7 +63,7 @@
                     <div slot="tip" class="el-upload__tip">{{fileUploadText}}}，且不超过{{fileMaxSize}}M</div>
                 </el-upload>
 
-            </ul>
+            </el-checkbox-group>
         </div>
     </div>
 </template>
@@ -75,7 +76,9 @@
     export default {
         name: "GUploadFile",
         data() {
-            return {}
+            return {
+                checkList: []
+            }
         },
         props: {
             fileList: {
@@ -170,13 +173,25 @@
                 vm.$set(fileList.filter(_file => _file.uid === file.uid)[0], "downloadProgress", downloadProgress);
             },
             //文件批量下载（多个文件打包zip下载）
+            //downloadBatch() {
+            //    let vm = this;
+            //    vm.$api.downloadBatch([
+            //        {filename: "2C5140AB28C21C4D.jpg", name: "yanyue.jpg"},
+            //        {filename: "43D6D4047C66FEC2.jpeg", name: "avatar.jpg"},
+            //        {filename: "58D60C09F72C5CDC.docx", name: "0.前端.docx"}
+            //    ], "file.zip")
+            //}
             downloadBatch() {
                 let vm = this;
-                vm.$api.downloadBatch([
-                    {filename: "2C5140AB28C21C4D.jpg", name: "yanyue.jpg"},
-                    {filename: "43D6D4047C66FEC2.jpeg", name: "avatar.jpg"},
-                    {filename: "58D60C09F72C5CDC.docx", name: "0.前端.docx"}
-                ], "file.zip")
+                if (vm.checkList.length > 0) {
+                    let downFileList = vm.checkList.map(file => {
+                        return {name: file.fileName, filename: file.name}
+                    });
+                    vm.$api.downloadBatch(downFileList, "file.zip")
+                } else {
+                    vm.$message("请先选中文件！")
+                }
+
             }
         }
 
@@ -188,8 +203,10 @@
         display: inline-block;
         width: 750px;
 
-        li {
+        .li {
             margin-bottom: 5px;
+            height: 25px;
+            line-height: 25px;
         }
 
         .file-name {
