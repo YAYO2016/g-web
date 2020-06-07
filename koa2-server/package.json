@@ -16,6 +16,8 @@
     "koa-bodyparser": "^4.3.0",
     "koa-jwt": "^4.0.0",
     "koa-router": "^8.0.8",
+    "koa-send": "^5.0.0",
+    "koa-static": "^5.0.0",
     "mongoose": "^5.9.16",
     "nodemon": "^2.0.4"
   }

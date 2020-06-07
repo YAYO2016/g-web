@@ -146,13 +146,26 @@
                 taskId: "001",
                 fileList: [{
                     "_events": {},
-                    "size": 55436,
-                    "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\upload_53a50d90002143cd362589b594749f3c",
-                    "name": "79E2759562A127CA.png",
-                    "type": "image/png",
-                    "lastModifiedDate": "2020-06-06T13:24:33.080Z",
-                    "fileName": "avatar.png",
-                    "uploadTime": "2020-06-06T13:24:33.085Z",
+                    "_eventsCount": 0,
+                    "size": 346915164,
+                    "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\upload_7b511e9d3c292593b92aa08462579d75",
+                    "name": "58D60C09F72C5CDC.docx",
+                    "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "lastModifiedDate": "2020-06-07T02:11:27.062Z",
+                    "fileName": "0.前台.docx",
+                    "uploadTime": "2020-06-07T02:11:27.063Z",
+                    "progress": 100
+                }, {
+                    "_events": {},
+                    "_eventsCount": 0,
+                    "size": 45179,
+                    "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\upload_8788ec6ffe1ad5f67ce3bf7abf439d64",
+                    "name": "43D6D4047C66FEC2.jpeg",
+                    "type": "image/jpeg",
+                    "hash": null,
+                    "lastModifiedDate": "2020-06-07T03:18:02.099Z",
+                    "fileName": "20171216094159_QaLXP.jpeg",
+                    "uploadTime": "2020-06-07T03:18:02.103Z",
                     "progress": 100
                 }]
             }

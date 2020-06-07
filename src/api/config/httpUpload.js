@@ -84,6 +84,7 @@ http.interceptors.request.use(config => {
 http.interceptors.response.use(
     response => {
         endLoading();
+        console.log(response);
         if (response.status == 200) {  //http请求OK
             if (response.data.code == 200) {  //业务code OK
                 return Promise.resolve(response.data) //直接返回data字段中的数据
@@ -130,33 +131,26 @@ http.interceptors.response.use(
     }
 );
 
-function get(url, params = {}, options = {}) {
-    return http({
-        url,
-        method: 'GET',
-        headers: {
-            //'Authorization': localStorage.getItem('token')
-        },
-        params,
-        options
-    })
-}
-
-//封装post请求
-function post(url, data = {}, options = {}, callback = () => {
+//上传文件
+function upload(url, data = {}, options = {}, callback = () => {
 }) {
     return http({
         url,
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
+            'Content-Type': 'multipart/form-data'
         },
         data,
-        options
+        options,
+        //文件上传显示进度条
+        onUploadProgress(processEvent) {
+            if (processEvent.lengthComputable) {
+                callback(parseInt((processEvent.loaded / processEvent.total * 100).toFixed(0)));
+            }
+        },
     })
 }
 
-
 export default {
-    get, post
+    upload,
 };

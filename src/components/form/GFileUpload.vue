@@ -32,7 +32,9 @@
                             </el-progress>
                         </span>
                         <span class="buttons" style="margin-left: 10px;float: right">
-                            <el-button>下载</el-button>
+                            <el-button @click="downloadFile(item)" :loading="item.loading">下载
+                                {{item.downloadProgress&&item.downloadProgress!=0&&item.downloadProgress!=100?item.downloadProgress:''}}
+                            </el-button>
                             <el-button>删除</el-button>
                         </span>
                         <span v-if="item.progress===100" class="finish-time" style="float: right">
@@ -142,6 +144,29 @@
                 let vm = this;
                 vm.$set(fileList.filter(_file => _file.uid === file.uid)[0], "progress", progress);
             },
+            //下载文件
+            downloadFile(item) {
+                let vm = this;
+                vm.$set(item, 'loading', true);
+                vm.$api.downloadFile({filename: item.name}, (downloadProgress => {
+                    //console.log(downloadProgress);
+                    //vm.showDownloadProgress(file, downloadProgress, vm.fileList);
+                })).then(res => {
+                    //将接口返回的二进制文件流 进行封装下载成文件
+                    // 创建一个a标签
+                    let oA = document.createElement('a');
+                    oA.href = window.URL.createObjectURL(new Blob([res], {type: 'application/octet-stream'}));
+                    // 给文件命名
+                    oA.download = item.fileName;
+                    // 模拟点击
+                    oA.click();
+                    vm.$set(item, 'loading', false);
+                })
+            },
+            showDownloadProgress(file, downloadProgress, fileList) {
+                let vm = this;
+                vm.$set(fileList.filter(_file => _file.uid === file.uid)[0], "downloadProgress", downloadProgress);
+            }
         }
 
     }

@@ -3,10 +3,11 @@
  * 用户相关的接口请求
  */
 import Http from '@/api/config/http.js';
+import HttpUpload from '@/api/config/httpUpload.js';
 
 const post = Http.post;
 const get = Http.get;
-const upload = Http.upload;
+const upload = HttpUpload.upload;
 
 const userApi = {
     //注册接口

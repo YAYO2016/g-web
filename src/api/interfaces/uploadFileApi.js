@@ -3,12 +3,20 @@
  * 用户相关的接口请求
  */
 import Http from '@/api/config/http.js';
+import HttpUpload from '@/api/config/httpUpload.js';
+import HttpDownload from '@/api/config/httpDownload.js';
 
-const upload = Http.upload;
+const upload = HttpUpload.upload;
+const download = HttpDownload.download;
 
 const uploadFileApi = {
+    //上传文件
     uploadFile(params, callback) {
         return upload('/file/uploadfile', params, {}, callback)
+    },
+    //下载文件
+    downloadFile(params, callback) {
+        return download("/file/downloadFile", params, {}, callback)
     },
 };
 

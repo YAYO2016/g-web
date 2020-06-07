@@ -84,8 +84,9 @@ http.interceptors.request.use(config => {
 http.interceptors.response.use(
     response => {
         endLoading();
+        console.log(response);
         if (response.status == 200) {  //http请求OK
-            if (response.data.code == 200) {  //业务code OK
+            if (response.config.responseType === "blob") {
                 return Promise.resolve(response.data) //直接返回data字段中的数据
             } else {
                 Message.error(response.data.message || "请求失败");
@@ -130,33 +131,32 @@ http.interceptors.response.use(
     }
 );
 
-function get(url, params = {}, options = {}) {
+//普通下载文件
+function download(url, params = {}, options = {}, callback = () => {
+}) {
     return http({
         url,
         method: 'GET',
         headers: {
-            //'Authorization': localStorage.getItem('token')
+            //'Content-Type': 'multipart/form-data'，
+            "Range": "bytes=0-20"   //分段下载
         },
+        responseType: 'blob',
         params,
-        options
-    })
-}
-
-//封装post请求
-function post(url, data = {}, options = {}, callback = () => {
-}) {
-    return http({
-        url,
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
+        options,
+        //文件下载显示进度条
+        onDownloadProgress(processEvent) {
+            //processEvent.lengthComputable 所关联的资源是否具有可以计算的长度;否则 ，ProgressEvent.total 属性将是一个无意义的值,
+            //需要后台发送的时候带有文件的大小数据  Content-Length
+            if (processEvent.lengthComputable) {
+                console.log(parseInt((processEvent.loaded / processEvent.total * 100)));
+                callback(parseInt((processEvent.loaded / processEvent.total * 100).toFixed(0)));
+            }
         },
-        data,
-        options
     })
 }
 
 
 export default {
-    get, post
+    download
 };
