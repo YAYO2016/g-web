@@ -1,8 +1,7 @@
 /**
  * Created by yanyue on 2019-09-18 17:10
- * 用户相关的接口请求
+ * 上传下载文件相关的接口
  */
-import Http from '@/api/config/http.js';
 import HttpUpload from '@/api/config/httpUpload.js';
 import HttpDownload from '@/api/config/httpDownload.js';
 
