@@ -14,7 +14,7 @@ const BASE_URL = process.env.VUE_APP_API_URL;
 // 创建axios实例
 const http = axios.create({
     baseURL: BASE_URL,
-    timeout: 30000, // 请求超时时间
+    timeout: 10 * 60 * 1000, // 请求超时时间
 
 });
 
