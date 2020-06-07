@@ -146,7 +146,7 @@
                 let vm = this;
                 vm.$set(fileList.filter(_file => _file.uid === file.uid)[0], "progress", progress);
             },
-            //下载文件
+            //下载文件（单个文件的下载）
             downloadFile(item) {
                 let vm = this;
                 vm.$set(item, 'loading', true);
@@ -169,7 +169,7 @@
                 let vm = this;
                 vm.$set(fileList.filter(_file => _file.uid === file.uid)[0], "downloadProgress", downloadProgress);
             },
-            //文件批量下载
+            //文件批量下载（多个文件打包zip下载）
             downloadBatch() {
                 let vm = this;
                 vm.$api.downloadBatch([
