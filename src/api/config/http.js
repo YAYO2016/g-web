@@ -4,6 +4,7 @@ import store from "@/store"
 import {Message, Loading} from "element-ui"
 import {getToken} from "../../common/js/auth";
 import util from "@/common/js/util"
+import _ from 'lodash';
 
 let loadingInstance;
 let loadingCount = 0;
@@ -34,17 +35,19 @@ function startLoading() {
 
 }
 
-function endLoading() {
+//防抖：将 300ms 间隔内的关闭 loading 便合并为一次。防止连续请求时， loading闪烁的问题。
+const toHideLoading = _.debounce(() => {
+    loadingInstance.close();
+    loadingInstance = null;
+}, 300);
 
+function endLoading() {
     if (loadingCount <= 0) return;
     loadingCount--;
     if (loadingCount === 0) {
-
         // 结束加载
-        loadingInstance.close();
-
+        toHideLoading();
     }
-
 }
 
 // 添加request拦截器--请求拦截

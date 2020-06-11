@@ -95,14 +95,15 @@
                 bankFormDialogVisible: false,
             }
         },
-        mounted() {
-            this.getData(1);
+        async mounted() {
+            await this.getData(1);
+            await this.getData(1);
         },
         methods: {
             getData(currentPage = 1) {
                 let vm = this;
                 vm.pageInfo.pageNum = currentPage;
-                vm.$api.getBanks({
+                return vm.$api.getBanks({
                     bankName: vm.searchKeyForm.bankName,
                     pageNum: vm.pageInfo.pageNum,
                     pageSize: vm.pageInfo.pageSize
