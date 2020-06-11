@@ -49,7 +49,7 @@ function endLoading() {
 
 // 添加request拦截器--请求拦截
 http.interceptors.request.use(config => {
-    if (config.options.loading) {
+    if (config.headers.loading == '1') {
         startLoading();
     }
 
@@ -83,7 +83,10 @@ http.interceptors.request.use(config => {
 // 添加respone拦截器--拦截响应
 http.interceptors.response.use(
     response => {
-        endLoading();
+        if (response.config.headers.loading == '1') {
+            endLoading();
+        }
+
         if (response.status == 200) {  //http请求OK
             if (response.data.code == 200) {  //业务code OK
                 return Promise.resolve(response.data) //直接返回data字段中的数据
@@ -135,6 +138,7 @@ function get(url, params = {}, options = {}) {
         url,
         method: 'GET',
         headers: {
+            'loading': options.loading ? '1' : '0'
             //'Authorization': localStorage.getItem('token')
         },
         params,
@@ -150,6 +154,7 @@ function post(url, data = {}, options = {}, callback = () => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
+            'loading': options.loading ? '1' : '0'
         },
         data,
         options
