@@ -37,8 +37,10 @@ function startLoading() {
 
 //防抖：将 300ms 间隔内的关闭 loading 便合并为一次。防止连续请求时， loading闪烁的问题。
 const toHideLoading = _.debounce(() => {
-    loadingInstance.close();
-    loadingInstance = null;
+    if (loadingCount <= 0){
+        loadingInstance.close();
+        //loadingInstance = null;
+    }
 }, 300);
 
 function endLoading() {
@@ -80,6 +82,7 @@ http.interceptors.request.use(config => {
 
     //store.dispatch('common/set_loading', false);
     loadingCount = 0;
+    endLoading()
 
     Promise.reject(error)
 });
@@ -105,6 +108,7 @@ http.interceptors.response.use(
     error => {
         //store.dispatch('common/set_loading', false);
         loadingCount = 0;
+        endLoading()
 
         let errorMessage = error.message;
 
