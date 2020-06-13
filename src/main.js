@@ -14,14 +14,17 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 //修改elementUI的默认样式
 // import './element-var.scss';
-Vue.use(ElementUI);
+Vue.use(ElementUI, {size: 'small'});
 //设置elementUI的全局size
-Vue.prototype.$ELEMENT = {size: 'mini'};
+//Vue.prototype.$ELEMENT = {size: 'mini'};
+
 //导入自定义校验数据
 import rules from './common/js/rules';
+
 Vue.prototype.$rules = rules;
 //全局使用自定义的UI的组件
 import GUI from './components/plugins';
+
 Vue.use(GUI);
 
 //导入font-awesome，font-awesome图标
@@ -29,10 +32,12 @@ import 'font-awesome/css/font-awesome.min.css'
 
 //导入api接口
 import api from './api/index';
+
 Vue.prototype.$api = api;
 
 //在全局注册一些自定义方法
 import globalFun from './common/js/global-fun';
+
 Vue.use(globalFun);
 
 //导入babel-polyfill，解决ie9和一些低版本的高级浏览器对es6新语法并不支持
