@@ -37,7 +37,7 @@ function startLoading() {
 
 //防抖：将 300ms 间隔内的关闭 loading 便合并为一次。防止连续请求时， loading闪烁的问题。
 const toHideLoading = _.debounce(() => {
-    if (loadingCount <= 0){
+    if (loadingCount <= 0) {
         loadingInstance.close();
         //loadingInstance = null;
     }
@@ -54,7 +54,7 @@ function endLoading() {
 
 // 添加request拦截器--请求拦截
 http.interceptors.request.use(config => {
-    if (config.headers.loading == '1') {
+    if (config.options.loading) {
         startLoading();
     }
 
@@ -89,7 +89,7 @@ http.interceptors.request.use(config => {
 // 添加respone拦截器--拦截响应
 http.interceptors.response.use(
     response => {
-        if (response.config.headers.loading == '1') {
+        if (response.config.options.loading) {
             endLoading();
         }
 
@@ -145,7 +145,6 @@ function get(url, params = {}, options = {}) {
         url,
         method: 'GET',
         headers: {
-            'loading': options.loading ? '1' : '0'
             //'Authorization': localStorage.getItem('token')
         },
         params,
@@ -161,7 +160,6 @@ function post(url, data = {}, options = {}, callback = () => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            'loading': options.loading ? '1' : '0'
         },
         data,
         options

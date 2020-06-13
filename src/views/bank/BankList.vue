@@ -95,9 +95,8 @@
                 bankFormDialogVisible: false,
             }
         },
-        async mounted() {
-            await this.getData(1);
-            await this.getData(1);
+        mounted() {
+            this.getData(1);
         },
         methods: {
             getData(currentPage = 1) {
