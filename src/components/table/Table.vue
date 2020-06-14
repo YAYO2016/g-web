@@ -15,7 +15,6 @@
                 :row-class-name="tableRowClassName"
                 @selection-change="handleSelectionChange"
                 @select="select"
-                @filter-change="filterChange"
                 tooltip-effect="dark"
         >
             <!-- stripe:是否是斑马纹-->
@@ -26,7 +25,7 @@
 
 <script>
     export default {
-        name: 'BackTable',
+        name: 'GTable',
         props: {
             tableData: {
                 type: Array,
@@ -78,7 +77,7 @@
             rowClickFun(row, column, event) {
                 this.$refs.GTable.toggleRowSelection(row);
             },
-            
+
             tableRowClassName({row, rowIndex}) {
                 //将下标添加到row中去
                 row.index = rowIndex;
@@ -91,10 +90,7 @@
             },
             select() {
                 this.$emit('select');
-            },
-            filterChange(val) {
-                this.$emit('filterChange', val);
-            },
+            }
         }
     }
 </script>

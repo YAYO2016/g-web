@@ -2,7 +2,7 @@
 
 
 //声明混合宏
-@mixin  content-box {
+@mixin content-box {
   -webkit-border-radius: 5px;
   border-radius: 5px;
   -moz-border-radius: 5px;
@@ -28,6 +28,10 @@
     color: #303133;
     font-size: 20px;
     margin: 20px;
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  i.active {
+    color: #409EFF;
   }
 }
