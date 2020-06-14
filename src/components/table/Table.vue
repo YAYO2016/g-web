@@ -1,8 +1,8 @@
 <template>
     <div class="Table">
         <el-table
-                ref="table"
-                :data="tableData"
+                ref="GTable"
+                :data="tableDataView"
                 :size="size"
                 :height="height"
                 :header-cell-style="{background:'#F5F7FA'}"
@@ -10,14 +10,13 @@
                 highlight-current-row
                 border
                 stripe
-                @row-click="rowClick"
+                @row-click="rowClickFun"
                 @current-change="handleCurrentChange"
                 :row-class-name="tableRowClassName"
-                @selection-change="handleChange"
+                @selection-change="handleSelectionChange"
                 @select="select"
                 @filter-change="filterChange"
                 tooltip-effect="dark"
-
         >
             <!-- stripe:是否是斑马纹-->
             <slot></slot>
@@ -33,15 +32,10 @@
                 type: Array,
                 default: []
             },
-            rowClickFun: {
-                type: Function,
-                default: () => {
-                }
-            },
-            handleSelectionChange: {
-                type: Function,
-                default: () => {
-                }
+            // 多选表格  被选中的表格数据
+            selectData: {
+                type: Array,
+                default: () => []
             },
             height: {
                 type: String,
@@ -52,32 +46,55 @@
             }
         },
         data() {
-            return {}
+            return {
+                tableDataView: [],
+                selectDataView: [],
+            }
+        },
+        mounted() {
+            this.tableDataView = this.tableData;
+            this.selectDataView = this.selectData;
+        },
+        watch: {
+            tableData(newVal) {
+                this.tableDataView = newVal;
+            },
+            tableDataView(newVal) {
+                this.$emit("update:tableData", newVal);
+            },
+            selectData(newVal) {
+                this.selectDataView = newVal;
+            },
+            selectDataView(newVal) {
+                this.$emit("update:selectData", newVal);
+            },
         },
         methods: {
-            rowClick(row) {
-                let vm = this;
-                return vm.rowClickFun(row);
+            // 多选表格 选择函数
+            handleSelectionChange(val) {
+                this.selectDataView = val;
             },
+            // 行点击函数,一般是为了多选表格  点击行的时候就直接添加的作用，而不是必须点击多选框才算选中
+            rowClickFun(row, column, event) {
+                this.$refs.GTable.toggleRowSelection(row);
+            },
+            
             tableRowClassName({row, rowIndex}) {
                 //将下标添加到row中去
                 row.index = rowIndex;
             },
-            handleCurrentChange() {
-
+            handleCurrentChange(val) {
+                this.$emit('handleCurrentChange', val);
             },
             handleChange(val) {
-                let vm = this;
-                vm.$emit('handleChange', val);
+                this.$emit('handleChange', val);
             },
             select() {
-                let vm = this;
-                vm.$emit('select');
+                this.$emit('select');
             },
             filterChange(val) {
-                let vm = this;
-                vm.$emit('filterChange', val);
-            }
+                this.$emit('filterChange', val);
+            },
         }
     }
 </script>

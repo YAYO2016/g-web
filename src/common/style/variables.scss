@@ -1,34 +1,36 @@
 // base color
-$white:#fff;
-$blue:#324157;
-$light-blue:#3A71A8;
-$red:#C03639;
+$white: #fff;
+$blue: #324157;
+$light-blue: #3A71A8;
+$red: #C03639;
+$danger:#F56C6C;
 $pink: #E65D6E;
 $green: #30B08F;
 $tiffany: #4AB7BD;
-$yellow:#FEC171;
+$yellow: #FEC171;
 $panGreen: #30B08F;
 
 //tabs
-$headerHeight:54px;
-$tabsHeight:34px;
+$headerHeight: 54px;
+$tabsHeight: 34px;
 
 // sidebar
-$menuText:#bfcbd9;
-$menuActiveText:#409EFF;
-$subMenuActiveText:#f4f4f5; // https://github.com/ElemeFE/element/issues/12951
+$menuText: #bfcbd9;
+$menuActiveText: #409EFF;
+$subMenuActiveText: #f4f4f5; // https://github.com/ElemeFE/element/issues/12951
 
-$menuBg:#304156;
-$menuHover:#263445;
+$menuBg: #304156;
+$menuHover: #263445;
 
-$subMenuBg:#1f2d3d;
-$subMenuHover:#001528;
+$subMenuBg: #1f2d3d;
+$subMenuHover: #001528;
 
 $asideWidth: 210px;
 
 //如果想通过computed方法输出的变量，必须在这边写到处才生效
 :export {
-  headerHeight:$headerHeight;
+  danger: $danger;
+  headerHeight: $headerHeight;
   menuText: $menuText;
   menuActiveText: $menuActiveText;
   subMenuActiveText: $subMenuActiveText;

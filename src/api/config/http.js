@@ -82,7 +82,7 @@ http.interceptors.request.use(config => {
 
     //store.dispatch('common/set_loading', false);
     loadingCount = 0;
-    endLoading()
+    endLoading();
 
     Promise.reject(error)
 });
@@ -153,8 +153,7 @@ function get(url, params = {}, options = {}) {
 }
 
 //封装post请求
-function post(url, data = {}, options = {}, callback = () => {
-}) {
+function post(url, data = {}, options = {}) {
     return http({
         url,
         method: 'POST',
