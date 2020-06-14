@@ -102,6 +102,27 @@ export const asyncRoutes = [
         ]
     },
     {
+        path: '/meeting',
+        component: Layout,
+        name: 'Meeting',
+        redirect: '/meeting/meetingList',
+        meta: {title: '会议管理', icon: 'fa fa-clock-o', roles: ["admin"]},
+        children: [
+            {
+                path: '/meeting/meetingList',
+                component: () => import('@/views/meeting/MeetingList'),
+                name: 'MeetingList',
+                meta: {title: '会议列表', icon: 'fa fa-clock-o', roles: ["admin"]}
+            },
+            {
+                path: '/meeting/addMeeting',
+                component: () => import('@/views/meeting/AddMeeting'),
+                name: 'AddMeeting',
+                meta: {title: '自定义表格控件', icon: 'fa fa-calendar', roles: ["admin"]}
+            },
+        ]
+    },
+    {
         path: '/user',
         component: Layout,
         redirect: '/user/userManager',
