@@ -140,7 +140,7 @@ http.interceptors.response.use(
     }
 );
 
-function get(url, params = {}, options = {}) {
+export function get(url, params = {}, options = {}) {
     return http({
         url,
         method: 'GET',
@@ -153,7 +153,7 @@ function get(url, params = {}, options = {}) {
 }
 
 //封装post请求
-function post(url, data = {}, options = {}) {
+export function post(url, data = {}, options = {}) {
     return http({
         url,
         method: 'POST',
@@ -166,6 +166,6 @@ function post(url, data = {}, options = {}) {
 }
 
 
-export default {
-    get, post
-};
+//export default {
+//    get, post
+//};
