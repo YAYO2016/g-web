@@ -66,19 +66,28 @@ http.interceptors.request.use(config => {
         config.headers['Authorization'] = `${getToken()}`;
     }
 
-    if (config.headers['Content-Type'] === 'application/json;charset=UTF-8') {
-        if (config.method === 'post') {
-            config.data = {
-                ...config.data,
-                _t: Date.parse(new Date()) / 1000,
-            }
-        } else if (config.method === 'get') {
-            config.params = {
-                _t: Date.parse(new Date()) / 1000,
-                ...config.params
-            }
+    //if (config.headers['Content-Type'] === 'application/json;charset=UTF-8') {
+    //    if (config.method === 'post') {
+    //        config.data = {
+    //            ...config.data,
+    //            _t: Date.parse(new Date()) / 1000,
+    //        }
+    //    } else if (config.method === 'get') {
+    //        config.params = {
+    //            _t: Date.parse(new Date()) / 1000,
+    //            ...config.params
+    //        }
+    //    }
+    //}
+
+    // get请求因为存在缓存，需要价格时间戳参数解决缓存问题
+    if (config.method === 'get') {
+        config.params = {
+            _t: Date.parse(new Date()) / 1000,
+            ...config.params
         }
     }
+
     return config
 }, error => {
 
@@ -86,7 +95,7 @@ http.interceptors.request.use(config => {
     loadingCount = 0;
     endLoading();
 
-    Promise.reject(error)
+    return Promise.reject(error)
 });
 // 添加respone拦截器--拦截响应
 http.interceptors.response.use(
@@ -98,7 +107,7 @@ http.interceptors.response.use(
         if (response.status == 200) {  //http请求OK
             if (response.data.code == 200) {  //业务code OK
                 return Promise.resolve(response.data) //直接返回data字段中的数据
-            } else if (response.config.responseType === "blob" && response.data.code === undefined) {
+            } else if (response.config.responseType === "blob" && response.data.code === undefined) {  //文件下载
                 //如果是下载接口的话，返回的是bolob二进制数据，没有业务code，直接下载，返回接口返回的二进制码
                 // 获取文件名  后台接口需要返回  -- ctx.set('Content-disposition', 'attachment;filename=' + filename);
                 // 文件名如果是中文的话  需要进行解码
@@ -226,6 +235,7 @@ export function download(url, params = {}, options = {}, callback = () => {
 }
 
 /**
+ * 批量下载文件并且打包成zip包
  * 本质上还是单独下载文件，只不过将单独下载的文件进行打包，然后输出成一个zip
  * 需要 npm i jszip file-saver -S 工具包
  * @param url
