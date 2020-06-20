@@ -70,14 +70,17 @@ router.post('/uploadfiles', async (ctx, next) => {
 //文件下载 -- 普通下载
 router.get('/downloadFile', async (ctx, next) => {
     try {
-        const filename = ctx.query.filename;
-        const filePath = `D:\\YAYO-WEB\\upload\\${filename}`;
+        let filename = ctx.query.filename;
+        let originName = ctx.query.originName;
+        let filePath = `D:\\YAYO-WEB\\upload\\${filename}`;
         // 判断文件是否存在
         if (!fs.existsSync(filePath)) {
             ctx.status = 404;
             return
         }
         let result = fs.createReadStream(filePath);
+        //在response的headers里面返回文件名
+        ctx.set('Content-disposition', 'attachment;filename=' + originName);
         ctx.body = result; // koa做了针对stream类型的处理，详情可以看之前的koa篇
     } catch (err) {
         console.log(err);

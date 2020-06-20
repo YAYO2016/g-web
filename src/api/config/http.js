@@ -99,8 +99,16 @@ http.interceptors.response.use(
             if (response.data.code == 200) {  //业务code OK
                 return Promise.resolve(response.data) //直接返回data字段中的数据
             } else if (response.config.responseType === "blob" && response.data.code === undefined) {
-                //如果是下载接口的话，返回的是bolob二进制数据，没有业务code的
-                // ，直接下载，返回接口返回的二进制码
+                //如果是下载接口的话，返回的是bolob二进制数据，没有业务code，直接下载，返回接口返回的二进制码
+                // 获取文件名  后台接口需要返回  -- ctx.set('Content-disposition', 'attachment;filename=' + filename);
+                // 文件名如果是中文的话  需要进行解码
+                let filename = decodeURI(response.headers['content-disposition'].split(";")[1].split("filename=")[1]);
+                // 创建连接进行文件的下载
+                let oA = document.createElement('a');
+                oA.href = window.URL.createObjectURL(new Blob([response.data], {type: 'application/octet-stream'}));
+                oA.download = filename;
+                // 模拟点击
+                oA.click();
                 return Promise.resolve(response.data) //直接返回data字段中的数据
             } else {
                 Message.error(response.data.message || "请求失败");

@@ -153,19 +153,19 @@
             downloadFile(item) {
                 let vm = this;
                 vm.$set(item, 'loading', true);
-                vm.$api.downloadFile({filename: item.name}, (downloadProgress => {
+                vm.$api.downloadFile({filename: item.name, originName: encodeURI (item.fileName)}, (downloadProgress => {
                     //console.log(downloadProgress);
                     //vm.showDownloadProgress(file, downloadProgress, vm.fileList);
                 })).then(res => {
                     //将接口返回的二进制文件流 进行封装下载成文件
                     // 创建一个a标签
-                    let oA = document.createElement('a');
-                    oA.href = window.URL.createObjectURL(new Blob([res], {type: 'application/octet-stream'}));
-                    // 给文件命名
-                    //这里之所以将下载文件的逻辑没有写到http.js中是因为需要这边发出请求时候的文件名 item.fileName;
-                    oA.download = item.fileName;
-                    // 模拟点击
-                    oA.click();
+                    //let oA = document.createElement('a');
+                    //oA.href = window.URL.createObjectURL(new Blob([res], {type: 'application/octet-stream'}));
+                    //// 给文件命名
+                    ////这里之所以将下载文件的逻辑没有写到http.js中是因为需要这边发出请求时候的文件名 item.fileName;
+                    //oA.download = item.fileName;
+                    //// 模拟点击
+                    //oA.click();
                     vm.$set(item, 'loading', false);
                 })
             },
