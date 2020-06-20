@@ -2,12 +2,11 @@
  * Created by yanyue on 2019-09-18 17:10
  * 上传下载文件相关的接口
  */
-import HttpUpload from '@/api/config/httpUpload.js';
+import {upload, download, downloadBatch} from '@/api/config/http.js';
 import HttpDownload from '@/api/config/httpDownload.js';
 
-const upload = HttpUpload.upload;
-const download = HttpDownload.download;
-const downloadBatch = HttpDownload.downloadBatch;
+//const download = HttpDownload.download;
+//const downloadBatch = HttpDownload.downloadBatch;
 
 const uploadFileApi = {
     //上传文件
@@ -20,7 +19,7 @@ const uploadFileApi = {
     },
     //批量下载文件
     downloadBatch(params, zipName) {
-        return downloadBatch("/file/downloadFile", params,zipName)
+        return downloadBatch("/file/downloadFile", params, zipName)
     },
 };
 

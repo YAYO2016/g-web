@@ -2,12 +2,8 @@
  * Created by yanyue on 2019-09-18 17:10
  * 用户相关的接口请求
  */
-import {get,post} from '@/api/config/http.js';
-import HttpUpload from '@/api/config/httpUpload.js';
+import {get, post, upload} from '@/api/config/http.js';
 
-//const post = Http.post;
-//const get = Http.get;
-const upload = HttpUpload.upload;
 
 const userApi = {
     //注册接口

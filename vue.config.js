@@ -59,12 +59,12 @@ module.exports = {
         https: false,
         hotOnly: false,
         proxy: { // 配置跨域
-            '/api': {
+            [process.env.VUE_APP_API_URL]: {
                 target: 'http://localhost:7005/',
                 ws: true,
                 changOrigin: true,
                 pathRewrite: {
-                    '^/api': ''
+                    ["^" + process.env.VUE_APP_API_URL]: ""
                 }
             }
         },

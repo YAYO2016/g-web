@@ -5,6 +5,8 @@ import {Message, Loading} from "element-ui"
 import {getToken} from "../../common/js/auth";
 import util from "@/common/js/util"
 import _ from 'lodash';
+import JSZip from 'jszip'
+import FileSaver from 'file-saver'
 
 let loadingInstance;
 let loadingCount = 0;
@@ -96,6 +98,10 @@ http.interceptors.response.use(
         if (response.status == 200) {  //http请求OK
             if (response.data.code == 200) {  //业务code OK
                 return Promise.resolve(response.data) //直接返回data字段中的数据
+            } else if (response.config.responseType === "blob" && response.data.code === undefined) {
+                //如果是下载接口的话，返回的是bolob二进制数据，没有业务code的
+                // ，直接下载，返回接口返回的二进制码
+                return Promise.resolve(response.data) //直接返回data字段中的数据
             } else {
                 Message.error(response.data.message || "请求失败");
                 return Promise.reject(response)
@@ -108,7 +114,7 @@ http.interceptors.response.use(
     error => {
         //store.dispatch('common/set_loading', false);
         loadingCount = 0;
-        endLoading()
+        endLoading();
 
         let errorMessage = error.message;
 
@@ -140,6 +146,7 @@ http.interceptors.response.use(
     }
 );
 
+//封装get请求
 export function get(url, params = {}, options = {}) {
     return http({
         url,
@@ -164,6 +171,93 @@ export function post(url, data = {}, options = {}) {
         options
     })
 }
+
+//上传文件
+export function upload(url, data = {}, options = {}, callback = () => {
+}) {
+    return http({
+        url,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        },
+        data,
+        options,
+        //文件上传显示进度条
+        onUploadProgress(processEvent) {
+            if (processEvent.lengthComputable) {
+                callback(parseInt((processEvent.loaded / processEvent.total * 100).toFixed(0)));
+            }
+        },
+    })
+}
+
+
+//普通下载文件
+export function download(url, params = {}, options = {}, callback = () => {
+}) {
+    return http({
+        url,
+        method: 'GET',
+        headers: {
+            //'Content-Type': 'multipart/form-data'，
+        },
+        responseType: 'blob',
+        params,
+        options,
+        //文件下载显示进度条
+        onDownloadProgress(processEvent) {
+            //processEvent.lengthComputable 所关联的资源是否具有可以计算的长度;否则 ，ProgressEvent.total 属性将是一个无意义的值,
+            //需要后台发送的时候带有文件的大小数据  Content-Length
+            if (processEvent.lengthComputable) {
+                console.log(parseInt((processEvent.loaded / processEvent.total * 100)));
+                callback(parseInt((processEvent.loaded / processEvent.total * 100).toFixed(0)));
+            }
+        },
+    })
+}
+
+/**
+ * 本质上还是单独下载文件，只不过将单独下载的文件进行打包，然后输出成一个zip
+ * 需要 npm i jszip file-saver -S 工具包
+ * @param url
+ * @param fileList
+ * @param zipName
+ * @returns {Promise<void>}
+ */
+export const downloadBatch = async (url, fileList, zipName) => {
+    //console.log(fileList);
+    const zip = new JSZip();
+    const cache = {};
+    const promises = [];
+    await fileList.forEach(item => {
+        //下载单个文件
+        const promise = download(url, item).then(res => { // 下载文件, 并存成ArrayBuffer对象
+            let file_name = item.name; // 获取文件名
+            // if (file_name.indexOf('.png') == -1) {
+            //    file_name = file_name + '.png'
+            // }
+            zip.file(file_name, res, {
+                binary: true
+            }); // 逐个添加文件
+            cache[file_name] = res
+        }).catch(err => {
+            Message.error("文件下载失败");
+        });
+        promises.push(promise)
+    });
+    //所有文件都下载完成，进行打包zip输出
+    Promise.all(promises).then(() => {
+        zip.generateAsync({
+            type: "blob"
+        }).then(content => { // 生成二进制流
+            FileSaver.saveAs(content, zipName) // 利用file-saver保存文件
+        }).catch(err => {
+            Message.error("文件下载失败");
+        })
+    })
+
+};
 
 
 //export default {
