@@ -162,6 +162,7 @@
                     let oA = document.createElement('a');
                     oA.href = window.URL.createObjectURL(new Blob([res], {type: 'application/octet-stream'}));
                     // 给文件命名
+                    //这里之所以将下载文件的逻辑没有写到http.js中是因为需要这边发出请求时候的文件名 item.fileName;
                     oA.download = item.fileName;
                     // 模拟点击
                     oA.click();

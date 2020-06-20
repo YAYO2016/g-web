@@ -93,11 +93,38 @@ export const asyncRoutes = [
                 name: 'FormTest',
                 meta: {title: '自定义表单元素测试', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
             },
+            //{
+            //    path: '/form/formTable',
+            //    component: () => import('@/views/formManager/FormTable'),
+            //    name: 'FormTable',
+            //    meta: {title: '自定义表格控件', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+            //},
+        ]
+    },
+    {
+        path: '/table',
+        component: Layout,
+        name: 'Table',
+        redirect: '/table/tabledemo',
+        meta: {title: '表格控件', icon: 'fa fa-table', roles: ["editor", "admin"]},
+        children: [
             {
-                path: '/form/formTable',
-                component: () => import('@/views/formManager/FormTable'),
+                path: '/table/tabledemo',
+                component: () => import('@/views/table/TableDemo'),
+                name: 'FormTest',
+                meta: {title: '普通表格', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+            },
+            {
+                path: '/table/tableselect',
+                component: () => import('@/views/table/TableSelect'),
                 name: 'FormTable',
-                meta: {title: '自定义表格控件', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+                meta: {title: '多选表格', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+            },
+            {
+                path: '/table/tableSeatch',
+                component: () => import('@/views/table/TableSearch'),
+                name: 'FormTable',
+                meta: {title: '表格搜索', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
             },
         ]
     },
