@@ -198,7 +198,7 @@
 
                         span {
                             &::before {
-                                content: attr(data-placeholder);
+                                content: attr(data- placeholder);
                                 position: absolute;
                                 top: 50%;
                                 left: 5px;

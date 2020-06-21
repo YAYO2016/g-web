@@ -112,11 +112,25 @@
             td {
                 text-align: center;
 
-                div {
+                > div {
                     overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
                 }
+            }
+        }
+
+        /deep/ .el-form-item {
+            padding: 0;
+            margin: 0;
+
+            .el-form-item__content {
+                margin-left: 0 !important;
+            }
+
+            .el-form-item__error {
+                position: relative;
+                text-align: left;
             }
         }
     }

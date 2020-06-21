@@ -105,6 +105,24 @@ export const asyncRoutes = [
                 name: 'FormRules',
                 meta: {title: '表单校验', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
             },
+            {
+                path: '/form/formcomponents',
+                component: () => import('@/views/formManager/FormComponents'),
+                name: 'FormComponents',
+                meta: {title: '自定义表单控件', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+            },
+            {
+                path: '/form/formmore',
+                component: () => import('@/views/formManager/FormMore'),
+                name: 'FormMore',
+                meta: {title: '多个表单校验', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+            },
+            {
+                path: '/form/formcycle',
+                component: () => import('@/views/formManager/FormCycle'),
+                name: 'FormCycle',
+                meta: {title: '循环表单', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+            },
         ]
     },
     {

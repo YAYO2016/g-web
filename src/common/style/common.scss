@@ -27,11 +27,30 @@
   .first-title {
     color: #303133;
     font-size: 20px;
-    margin: 20px;
+    margin-bottom: 20px;
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   }
 
   i.active {
     color: #409EFF;
+  }
+}
+
+//自定义表单控件样式1
+.form-item-single1 {
+  width: 250px;
+  border: 1px solid #DCDFE6;
+  display: inline-block;
+  padding: 1px;
+  border-radius: 4px;
+
+  label {
+    text-align: left;
+    padding-left: 15px;
+    width: 100%;
+  }
+
+  input {
+    border: 0;
   }
 }
