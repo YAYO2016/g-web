@@ -1,10 +1,13 @@
 <template>
     <div class='Login'>
+        <div style="position: fixed;top: 20px;right: 20px;">
+            <el-button type="text" @click="changeLocale">中文/EN</el-button>
+        </div>
         <div class="container">
             <div class="panel">
                 <div class="content">
                     <div class="switch">
-                        <h1 id="login">登录</h1>
+                        <h1 id="login">{{$t("login.title")}}</h1>
                     </div>
                     <el-form ref="loginForm" :model="loginForm">
                         <div class="login-form">
@@ -12,25 +15,28 @@
                                 <!--<input type="text" v-model="loginForm.username"/>-->
                                 <el-form-item prop="username" :rules="[{...$rules.NotEmpty[0],message:'用户名不能为空'}]">
                                     <el-input type="text" v-model="loginForm.username" clearable ref="username-input"/>
-                                    <span data-placeholder="用户名"></span>
+                                    <span :data-placeholder="$t('login.username')"></span>
                                 </el-form-item>
                             </div>
 
                             <div class="txtb">
                                 <el-form-item prop="password" :rules="[{...$rules.NotEmpty[0],message:'密码不能为空'}]">
                                     <el-input type="password" v-model="loginForm.password" clearable show-password/>
-                                    <span data-placeholder="密码"></span>
+                                    <span :data-placeholder="$t('login.password')"></span>
                                 </el-form-item>
 
                             </div>
 
                             <div class="buttons">
-                                <span class="signUp" @click="$router.push('/register')">跳转注册</span>
+                                <span class="signUp"
+                                      @click="$router.push('/register')"> {{$t("login.gotoRegister")}}</span>
                                 <span class="split">|</span>
-                                <span class="forget" @click="$router.push('/forgetPassword')">忘记密码？</span>
+                                <span class="forget" @click="$router.push('/forgetPassword')"> {{$t("login.forgetPassword")}}？</span>
                             </div>
 
-                            <button class="login-button" v-if="!loading" @click="handleLogin('loginForm')">登录</button>
+                            <button class="login-button" v-if="!loading" @click="handleLogin('loginForm')">
+                                {{$t("login.title")}}
+                            </button>
                             <button class="login-button loading" v-else>
                                 <i class="el-icon-loading" style="font-size: 25px"></i>
                             </button>
@@ -111,6 +117,12 @@
                     return acc
                 }, {})
             },
+            //中英文切换  --  主要就是改变  vm.$i18n.locale
+            changeLocale() {
+                let vm = this;
+                let locale = vm.$i18n.locale;
+                locale === "zh" ? (vm.$i18n.locale = "en") : (vm.$i18n.locale = "zh");
+            }
         },
         watch: {
             $route: {
@@ -198,7 +210,7 @@
 
                         span {
                             &::before {
-                                content: attr(data- placeholder);
+                                content: attr(data-placeholder);
                                 position: absolute;
                                 top: 50%;
                                 left: 5px;
