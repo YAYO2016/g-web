@@ -13,14 +13,19 @@
                         <div class="login-form">
                             <div class="txtb">
                                 <!--<input type="text" v-model="loginForm.username"/>-->
-                                <el-form-item prop="username" :rules="[{...$rules.NotEmpty[0],message:'用户名不能为空'}]">
+                                <!-- 这边 错误的国际化信息 使用函数返回的原因是：
+                                 函数的模式返回数据，务必使用函数返回的模式，因为使用一般属性对象，在编译一次后，后面更改语言，不会自动刷新
+                                 -->
+                                <el-form-item prop="username"
+                                              :rules="(()=>[{...$rules.NotEmpty[0],message:$t('rules.usernameNotEmpty')}])()">
                                     <el-input type="text" v-model="loginForm.username" clearable ref="username-input"/>
                                     <span :data-placeholder="$t('login.username')"></span>
                                 </el-form-item>
                             </div>
 
                             <div class="txtb">
-                                <el-form-item prop="password" :rules="[{...$rules.NotEmpty[0],message:'密码不能为空'}]">
+                                <el-form-item prop="password"
+                                              :rules="(()=>[{...$rules.NotEmpty[0],message:$t('rules.passwordNoEmpty')}])()">
                                     <el-input type="password" v-model="loginForm.password" clearable show-password/>
                                     <span :data-placeholder="$t('login.password')"></span>
                                 </el-form-item>

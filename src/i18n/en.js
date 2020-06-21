@@ -12,7 +12,10 @@ const en = {
 
     },
     register: {},
-    rules: {}
+    rules: {
+        usernameNotEmpty: "username can not be empty",
+        passwordNoEmpty: "password can not be empty"
+    }
 };
 
 export default en;

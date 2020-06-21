@@ -11,7 +11,10 @@ const zh = {
         forgetPassword: "忘记密码？"
     },
     register: {},
-    rules: {}
+    rules: {
+        usernameNotEmpty: "用户名不能为空",
+        passwordNoEmpty: "密码不能为空"
+    }
 };
 
 export default zh;
