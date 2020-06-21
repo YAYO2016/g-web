@@ -188,7 +188,7 @@
                     let downFileList = vm.checkList.map(file => {
                         return {name: file.fileName, filename: file.name}
                     });
-                    vm.$api.downloadBatch(downFileList, "file.zip")
+                    vm.$api.downloadBatchApi(downFileList, "file.zip")
                 } else {
                     vm.$message("请先选中文件！")
                 }

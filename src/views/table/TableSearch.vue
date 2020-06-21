@@ -14,7 +14,7 @@
                                 :class="searchKeyForm.bankName?'el-icon-search active':'el-icon-search'"></i></span>
                         <div class="popoverContent">
                             <el-button type="text" @click="()=>{searchForm.bankName='';handleSearch()}">清除搜索</el-button>
-                            <el-input autofocus v-model="searchForm.bankName" placeholder="请输入"
+                            <el-input v-model="searchForm.bankName" placeholder="请输入"
                                       @keyup.enter.native="handleSearch()">
                                 <el-button slot="append" icon="el-icon-search" @click="handleSearch()"></el-button>
                             </el-input>
@@ -45,6 +45,14 @@
         name: "TableSearch",
         data() {
             return {
+                searchForm: {
+                    bankName: '',
+                    bankId: '',
+                },
+                searchKeyForm: {
+                    bankName: '',
+                    bankId: '',
+                },
                 tableData: [],
                 pageInfo: {
                     pageNum: 1,
@@ -72,6 +80,11 @@
                     vm.tableData = res.data.list;
                     vm.pageInfo = res.data.pageInfo;
                 })
+            },
+            handleSearch() {
+                let vm = this;
+                vm.searchKeyForm = {...vm.searchForm};
+                vm.getData(1);
             },
         }
     }

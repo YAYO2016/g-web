@@ -18,7 +18,7 @@ const uploadFileApi = {
         return download("/file/downloadFile", params, {}, callback)
     },
     //批量下载文件
-    downloadBatch(params, zipName) {
+    downloadBatchApi(params, zipName) {
         return downloadBatch("/file/downloadFile", params, zipName)
     },
 };

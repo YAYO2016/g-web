@@ -99,6 +99,12 @@ export const asyncRoutes = [
             //    name: 'FormTable',
             //    meta: {title: '自定义表格控件', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
             //},
+            {
+                path: '/form/formrules',
+                component: () => import('@/views/formManager/FormRules'),
+                name: 'FormRules',
+                meta: {title: '表单校验', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+            },
         ]
     },
     {
@@ -121,7 +127,7 @@ export const asyncRoutes = [
                 meta: {title: '多选表格', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
             },
             {
-                path: '/table/tableSeatch',
+                path: '/table/tablesearch',
                 component: () => import('@/views/table/TableSearch'),
                 name: 'FormTable',
                 meta: {title: '表格搜索', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
