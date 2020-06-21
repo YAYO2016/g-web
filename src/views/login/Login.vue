@@ -140,6 +140,21 @@
                     }
                 },
                 immediate: true  //会在create的时候就进行调用
+            },
+            // 当切换语言的时候，触发下错误提示的更新
+            "$i18n.locale": {
+                handler() {
+                    //在下次dom更新循环结束之后，执行延迟回调。在修改数据之后立即使用这个方法，获得更新后的dom
+                    if (this.$refs["loginForm"]) {
+                        this.$nextTick(() => {
+                            this.$refs["loginForm"].fields.forEach(item => {
+                                if (item.validateState === "error") {
+                                    this.$refs["loginForm"].validateField(item.labelFor);
+                                }
+                            });
+                        });
+                    }
+                }
             }
         },
     }
