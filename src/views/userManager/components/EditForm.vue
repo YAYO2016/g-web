@@ -39,7 +39,6 @@
     /**
      * Created by yanyue on 2020/5/28 16:21
      */
-    import axios from "axios"
 
     export default {
         name: "EditForm",

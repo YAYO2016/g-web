@@ -17,6 +17,8 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
+                <!-- 重置 会清除表单的数据  并且消除已经显示的错误提示 -->
+                <el-button @click="$refs['personForm'].resetFields()">重置</el-button>
                 <el-button type="" @click="save('personForm')">暂存</el-button>
                 <el-button type="primary" @click="submit('personForm')">提交</el-button>
             </el-form-item>

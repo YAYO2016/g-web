@@ -59,6 +59,7 @@
      * Created by yanyue on 2020/5/26 20:31
      */
     import $ from "jquery";
+    import sha1 from 'js-sha1';
 
     export default {
         name: "Register",
@@ -99,7 +100,8 @@
                 let vm = this;
                 if (vm.validateRules(formName, vm)) {
                     vm.loading = true;
-                    vm.$api.register(vm.registerForm).then(res => {
+                    // 注册的时候 对密码进行加密处理sha1
+                    vm.$api.register({...vm.registerForm, password: sha1(vm.registerForm.password)}).then(res => {
                         vm.$message.success("注册成功");
                         vm.$router.push("/login");
                         vm.loading = false;

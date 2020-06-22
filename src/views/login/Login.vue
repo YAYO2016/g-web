@@ -59,7 +59,7 @@
      * Created by yanyue on 2020/5/26 15:44
      */
     import $ from "jquery";
-    import {setToken} from "@/common/js/auth.js"
+    import sha1 from 'js-sha1';
 
     export default {
         name: "Login",
@@ -102,7 +102,7 @@
                 let vm = this;
                 if (vm.validateRules(formName, vm)) {
                     vm.loading = true;
-                    vm.$store.dispatch('user/login', vm.loginForm)
+                    vm.$store.dispatch('user/login', {...vm.loginForm, password: sha1(vm.loginForm.password)})  //sha1密码加密处理
                         .then((res) => {
                             //登录成功，跳转到路由query中redirect参数的路由地址，并且带上剩余的其他路由参数otherQuery
                             vm.$router.push({path: vm.redirect || '/', query: vm.otherQuery});

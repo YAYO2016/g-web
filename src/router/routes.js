@@ -70,7 +70,7 @@ export const asyncRoutes = [
         component: Layout,
         name: 'Bank',
         redirect: '/bank/banklist',
-        meta: {title: '银行', icon: 'fa fa-university', roles: ["editor", "admin"]},
+        meta: {title: '银行', icon: 'fa fa-university', roles: ["visitor", "admin"]},
         children: [
             {
                 path: '/bank/banklist',
@@ -85,7 +85,7 @@ export const asyncRoutes = [
         component: Layout,
         name: 'Bank',
         redirect: '/form/formTest',
-        meta: {title: '自定义控件', icon: 'fa fa-fort-awesome', roles: ["editor", "admin"]},
+        meta: {title: '自定义控件', icon: 'fa fa-fort-awesome', roles: ["visitor", "admin"]},
         children: [
             {
                 path: '/form/formTest',
@@ -130,7 +130,7 @@ export const asyncRoutes = [
         component: Layout,
         name: 'Table',
         redirect: '/table/tabledemo',
-        meta: {title: '表格控件', icon: 'fa fa-table', roles: ["editor", "admin"]},
+        meta: {title: '表格控件', icon: 'fa fa-table', roles: ["visitor", "admin"]},
         children: [
             {
                 path: '/table/tabledemo',
@@ -177,7 +177,7 @@ export const asyncRoutes = [
         path: '/user',
         component: Layout,
         redirect: '/user/userManager',
-        meta: {title: '用户模块', icon: 'el-icon-s-custom', roles: ["editor", "admin"]},
+        meta: {title: '用户模块', icon: 'el-icon-s-custom', roles: ["visitor", "admin"]},
         children: [
             {
                 path: '/user/userManager',

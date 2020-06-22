@@ -15,7 +15,7 @@
             <el-table-column prop="createDate" label="创建日期" :formatter="gRowTimeFormat"></el-table-column>
             <el-table-column prop="lastLoginDate" label="最后登录日期" :formatter="gRowTimeFormat"></el-table-column>
             <el-table-column prop="roles" label="角色" :formatter="(row,column)=>{
-            return  row[column.property].replace('visitor','游客').replace('admin','管理员');
+            return  row[column.property]?row[column.property].replace('visitor','游客').replace('admin','管理员'):'';
             }"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -101,7 +101,7 @@
                 let vm = this;
                 vm.$api.getSingleUser({_id: row._id}).then(res => {
                     let result = res.data;
-                    result.roles = result.roles.split(',');
+                    result.roles = result.roles?result.roles.split(','):[];
                     vm.editForm = result;
                     vm.editFormVisible = true;
                 })
