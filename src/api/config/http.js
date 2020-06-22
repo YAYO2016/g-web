@@ -54,7 +54,7 @@ function endLoading() {
     }
 }
 
-// 添加request拦截器--请求拦截
+// 添加request拦截器--请求拦截（请求接口触发前，做一些处理）
 http.interceptors.request.use(config => {
     if (config.options.loading) {
         startLoading();
@@ -87,6 +87,9 @@ http.interceptors.request.use(config => {
             ...config.params
         }
     }
+
+    //获得请求头
+    //console.log(config.headers);
 
     return config
 }, error => {

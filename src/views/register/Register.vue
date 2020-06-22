@@ -98,8 +98,12 @@
         methods: {
             handleRegister(formName) {
                 let vm = this;
+
                 if (vm.validateRules(formName, vm)) {
                     vm.loading = true;
+                    // 删除对象中的一个属性 delete
+                    delete vm.registerForm.repeatPassword;
+                    //console.log(vm.registerForm);
                     // 注册的时候 对密码进行加密处理sha1
                     vm.$api.register({...vm.registerForm, password: sha1(vm.registerForm.password)}).then(res => {
                         vm.$message.success("注册成功");
