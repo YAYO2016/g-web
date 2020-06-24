@@ -135,19 +135,19 @@ export const asyncRoutes = [
             {
                 path: '/table/tabledemo',
                 component: () => import('@/views/table/TableDemo'),
-                name: 'FormTest',
+                name: 'TableDemo',
                 meta: {title: '普通表格', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
             },
             {
                 path: '/table/tableselect',
                 component: () => import('@/views/table/TableSelect'),
-                name: 'FormTable',
+                name: 'TableSelect',
                 meta: {title: '多选表格', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
             },
             {
                 path: '/table/tablesearch',
                 component: () => import('@/views/table/TableSearch'),
-                name: 'FormTable',
+                name: 'TableSearch',
                 meta: {title: '表格搜索', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
             },
         ]

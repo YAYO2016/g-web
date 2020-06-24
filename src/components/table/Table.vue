@@ -15,7 +15,7 @@
                 :row-class-name="tableRowClassName"
                 @selection-change="handleSelectionChange"
                 @select="select"
-                tooltip-effect="dark"
+                tooltip-effect="light"
         >
             <!-- stripe:是否是斑马纹-->
             <slot></slot>
