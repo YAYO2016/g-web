@@ -66,7 +66,8 @@
             handleScroll(e) {
                 const eventDelta = e.wheelDelta || -e.deltaY * 40;
                 const $scrollWrapper = this.scrollWrapper;
-                $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
+                // 如果是 + - 就是滚轮方向的切换改变转向
+                $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft - eventDelta / 4
             },
             emitScroll() {
                 this.$emit('scroll')
@@ -79,7 +80,7 @@
     .Tags {
         padding: 0 15px;
         height: $tabsHeight;
-        line-height: $tabsHeight;
+        line-height: $tabsHeight - 4px;
         background: $white;
         border-bottom: 1px solid #d8dce5;
 
