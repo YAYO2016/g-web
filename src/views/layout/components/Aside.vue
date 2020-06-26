@@ -14,11 +14,12 @@
                 el-menu 设置了router属性后，el-menu-item中index值就是点击时候的路由跳转值
                 default-active 激活的路由地址
                 background-color 背景颜色
-                text-color 文本颜色
+                text-color 菜单的文本颜色
                 active-text-color 激活时候的文本颜色
                 mode vertical 垂直菜单模式（默认）  horizontal 水平菜单模式
                 unique-opened 是否只能同时打开一个菜单，其他的会收起
                 collapse 是否折叠
+                router 启用ve-router的模式，该模式下导航会以index作为path进行路由跳转--所以要将路由的path赋值给index属性
                 @open="handleOpen" 打开一个submenu会执行的事件
                 @close="handleClose" 关闭一个submenu会执行的事件
                 @select="handleSelect" 点击某个el-menu-item菜单选项的时候会执行的事件
@@ -142,6 +143,12 @@
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
+
+                /*修改菜单选项激活时候的样式*/
+                &.is-active {
+                    background-color: #f56c6c !important;
+                    color: #fff;
+                }
             }
         }
 
