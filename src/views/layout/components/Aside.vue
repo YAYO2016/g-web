@@ -164,22 +164,10 @@
             }
         }
 
-        .el-menu-slide {
-            border-right: none;
-
-            i {
-                margin-right: 5px;
-                width: 24px;
-                text-align: center;
-                font-size: 18px;
-            }
-        }
-
+        /*实现左侧菜单栏收起和展开的宽度设置*/
         .el-menu-vertical-demo:not(.el-menu--collapse) {
             width: 200px;
             min-height: 400px;
         }
     }
-
-
 </style>
