@@ -14,6 +14,9 @@
         </div>
         <div class="right-content">
             <div class="content-item">
+                <svg-icon icon-class="fullscreen"></svg-icon>
+            </div>
+            <div class="content-item">
                 <!--用户相关-->
                 <el-dropdown trigger="click">
                     <span class="el-dropdown-link"><img :src="iobsUrl+$store.state.user.userInfo.avatar" class="user"/></span>

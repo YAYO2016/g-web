@@ -3,8 +3,12 @@
  */
 
 const path = require('path');
-const webpack = require('webpack')
+const webpack = require('webpack');
 const debug = process.env.NODE_ENV !== 'production';
+
+function resolve(dir) {
+    return path.join(__dirname, '.', dir);
+}
 
 module.exports = {
     publicPath: process.env.NODE_ENV === "production" ? "./" : "/", // 输出文件目录
@@ -20,15 +24,17 @@ module.exports = {
         } else { // 生产环境配置
 
         }
-        //Object.assign(config, { // 开发生产共同配置
-        //    resolve: {
-        //        alias: {
-        //            '@': path.resolve(__dirname, './src'),
-        //            '@c': path.resolve(__dirname, './src/components'),
-        //            'vue$': 'vue/dist/vue.esm.js'
-        //        }
-        //    }
-        //})
+        Object.assign(config, { // 开发生产共同配置
+            resolve: {
+                extensions: [".js", ".vue", ".json"],
+                alias: {
+                    '@': path.resolve(__dirname, './src'),
+                    '@components': path.resolve(__dirname, './src/components'),
+                    //修改项目中vue的指向文件，让项目中使用vue的地方指向dist下的vue文件，不使用默认的vue.runtime.common.js
+                    'vue': 'vue/dist/vue.js',
+                }
+            }
+        })
     },
     chainWebpack: config => { // webpack链接API，用于生成和修改webapck配置，https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
         if (debug) {
@@ -36,6 +42,21 @@ module.exports = {
         } else {
             // 生产开发配置
         }
+        config.module
+            .rule('svg')
+            .exclude.add(resolve('src/icons'))
+            .end();
+
+        config.module
+            .rule('icons')
+            .test(/\.svg$/)
+            .include.add(resolve('src/icons'))
+            .end()
+            .use('svg-sprite-loader')
+            .loader('svg-sprite-loader')
+            .options({
+                symbolId: 'icon-[name]'
+            });
     },
     css: {
         loaderOptions: {

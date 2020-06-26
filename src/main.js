@@ -22,6 +22,9 @@ Vue.use(ElementUI, {size: 'small', locale});
 // 国际化
 import i18n from "@/i18n";
 
+//svg的icon导入
+import '@/icons'
+
 //导入自定义校验数据
 import rules from './common/js/rules';
 
@@ -48,6 +51,7 @@ Vue.use(globalFun);
 //导入babel-polyfill，解决ie9和一些低版本的高级浏览器对es6新语法并不支持
 import "babel-polyfill";
 
+// runtime模式 （运行时模式）
 new Vue({
     router,
     store,

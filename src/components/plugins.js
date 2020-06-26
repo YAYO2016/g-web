@@ -1,5 +1,6 @@
 /**
  * Created by yanyue on 2019-09-25 20:48
+ * 注册全局的组件
  */
 import GDialog from './dialog/GDialog';
 import GSplitLevel from './split/SplitLevel';

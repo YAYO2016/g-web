@@ -59,7 +59,10 @@
                         :disabled="disabled"
                         :data="{fileList}">
                     <el-button type="primary" icon="el-icon-upload2">继续添加</el-button>
-                    <el-button type="primary" @click.stop="downloadBatch">批量下载</el-button>
+                    <el-button type="primary" @click.stop="downloadBatch">
+                        <svg-icon icon-class="zip"></svg-icon>
+                        批量下载
+                    </el-button>
                     <div slot="tip" class="el-upload__tip">{{fileUploadText}}}，且不超过{{fileMaxSize}}M</div>
                 </el-upload>
 
@@ -153,7 +156,7 @@
             downloadFile(item) {
                 let vm = this;
                 vm.$set(item, 'loading', true);
-                vm.$api.downloadFile({filename: item.name, originName: encodeURI (item.fileName)}, (downloadProgress => {
+                vm.$api.downloadFile({filename: item.name, originName: encodeURI(item.fileName)}, (downloadProgress => {
                     //console.log(downloadProgress);
                     //vm.showDownloadProgress(file, downloadProgress, vm.fileList);
                 })).then(res => {
