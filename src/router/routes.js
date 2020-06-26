@@ -91,7 +91,7 @@ export const asyncRoutes = [
                 path: '/form/formTest',
                 component: () => import('@/views/formManager/FormTest'),
                 name: 'FormTest',
-                meta: {title: '自定义表单元素测试', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+                meta: {title: '自定义表单元素测试', icon: 'svg-dashboard', roles: ["visitor", "admin"]}
             },
             //{
             //    path: '/form/formTable',

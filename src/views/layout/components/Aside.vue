@@ -32,7 +32,10 @@
                 <el-menu-item v-if="item.children.length === 1" :index="item.children[0].path"
                               :key="item.children[0].path"
                               @click="clickMenu(item.children[0])">
-                    <i v-if="item.children[0].meta.icon" :class="`${item.children[0].meta.icon}`"></i>
+                    <!-- 判断是使用svg图标  还是class图标 -->
+                    <svg-icon v-if="item.children[0].meta.icon && item.children[0].meta.icon.indexOf('svg')!==-1"
+                              :icon-class="item.children[0].meta.icon.replace('svg-','')"></svg-icon>
+                    <i v-else-if="item.children[0].meta.icon" :class="`${item.children[0].meta.icon}`"></i>
                     <span slot="title" :title="item.children[0].meta.title">{{item.children[0].meta.title}}</span>
                 </el-menu-item>
 
@@ -40,14 +43,18 @@
                 <el-submenu v-else :index="item.children[0].path" :key="item.children[0].path">
                     <!--父目录名称-->
                     <template slot="title">
-                        <i v-if="item.meta.icon" :class="`${item.meta.icon}`"></i>
+                        <svg-icon v-if="item.meta.icon && item.meta.icon.indexOf('svg')!==-1"
+                                  :icon-class="item.meta.icon.replace('svg-','')"></svg-icon>
+                        <i v-else-if="item.meta.icon" :class="`${item.meta.icon}`"></i>
                         <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
                     </template>
                     <!--子菜单名称-->
                     <el-menu-item v-for="child in item.children" v-if="!child.hidden" :index='child.path'
                                   :key="child.path"
                                   @click="clickMenu(child)">
-                        <i v-if="child.meta.icon" :class="`${child.meta.icon}`"></i>
+                        <svg-icon v-if="child.meta.icon && child.meta.icon.indexOf('svg')!==-1"
+                                  :icon-class="child.meta.icon.replace('svg-','')"></svg-icon>
+                        <i v-else-if="child.meta.icon" :class="`${child.meta.icon}`"></i>
                         <span v-if="child.meta&&child.meta.title" slot="title" :title="child.meta.title">{{child.meta.title}}</span>
                     </el-menu-item>
                 </el-submenu>
@@ -124,6 +131,11 @@
                     margin-right: 5px;
                     width: 24px;
                     text-align: center;
+                    font-size: 18px;
+                }
+
+                .svg-icon {
+                    margin-right: 5px;
                     font-size: 18px;
                 }
             }
