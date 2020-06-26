@@ -54,3 +54,32 @@
     border: 0;
   }
 }
+
+//自定义左侧菜单的全局样式 -- 修改elementUI的默认样式
+.el-menu-item {
+  &.is-active {
+    background-color: #f56c6c !important;
+    color: #fff;
+  }
+
+  i {
+    margin-right: 5px;
+    width: 24px;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  .svg-icon {
+    margin-right: 5px;
+    font-size: 18px;
+  }
+}
+//菜单激活时候展开和收起时候的样式
+.el-submenu {
+  &.is-active:not(.is-opened) {
+    div {
+      background-color: #f56c6c !important;
+      color: #fff;
+    }
+  }
+}
