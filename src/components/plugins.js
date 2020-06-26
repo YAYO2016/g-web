@@ -14,6 +14,7 @@ import GSelect from './form/GSelect'
 import GArea from './form/GArea'
 import GTree from './form/GTree'
 import GFileUpload from './form/GFileUpload'
+import GScreenFull from "./screenfull/Screenfull"
 
 export default {
     install(Vue, options) {
@@ -29,5 +30,6 @@ export default {
         Vue.component('g-area', GArea);
         Vue.component('g-tree', GTree);
         Vue.component('g-file-upload', GFileUpload);
+        Vue.component('g-screen-full', GScreenFull);
     }
 };

@@ -13,8 +13,9 @@
             </el-breadcrumb>
         </div>
         <div class="right-content">
+
             <div class="content-item">
-                <svg-icon icon-class="fullscreen"></svg-icon>
+                <g-screen-full></g-screen-full>
             </div>
             <div class="content-item">
                 <!--用户相关-->
