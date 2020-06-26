@@ -10,10 +10,10 @@ const common = {
         tabsList: initTabs(),
     },
     mutations: {
-        SET_COLLAPSE(state, payload){
+        SET_COLLAPSE(state, payload) {
             state.isCollapse = payload;
         },
-        SET_TABSLIST(state, payload){
+        SET_TABSLIST(state, payload) {
             state.tabsList = payload;
         },
     },
@@ -23,35 +23,37 @@ const common = {
         collapseMenu: ({commit, state}) => {
             commit('SET_COLLAPSE', !state.isCollapse);
         },
-        getTabs: ({commit, state}) => {
-            if (util.StorageFn.getLocal("tabsList")) {
-                commit('SET_TABSLIST',util.StorageFn.getLocal("tabsList"));
-            }
-        },
+        //getTabs: ({commit, state}) => {
+        //    if (util.StorageFn.getLocal("tabsList")) {
+        //        commit('SET_TABSLIST', util.StorageFn.getLocal("tabsList"));
+        //    }
+        //},
         //关闭一个tab
         closeTab: ({commit, state}, payload) => {
-            let result = (state.tabsList || util.StorageFn.getLocal("tabsList")).findIndex(item => item.name === payload.name);
+            //let result = (state.tabsList || util.StorageFn.getLocal("tabsList")).findIndex(item => item.name === payload.name);
+            let result = state.tabsList.findIndex(item => item.name === payload.name);
             let tabsList = [...state.tabsList];
             tabsList.splice(result, 1);
-            commit('SET_TABSLIST',tabsList);
-            util.StorageFn.setLocal("tabsList", tabsList);
+            commit('SET_TABSLIST', tabsList);
+            //util.StorageFn.setLocal("tabsList", tabsList);
         },
         //点击菜单会新增没有加过的tab
         selectMenu: ({commit, state}, payload) => {
             //console.log(payload);
             //tabList中不存在的话就新增下
-            let result = (state.tabsList || JSON.parse(localStorage.tabsList) || []).findIndex(item => item.name === payload.name);
+            //let result = (state.tabsList || JSON.parse(localStorage.tabsList) || []).findIndex(item => item.name === payload.name);
+            let result = (state.tabsList || []).findIndex(item => item.name === payload.name);
             if (result === -1) {
                 let tabsList = [...state.tabsList];
                 tabsList.push(payload);
-                commit('SET_TABSLIST',tabsList);
-                util.StorageFn.setLocal("tabsList", tabsList);
+                commit('SET_TABSLIST', tabsList);
+                //util.StorageFn.setLocal("tabsList", tabsList);
             }
         },
         //清空tabs
         clearTabs: ({commit, state}, payload) => {
-            commit('SET_TABSLIST',initTabs());
-            util.StorageFn.removeLocal("tabsList");
+            commit('SET_TABSLIST', initTabs());
+            //util.StorageFn.removeLocal("tabsList");
         }
     },
     getters: {}
