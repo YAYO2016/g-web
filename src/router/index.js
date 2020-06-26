@@ -6,6 +6,10 @@ import {getToken} from "@/common/js/auth";
 import api from "@/api"
 import util from "@/common/js/util"
 
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css' // progress bar style
+NProgress.configure({showSpinner: false}); //不显示右侧的转圈圈
+
 // 解决控制台 在使用ElementUi时点击同一个路由，页面报错
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
@@ -22,6 +26,9 @@ const router = new VueRouter({
 const whiteList = ["/login", "/register", "/forgetPassword"];
 // 路由守卫,进行拦截，可以拦截用户设置的权限是路由requireAuth:true的（但是可能token失效了，但是本地还是保存着，所以需要axios拦截配合）
 router.beforeEach(async (to, from, next) => {
+
+    NProgress.start();
+
     //判断cookie中是否有token来判断是否登录
     const token = getToken();
     if (util.TypeFn.isTrue(token)) {
@@ -29,6 +36,8 @@ router.beforeEach(async (to, from, next) => {
         if (to.path === '/login') {
             //跳转到login页面的话，直接跳转到/主页去，然后重新执行了一次beforeEach
             next({path: '/'});
+
+            NProgress.done()
         } else {
             //根据store中的userInfo信息是否存在，来判断页面是否刷新了
             const userInfo = store.state.user.userInfo;
@@ -42,11 +51,13 @@ router.beforeEach(async (to, from, next) => {
                     const accessRoutes = await store.dispatch('permission/generateRoutes', store.getters.userRoles);
                     //将获取到路由参数添加到路由中
                     router.addRoutes(accessRoutes);
-                    next({...to, replace: true})
+                    next({...to, replace: true});
+                    NProgress.done()
                 } catch (e) {
                     store.dispatch("user/clearCurrentState");
                     // 用户没有登录
                     next(`/login?redirect=${to.path}`);
+                    NProgress.done()
                 }
             }
         }
@@ -61,12 +72,15 @@ router.beforeEach(async (to, from, next) => {
             store.dispatch("user/clearCurrentState");
             // 用户没有登录
             next(`/login?redirect=${to.path}`);
+
+            NProgress.done()
         }
     }
 });
 
 router.afterEach((to, from, next) => {
     window.scrollTo(0, 0);
+    NProgress.done()
 });
 
 export default router
