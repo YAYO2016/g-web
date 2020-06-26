@@ -1,9 +1,13 @@
 <template>
     <div class='Header'>
         <div class="left-content">
-            <el-button type="primary" icon="el-icon-menu"
-                       @click="$store.dispatch('common/collapseMenu')"
-            ></el-button>
+            <!--<el-button type="primary" icon="el-icon-menu"-->
+            <!--@click="$store.dispatch('common/collapseMenu')"-->
+            <!--&gt;</el-button>-->
+            <div class="hamburger">
+                <svg-icon :icon-class="$store.state.common.isCollapse?'hamburger-open':'hamburger-close'"
+                          @click.native="$store.dispatch('common/collapseMenu')"></svg-icon>
+            </div>
             <!--面包屑导航-->
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item v-for="bread in breadCrumbItems" :key="bread.path"
@@ -108,6 +112,15 @@
         height: 100%;
         align-items: center;
         justify-content: space-between;
+
+        .hamburger {
+            width: 30px;
+
+            .svg-icon {
+                cursor: pointer;
+                font-size: 20px;
+            }
+        }
 
         .left-content {
             display: flex;
