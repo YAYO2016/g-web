@@ -157,7 +157,7 @@ router.post("/getUserInfo", async (ctx) => {
 
 //获取所有用户的信息
 router.post('/getAllUsers', async (ctx) => {
-    let {username, createStartDate, createEndDate, pageNum, pageSize} = ctx.request.body;
+    let {username, createStartDate, createEndDate, roles, pageNum, pageSize} = ctx.request.body;
     const User = mongoose.model("User");
     let total = 0;
     if (username) {
@@ -167,19 +167,27 @@ router.post('/getAllUsers', async (ctx) => {
         let allUser = await User.find();
         total = allUser.length;
     }
-    console.log(username);
-    console.log(createStartDate);
-    console.log(createEndDate);
+    //console.log(username);
+    //console.log(createStartDate);
+    //console.log(createEndDate);
+    //console.log(roles);
     await User.find({
         "$and":
             [createStartDate ? {"createDate": {"$gt": createStartDate}} : {},
-                createEndDate ? {"createDate": {"$lt": createEndDate}} : {}, username === '' ? {} :
-                {
+                createEndDate ? {"createDate": {"$lt": createEndDate}} : {},
+                username === '' ? {} : {
                     username: {
                         $regex: username,  //正则匹配，模糊查询
                         $options: 'i'  //忽略大小写
                     }
-                }]
+                },
+                roles === '' ? {} : {
+                    roles: {
+                        $regex: roles,  //正则匹配，模糊查询
+                        $options: 'i'  //忽略大小写
+                    }
+                }
+            ]
     }).limit(pageSize).skip((pageNum - 1) * pageSize).then(users => {
         console.log(users);
         if (users) {

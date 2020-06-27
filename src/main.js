@@ -14,7 +14,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import locale from "element-ui/lib/locale/lang/en";
 //修改elementUI的默认样式
-// import './element-var.scss';
+//import './element-var.scss';
+
 Vue.use(ElementUI, {size: 'small', locale});
 //设置elementUI的全局size
 //Vue.prototype.$ELEMENT = {size: 'mini'};

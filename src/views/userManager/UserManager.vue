@@ -8,9 +8,15 @@
                 <g-date type="datetimerange" :start-date.sync="search.createStartDate"
                         :end-date.sync="search.createEndDate"></g-date>
             </el-form-item>
+            <el-form-item label="角色">
+                <g-select :value.sync="search.roles"
+                          :allSelect="true"
+                          :options="[{label: '管理员', value: 'admin'},{label: '游客', value: 'visitor'}]"
+                ></g-select>
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="handleSearch">查询</el-button>
-                <el-button type="primary" @click="resetForm('search')">重置</el-button>
+                <el-button @click="resetForm('search')">重置</el-button>
             </el-form-item>
         </el-form>
         <g-split-l></g-split-l>
@@ -31,9 +37,9 @@
             }"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button type="text">查看</el-button>
-                    <el-button type="text" @click="handleEdit(scope.row)">编辑</el-button>
-                    <el-button type="text">删除</el-button>
+                    <el-button type="text" @click.stop="">查看</el-button>
+                    <el-button type="text" @click.stop="handleEdit(scope.row)">编辑</el-button>
+                    <el-button type="text" style="color:#F56C6C " @click.stop="">删除</el-button>
                 </template>
             </el-table-column>
         </g-table>
@@ -68,11 +74,7 @@
         data() {
             return {
                 search: this.initSearch(),
-                searchKey: {
-                    input: '',
-                    createStartDate: "",
-                    createEndDate: ""
-                },
+                searchKey: this.initSearch(),
                 pageInfo: {
                     pageNum: 1,
                     pageSize: 10,
@@ -97,6 +99,7 @@
                     username: vm.searchKey.input,
                     createStartDate: vm.searchKey.createStartDate,
                     createEndDate: vm.searchKey.createEndDate,
+                    roles: vm.searchKey.roles,
                     pageNum: vm.pageInfo.pageNum,
                     pageSize: vm.pageInfo.pageSize,
                 }).then(res => {
@@ -145,7 +148,8 @@
                 return {
                     input: '',
                     createStartDate: "",
-                    createEndDate: ""
+                    createEndDate: "",
+                    roles: ""
                 }
             },
             resetForm(formName) {

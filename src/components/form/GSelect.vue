@@ -90,7 +90,7 @@
             //选项的key和value的属性值
             optionKey: {
                 type: String,
-                default: "key"
+                default: "label"
             },
             optionValue: {
                 type: String,
@@ -100,7 +100,6 @@
                 type: Boolean,
                 default: false
             },
-
             //select是否存在全选框
             allSelect: {
                 type: Boolean,
@@ -121,7 +120,7 @@
         },
         data() {
             return {
-                viewValue: "",
+                viewValue: (this.multiple || this.allSelect) ? [] : "",
                 checked: false,
             }
         },
@@ -130,11 +129,11 @@
         },
         watch: {
             value(newVal) {
-                this.viewValue = newVal;
+                this.viewValue = (this.multiple || this.allSelect) ? this.isTrue(newVal) ? newVal.split(',') : [] : newVal;
             },
             viewValue(newVal) {
                 if (this.isTrue(newVal)) {
-                    this.$emit("update:value", newVal);
+                    this.$emit("update:value", (this.multiple || this.allSelect) ? newVal.join(',') : newVal);  //如果是多选的时候，后台需要的多项的字符串
                 } else {
                     //如果值是0的话，也会是false，但是有时候数据本身就是0，这是需要的
                     if (newVal === 0) {

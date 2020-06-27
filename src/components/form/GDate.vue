@@ -75,7 +75,7 @@
         },
         data() {
             return {
-                viewValue: "",
+                viewValue: (this.type === 'datetimerange' || this.type === 'datetime') ? [] : "",
             }
         },
         mounted() {
@@ -89,6 +89,14 @@
         watch: {
             value(newVal) {
                 this.viewValue = newVal;
+            },
+            startDate(newVal) {
+                this.$set(this.viewValue, 0, newVal);
+                //this.viewValue[0] = newVal;
+            },
+            endDate(newVal) {
+                this.$set(this.viewValue, 1, newVal);
+                //this.viewValue[1] = newVal;
             },
             viewValue(newVal) {
                 if (this.isTrue(newVal)) {
