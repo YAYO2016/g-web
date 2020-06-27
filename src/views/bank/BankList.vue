@@ -30,7 +30,10 @@
         <g-pagination :currentPage="pageInfo.pageNum"
                       :pageSize="pageInfo.pageSize"
                       :total="pageInfo.total"
-                      :changePage="getData">
+                      :changePage="getData"
+                      :pageSizes="[10, 20, 50, 100]"
+                      :changeSize="(size)=>getData(pageInfo.pageNum,size)"
+        >
         </g-pagination>
 
 
@@ -99,9 +102,10 @@
             this.getData(1);
         },
         methods: {
-            getData(currentPage = 1) {
+            getData(currentPage = 1, currentSize = 10) {
                 let vm = this;
                 vm.pageInfo.pageNum = currentPage;
+                vm.pageInfo.pageSize = currentSize;
                 return vm.$api.getBanks({
                     bankName: vm.searchKeyForm.bankName,
                     pageNum: vm.pageInfo.pageNum,

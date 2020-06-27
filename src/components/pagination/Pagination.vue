@@ -2,11 +2,14 @@
     <div class="g-pagination">
         <el-pagination
                 background
-                layout="prev,pager,next,total"
+                :layout="pageSizes.length>0?'prev,pager,next,total,sizes':'prev,pager,next,total'"
                 :total="Number(total)"
                 @current-change="changePage"
                 :current-page="Number(currentPage)"
-                :page-size="Number(pageSize)">
+                :page-size="Number(pageSize)"
+                :page-sizes="pageSizes"
+                @size-change="changeSize"
+        >
         </el-pagination>
     </div>
 </template>
@@ -19,21 +22,31 @@
         },
         props: {
             total: {
-                type:[Number,String],
+                type: [Number, String],
                 default: 0
             },
+            pageSizes: {
+                type: [Array],
+                default: () => []
+            },
             currentPage: {
-                type: [Number,String],
+                type: [Number, String],
                 default: 1
             },
             pageSize: {
-                type: [Number,String],
+                type: [Number, String],
                 default: 10
             },
-            changePage:{
-                type:Function,
-                default:()=>{}
-            }
+            changePage: {
+                type: Function,
+                default: () => {
+                }
+            },
+            changeSize: {
+                type: Function,
+                default: () => {
+                }
+            },
         },
         methods: {
             //currentChange(page) {
