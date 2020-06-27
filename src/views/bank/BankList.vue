@@ -30,12 +30,11 @@
         <g-pagination :currentPage="pageInfo.pageNum"
                       :pageSize="pageInfo.pageSize"
                       :total="pageInfo.total"
-                      :changePage="getData"
+                      :changePage="page=>getData(page,pageInfo.pageSize)"
                       :pageSizes="[10, 20, 50, 100]"
-                      :changeSize="(size)=>getData(pageInfo.pageNum,size)"
+                      :changeSize="size=>getData(pageInfo.pageNum,size)"
         >
         </g-pagination>
-
 
         <!--
         sync是vue的语法糖，
