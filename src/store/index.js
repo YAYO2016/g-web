@@ -18,6 +18,7 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 const createPersisted = createPersistedState({
     //如果想放置搭配sessionStorage中，如下配置，session在浏览器关闭之后就消失，比较适合
     storage: window.sessionStorage,
+    // 不写这个reducer函数就默认存储所有的state数据
     reducer(state) {
         return {
             // 只储存state中的common模块

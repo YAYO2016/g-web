@@ -2,6 +2,7 @@
  * Created by yanyue on 2020/5/26 16:05
  * User用户表实体
  */
+const moment = require("moment");
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
@@ -23,10 +24,10 @@ const userSchema = new Schema({
         unique: true,
         type: String,
     },
-    //创建时间
-    createDate: {type: Date, default: Date.now()},
+    //创建时间 -- 不能直接使用Date.now() mongodb默认的时间是格林威治时间，和当地时间存在时间差，使用moment去设置时间可以解决该问题
+    createDate: {type: Date, default: () => moment(new Date()).format('YYYY-MM-DD HH:mm:ss')},
     //最后登录时间
-    lastLoginDate: {type: Date, default: Date.now()},
+    lastLoginDate: {type: Date, default: () => moment(new Date()).format('YYYY-MM-DD HH:mm:ss')},
     //头像地址
     avatar: String,
     //用户角色

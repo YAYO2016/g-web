@@ -438,7 +438,17 @@ const util = {
             getDayOfYearWeek(time) {
                 var numdays = this.getDayOfYear(time);
                 return Math.ceil(numdays / 7);
-            }
+            },
+            /**
+             * 返回因为地区差异出现的时间差，给Mongodb使用
+             * @param v
+             * @returns {string}
+             */
+            localDate(v) {
+                const d = new Date(v || Date.now());
+                d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+                return d.toISOString();
+            },
         },
         ArrayFn: {
             /*判断一个元素是否在数组中*/
