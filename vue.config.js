@@ -42,11 +42,12 @@ module.exports = {
         } else {
             // 生产开发配置
         }
+
+        //配置svg-sprite-loader，能批量解析svg文件
         config.module
             .rule('svg')
             .exclude.add(resolve('src/icons'))
             .end();
-
         config.module
             .rule('icons')
             .test(/\.svg$/)
@@ -60,7 +61,8 @@ module.exports = {
     },
     css: {
         loaderOptions: {
-            //安装sass-resources-loader，然后配置这里，可以全局使用scss的变量和方法
+            // 安装sass-resources-loader，然后配置这里，可以全局使用scss的变量和方法，
+            // 无需每个vue文件中都要单独引入样式，也无需在main.js中映入
             // npm i sass-resources-loader -D
             // ,不然的话只能使用样式，而无法使用方法和变量
             sass: {

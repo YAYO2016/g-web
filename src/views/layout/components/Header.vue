@@ -54,7 +54,7 @@
         name: "Header",
         data() {
             return {
-                userImg: require('@/assets/imgs/visitor.jpg'),
+                //userImg: require('@/assets/imgs/visitor.jpg'),
                 //面包屑导航数组
                 breadCrumbItems: [],
             }
