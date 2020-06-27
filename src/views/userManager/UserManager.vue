@@ -1,12 +1,24 @@
 <template>
     <div class='UserManager'>
-        <div>
-            <el-input v-model="search.input" placeholder="用户名查询" style="width: 250px" clearable></el-input>
-            <g-split-v></g-split-v>
-            <el-button type="primary" @click="handleSearch">查询</el-button>
-        </div>
+        <el-form ref="search" :model="search" label-width="80px" inline>
+            <el-form-item label="用户名">
+                <el-input v-model="search.input" placeholder="用户名查询" style="width: 250px" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="创建日期">
+                <g-date type="datetimerange" :start-date.sync="search.createStartDate"
+                        :end-date.sync="search.createEndDate"></g-date>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="handleSearch">查询</el-button>
+                <el-button type="primary" @click="resetForm('search')">重置</el-button>
+            </el-form-item>
+        </el-form>
         <g-split-l></g-split-l>
-        <g-table :table-data="tableData">
+        <g-table :table-data="tableData" :select-data.sync="selectData">
+
+            <!-- 多选表格 需要添加selection -->
+            <el-table-column type="selection" width="55"></el-table-column>
+
             <el-table-column type="index" label="序号">
                 <template slot-scope="scope">{{(pageInfo.pageNum-1)*pageInfo.pageSize+scope.$index+1}}</template>
             </el-table-column>
@@ -30,6 +42,7 @@
                       :total="pageInfo.total"
                       :changePage="getData">
         </g-pagination>
+        <el-button style="float: left;position:relative;top: -40px;">批量删除</el-button>
 
         <div class="dialog">
             <g-dialog title="编辑用户" :show.sync="editFormVisible" @closedDialog="editForm=initForm()">
@@ -54,11 +67,11 @@
         components: {EditForm},
         data() {
             return {
-                search: {
-                    input: '',
-                },
+                search: this.initSearch(),
                 searchKey: {
                     input: '',
+                    createStartDate: "",
+                    createEndDate: ""
                 },
                 pageInfo: {
                     pageNum: 1,
@@ -68,6 +81,8 @@
                 tableData: [],
                 editFormVisible: false,
                 editForm: this.initForm(),
+
+                selectData: [], // 多选表格选中的选项
             }
         },
         mounted() {
@@ -80,6 +95,8 @@
                 vm.pageInfo.pageNum = currentPage;
                 vm.$api.getAllUsers({
                     username: vm.searchKey.input,
+                    createStartDate: vm.searchKey.createStartDate,
+                    createEndDate: vm.searchKey.createEndDate,
                     pageNum: vm.pageInfo.pageNum,
                     pageSize: vm.pageInfo.pageSize,
                 }).then(res => {
@@ -94,14 +111,14 @@
             handleSearch() {
                 let vm = this;
                 //只有点击查询按钮的时候，关键字才会进行接口查询，不然只是个临时的数据而已
-                vm.searchKey.input = vm.search.input;
+                vm.searchKey = vm.search;
                 vm.getData();
             },
             handleEdit(row) {
                 let vm = this;
                 vm.$api.getSingleUser({_id: row._id}).then(res => {
                     let result = res.data;
-                    result.roles = result.roles?result.roles.split(','):[];
+                    result.roles = result.roles ? result.roles.split(',') : [];
                     vm.editForm = result;
                     vm.editFormVisible = true;
                 })
@@ -123,6 +140,21 @@
                     avatar: "",
                     roles: ""
                 }
+            },
+            initSearch() {
+                return {
+                    input: '',
+                    createStartDate: "",
+                    createEndDate: ""
+                }
+            },
+            resetForm(formName) {
+                let vm = this;
+                // 这边无效  resetFields()，调用resetFields()方法，将表单数据重置为初始值
+                // 初始值在表单生命周期的mounted钩子中被赋值
+                // 所以，调用resetFields()只会重置为初始值，而不是空值
+                //vm.$refs[formName].resetFields();
+                vm.search = this.initSearch();
             }
         }
     }

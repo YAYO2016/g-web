@@ -157,7 +157,7 @@ router.post("/getUserInfo", async (ctx) => {
 
 //获取所有用户的信息
 router.post('/getAllUsers', async (ctx) => {
-    let {username, pageNum, pageSize} = ctx.request.body;
+    let {username, createStartDate, createEndDate, pageNum, pageSize} = ctx.request.body;
     const User = mongoose.model("User");
     let total = 0;
     if (username) {
@@ -167,7 +167,21 @@ router.post('/getAllUsers', async (ctx) => {
         let allUser = await User.find();
         total = allUser.length;
     }
-    await User.find(username ? {username} : {}).limit(pageSize).skip((pageNum - 1) * pageSize).then(users => {
+    console.log(username);
+    console.log(createStartDate);
+    console.log(createEndDate);
+    await User.find({
+        "$and":
+            [createStartDate ? {"createDate": {"$gt": createStartDate}} : {},
+                createEndDate ? {"createDate": {"$lt": createEndDate}} : {}, username === '' ? {} :
+                {
+                    username: {
+                        $regex: username,  //正则匹配，模糊查询
+                        $options: 'i'  //忽略大小写
+                    }
+                }]
+    }).limit(pageSize).skip((pageNum - 1) * pageSize).then(users => {
+        console.log(users);
         if (users) {
             let result = {
                 list: users,
@@ -217,7 +231,7 @@ router.post('/editUser', async (ctx) => {
     const User = mongoose.model("User");
     await User.updateOne(
         {_id: user._id}, //查询
-        {avatar:user.avatar,roles:user.roles},
+        {avatar: user.avatar, roles: user.roles},
     ).then(user => {
         if (user) {
             ctx.body = {

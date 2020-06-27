@@ -8,8 +8,8 @@
                 :clearable="clearable"
                 :placeholder="placeholder"
                 :format="type==='datetimerange'||type==='datetime'?'yyyy-MM-dd HH:mm:ss':dateFormat"
-                :value-format="type==='datetimerange'||type==='datetime'?'yyyy-MM-dd HH:mm:ss  ':valueFormat"
-                :style="{width: width}"
+                :value-format="type==='datetimerange'||type==='datetime'?'yyyy-MM-dd HH:mm:ss':valueFormat"
+                :style="{width: type==='datetimerange'||type==='datetime'?'':width}"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
@@ -29,7 +29,7 @@
         props: {
             width: {
                 type: String,
-                default: "175px"
+                default: "200px"
             },
             //表单控件的类型
             type: {
