@@ -55,18 +55,10 @@
         <div class="dialog">
             <g-dialog title="编辑用户" :show.sync="editFormVisible" @closedDialog="editForm=initForm()">
                 <EditForm :formData="editForm"></EditForm>
-                <div class="textCenter">
-                    <el-button type="primary" @click="editSure">确认</el-button>
-                    <el-button @click="editFormVisible=false">取消</el-button>
-                </div>
             </g-dialog>
 
             <g-dialog title="新增用户" :show.sync="addFormVisible" @closedDialog="addForm=initAddForm()">
-                <AddForm :formData="addForm"></AddForm>
-                <div class="textCenter">
-                    <el-button type="primary" @click="addSure">确认</el-button>
-                    <el-button @click="addFormVisible=false">取消</el-button>
-                </div>
+                <AddForm :show.sync="addFormVisible" :formData="addForm"></AddForm>
             </g-dialog>
         </div>
     </div>
@@ -189,10 +181,6 @@
             handleAddUser() {
                 let vm = this;
                 vm.addFormVisible = true;
-            },
-            //添加用户确认按钮
-            addSure() {
-
             }
         }
     }
