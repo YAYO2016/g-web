@@ -125,7 +125,7 @@
             }
         },
         mounted() {
-            this.viewValue = this.value;
+            this.viewValue = (this.multiple || this.allSelect) ? (this.value.length > 0 ? this.value.split(",") : []) : this.value;
         },
         watch: {
             value(newVal) {
