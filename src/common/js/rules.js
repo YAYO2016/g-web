@@ -54,4 +54,5 @@ const DateRule = [
 ];
 export default {
     NotEmpty, NumberRule, TelRule, EmailRule, DateRule, TypeEmpty, PasswordRule
-};
+}
+;

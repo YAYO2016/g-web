@@ -1,5 +1,7 @@
 <template>
     <div class='UserManager'>
+        <el-button style="float: right" type="primary" @click="handleAddUser">新增用户</el-button>
+        <g-split-l></g-split-l>
         <el-form ref="search" :model="search" label-width="80px" inline>
             <el-form-item label="用户名">
                 <el-input v-model="search.input" placeholder="用户名查询" style="width: 250px" clearable></el-input>
@@ -58,6 +60,14 @@
                     <el-button @click="editFormVisible=false">取消</el-button>
                 </div>
             </g-dialog>
+
+            <g-dialog title="新增用户" :show.sync="addFormVisible" @closedDialog="addForm=initAddForm()">
+                <AddForm :formData="addForm"></AddForm>
+                <div class="textCenter">
+                    <el-button type="primary" @click="addSure">确认</el-button>
+                    <el-button @click="addFormVisible=false">取消</el-button>
+                </div>
+            </g-dialog>
         </div>
     </div>
 </template>
@@ -67,10 +77,11 @@
      * Created by yanyue on 2020/5/27 15:14
      */
     import EditForm from "./components/EditForm"
+    import AddForm from "./components/AddForm"
 
     export default {
         name: "UserManager",
-        components: {EditForm},
+        components: {EditForm, AddForm},
         data() {
             return {
                 search: this.initSearch(),
@@ -81,8 +92,12 @@
                     total: 0,
                 },
                 tableData: [],
+
                 editFormVisible: false,
                 editForm: this.initForm(),
+
+                addFormVisible: false,
+                addForm: this.initAddForm(),
 
                 selectData: [], // 多选表格选中的选项
             }
@@ -144,6 +159,16 @@
                     roles: ""
                 }
             },
+            initAddForm() {
+                return {
+                    username: "",
+                    email: "",
+                    password: "",
+                    repeatPassword: "",
+                    avatar: "",
+                    roles: ""
+                }
+            },
             initSearch() {
                 return {
                     input: '',
@@ -159,6 +184,15 @@
                 // 所以，调用resetFields()只会重置为初始值，而不是空值
                 //vm.$refs[formName].resetFields();
                 vm.search = this.initSearch();
+            },
+            //页面点击新增用户的按钮
+            handleAddUser() {
+                let vm = this;
+                vm.addFormVisible = true;
+            },
+            //添加用户确认按钮
+            addSure() {
+
             }
         }
     }
