@@ -41,7 +41,7 @@
                 <template slot-scope="scope">
                     <el-button type="text" @click.stop="handleView(scope.row)">查看</el-button>
                     <el-button type="text" @click.stop="handleEdit(scope.row)">编辑</el-button>
-                    <el-button type="text" style="color:#F56C6C " @click.stop="">删除</el-button>
+                    <el-button type="text" style="color:#F56C6C " @click.stop="deleteUser(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </g-table>
@@ -209,6 +209,27 @@
             handleView() {
                 let vm = this;
                 vm.viewFormVisible = true;
+            },
+            //点击删除用户
+            deleteUser(user) {
+                let vm = this;
+                vm.$confirm(`<span>此操作将永久删除<span> <span style="color:#f56c6c">${user.username}</span> <span>该用户, 是否继续?</span>`, '提示', {
+                    dangerouslyUseHTMLString: true,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    //center: true
+                }).then(() => {
+                    vm.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    vm.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
         }
     }
