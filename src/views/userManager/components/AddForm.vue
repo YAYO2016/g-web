@@ -67,7 +67,7 @@
                     {label: "游客", value: "visitor"}
                 ],
                 fileMaxSize: 50,
-                fileList: []
+                fileList: [],
             }
         },
         methods: {
@@ -98,6 +98,10 @@
                     vm.$forceUpdate();
                     vm.$message.success("上传成功");
                 })
+            },
+            handleUploadRemove(file, fileList) {
+                let vm = this;
+                vm.formData.avatar = ""
             },
             addSure(formName) {
                 let vm = this;

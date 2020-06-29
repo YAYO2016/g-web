@@ -55,6 +55,10 @@
         <div class="dialog">
             <g-dialog title="编辑用户" :show.sync="editFormVisible" @closedDialog="editForm=initForm()">
                 <EditForm :formData="editForm"></EditForm>
+                <div class="textCenter">
+                    <el-button type="primary" @click="editSure">确认</el-button>
+                    <el-button @click="editFormVisible=false">取消</el-button>
+                </div>
             </g-dialog>
 
             <g-dialog title="新增用户" :show.sync="addFormVisible" @closedDialog="addForm=initAddForm()">
@@ -70,10 +74,11 @@
      */
     import EditForm from "./components/EditForm"
     import AddForm from "./components/AddForm"
+    import ViewForm from "./components/ViewForm"
 
     export default {
         name: "UserManager",
-        components: {EditForm, AddForm},
+        components: {EditForm, AddForm,ViewForm},
         data() {
             return {
                 search: this.initSearch(),
