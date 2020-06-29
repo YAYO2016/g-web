@@ -17,6 +17,8 @@
             <el-form-item label="头像：" prop="avatar" class="upload"
                           :rules="[{...$rules.NotEmpty[0],message:'上传图片不能为空'}]"
                           ref="upload">
+                <!-- 用来校验图片是否上传的 -->
+                <el-input v-show="false" v-model="formData.avatar"/>
                 <el-upload
                         class="avatar-uploader"
                         action=""
@@ -24,7 +26,6 @@
                         :auto-upload="true"
                         :before-upload="(file)=>beforeUpload(file,fileList)"
                         :http-request="httpRequest"
-                        :on-change="$nextTick(()=>$refs.upload.clearValidate())"
                         :show-file-list="false">
                     <img v-if="formData.avatar" :src="iobsUrl+formData.avatar" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
