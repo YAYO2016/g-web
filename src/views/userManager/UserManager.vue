@@ -39,7 +39,7 @@
             }"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button type="text" @click.stop="">查看</el-button>
+                    <el-button type="text" @click.stop="handleView(scope.row)">查看</el-button>
                     <el-button type="text" @click.stop="handleEdit(scope.row)">编辑</el-button>
                     <el-button type="text" style="color:#F56C6C " @click.stop="">删除</el-button>
                 </template>
@@ -53,16 +53,24 @@
         <el-button style="float: left;position:relative;top: -40px;">批量删除</el-button>
 
         <div class="dialog">
+            <!-- 1.将提交等逻辑写在父组件中，调用子组件中的校验方法校验通过之后，然后执行父组件中的提交数据逻辑 -->
             <g-dialog title="编辑用户" :show.sync="editFormVisible" @closedDialog="editForm=initForm()">
-                <EditForm :formData="editForm"></EditForm>
+                <!-- 注意 formData 父组件如果传递给子组件的是一个对象，引用类型的变量的时候，父子组件实际上是共用一个变量的，
+                 所以就子组件修改了值，父组件中的值也会发生改变-->
+                <EditForm ref="editForm" :formData="editForm"></EditForm>
                 <div class="textCenter">
-                    <el-button type="primary" @click="editSure">确认</el-button>
+                    <el-button type="primary" @click="editSure('editForm')">确认</el-button>
                     <el-button @click="editFormVisible=false">取消</el-button>
                 </div>
             </g-dialog>
 
+            <!-- 2.将提交等逻辑写在子组件表单中，但是需要将模态框的开启和关闭传递给子组件，子组件内部执行校验和提交数据操作 -->
             <g-dialog title="新增用户" :show.sync="addFormVisible" @closedDialog="addForm=initAddForm()">
                 <AddForm :show.sync="addFormVisible" :formData="addForm"></AddForm>
+            </g-dialog>
+
+            <g-dialog title="查看用户" :show.sync="viewFormVisible" @closedDialog="viewForm=initForm()">
+                <ViewForm :formData="viewForm"></ViewForm>
             </g-dialog>
         </div>
     </div>
@@ -78,7 +86,7 @@
 
     export default {
         name: "UserManager",
-        components: {EditForm, AddForm,ViewForm},
+        components: {EditForm, AddForm, ViewForm},
         data() {
             return {
                 search: this.initSearch(),
@@ -88,15 +96,22 @@
                     pageSize: 10,
                     total: 0,
                 },
-                tableData: [],
 
+                tableData: [],
+                selectData: [], // 多选表格选中的选项
+
+                // 编辑
                 editFormVisible: false,
                 editForm: this.initForm(),
 
+                // 新增
                 addFormVisible: false,
                 addForm: this.initAddForm(),
 
-                selectData: [], // 多选表格选中的选项
+                // 查看
+                viewFormVisible: false,
+                viewForm: this.initForm(),
+
             }
         },
         mounted() {
@@ -133,19 +148,22 @@
                 let vm = this;
                 vm.$api.getSingleUser({_id: row._id}).then(res => {
                     let result = res.data;
-                    result.roles = result.roles ? result.roles.split(',') : [];
                     vm.editForm = result;
                     vm.editFormVisible = true;
                 })
             },
-            editSure() {
+            // 通过调用子组件中的校验方法 实现子组件中表单选项的校验
+            editSure(formName) {
                 let vm = this;
-                vm.editForm.roles = vm.editForm.roles.join(",");
-                vm.$api.editUser(vm.editForm).then(res => {
-                    vm.editFormVisible = false;
-                    vm.$message.success("用户信息编辑成功");
-                    vm.getData();
-                })
+                if (vm.$refs[formName].validateForm()) {
+                    vm.$api.editUser(vm.editForm).then(res => {
+                        vm.editFormVisible = false;
+                        vm.$message.success("用户信息编辑成功");
+                        vm.getData();
+                    })
+                } else {
+                    vm.$message.error("输入有误");
+                }
             },
             initForm() {
                 return {
@@ -186,6 +204,11 @@
             handleAddUser() {
                 let vm = this;
                 vm.addFormVisible = true;
+            },
+            //页面点击查看
+            handleView() {
+                let vm = this;
+                vm.viewFormVisible = true;
             }
         }
     }

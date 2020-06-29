@@ -1,14 +1,14 @@
 <template>
     <div class='EditForm'>
         <el-form ref="formData" :model="formData" label-width="100px">
-            <el-form-item label="用户名：" class="fl">
+            <el-form-item label="用户名：" class="fl" prop="username" :rules="$rules.NotEmpty">
                 <el-input v-model="formData.username" style="width: 175px" disabled></el-input>
             </el-form-item>
-            <el-form-item label="邮箱：" class="fl">
+            <el-form-item label="邮箱：" class="fl" prop="email" :rules="$rules.NotEmpty">
                 <el-input v-model="formData.email" style="width: 175px" disabled></el-input>
             </el-form-item>
             <div class="clearfix"></div>
-            <el-form-item label="头像：" class="upload">
+            <el-form-item label="头像：" class="upload" prop="avatar" :rules="$rules.NotEmpty">
                 <el-upload
                         class="avatar-uploader"
                         action=""
@@ -21,15 +21,16 @@
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
-            <el-form-item label="用户角色：">
-                <el-select v-model="formData.roles" placeholder="请选择角色" multiple>
-                    <el-option
-                            v-for="item in roleOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+            <el-form-item label="用户角色：" prop="roles" :rules="$rules.NotEmpty">
+                <!--<el-select v-model="formData.roles" placeholder="请选择角色" multiple>-->
+                <!--<el-option-->
+                <!--v-for="item in roleOptions"-->
+                <!--:key="item.value"-->
+                <!--:label="item.label"-->
+                <!--:value="item.value">-->
+                <!--</el-option>-->
+                <!--</el-select>-->
+                <g-select :value.sync="formData.roles" placeholder="请选择角色" all-select :options="roleOptions"></g-select>
             </el-form-item>
         </el-form>
     </div>
@@ -90,6 +91,18 @@
                     vm.$forceUpdate();
                     vm.$message.success("上传成功");
                 })
+            },
+            //子组件校验，传递到父组件
+            validateForm() {
+                let flag = null;
+                this.$refs['formData'].validate(valid => {
+                    if (valid) {
+                        flag = true
+                    } else {
+                        flag = false
+                    }
+                });
+                return flag
             }
         }
     }
