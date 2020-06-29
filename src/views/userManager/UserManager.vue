@@ -66,7 +66,7 @@
 
             <!-- 2.将提交等逻辑写在子组件表单中，但是需要将模态框的开启和关闭传递给子组件，子组件内部执行校验和提交数据操作 -->
             <g-dialog title="新增用户" :show.sync="addFormVisible" @closedDialog="addForm=initAddForm()">
-                <AddForm :show.sync="addFormVisible" :formData="addForm"></AddForm>
+                <AddForm :show.sync="addFormVisible" :formData="addForm" @getData="getData"></AddForm>
             </g-dialog>
 
             <g-dialog title="查看用户" :show.sync="viewFormVisible" @closedDialog="viewForm=initForm()">

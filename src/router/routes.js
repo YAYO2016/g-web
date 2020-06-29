@@ -183,7 +183,7 @@ export const asyncRoutes = [
                 path: '/user/userManager',
                 component: () => import('@/views/userManager/UserManager'),
                 name: 'UserManager',
-                meta: {title: '用户列表', icon: 'el-icon-s-custom', roles: ["admin"]}
+                meta: {title: '用户列表', icon: 'svg-userList', roles: ["admin"]}
             },
             {
                 path: '/user/userInfo',

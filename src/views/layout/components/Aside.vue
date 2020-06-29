@@ -135,6 +135,7 @@
                 }
 
                 .svg-icon {
+                    vertical-align: middle;
                     margin-right: 5px;
                     font-size: 18px;
                 }

@@ -1,17 +1,18 @@
 <template>
     <div class='AddForm'>
-        <el-form ref="formData" :model="formData" label-width="100px" :validate-on-rule-change="false">
-            <el-form-item label="用户名：" class="fl" prop="username" :rules="$rules.NotEmpty">
+        <el-form ref="formData" :model="formData" label-width="100px">
+            <el-form-item label="用户名：" class="fl" prop="username" :rules="[{...$rules.NotEmpty[0],message:'用户名不能为空'}]">
                 <el-input v-model="formData.username" style="width: 175px"></el-input>
             </el-form-item>
-            <el-form-item label="邮箱：" class="fl" prop="email" :rules="$rules.NotEmpty">
+            <el-form-item label="邮箱：" class="fl" prop="email" :rules="$rules.EmailRule">
                 <el-input v-model="formData.email" style="width: 175px"></el-input>
             </el-form-item>
-            <el-form-item label="密码：" class="fl" prop="password" :rules="$rules.NotEmpty">
-                <el-input v-model="formData.password" style="width: 175px"></el-input>
+            <el-form-item label="密码：" class="fl" prop="password" :rules="$rules.PasswordRule">
+                <el-input type="password" v-model="formData.password" style="width: 175px"></el-input>
             </el-form-item>
-            <el-form-item label="确认密码：" class="fl" prop="repeatPassword" :rules="$rules.NotEmpty">
-                <el-input v-model="formData.repeatPassword" style="width: 175px"></el-input>
+            <el-form-item label="确认密码：" class="fl" prop="repeatPassword"
+                          :rules="[...$rules.PasswordRule,{validator: validatePassWord, trigger: ['blur','change']}]">
+                <el-input type="password" v-model="formData.repeatPassword" style="width: 175px"></el-input>
             </el-form-item>
             <div class="clearfix"></div>
             <el-form-item label="头像：" prop="avatar" class="upload"
@@ -48,6 +49,7 @@
     /**
      * Created by yanyue on 2020/5/28 16:21
      */
+    import sha1 from 'js-sha1';
 
     export default {
         name: "AddForm",
@@ -61,6 +63,13 @@
         },
         computed: {},
         data() {
+            const validatePassWord = (rule, value, callback) => {
+                if (value !== this.formData.password) {
+                    callback(new Error('两次输入的密码不一致'));
+                } else {
+                    callback()
+                }
+            };
             return {
                 imageUrl: "",
                 roleOptions: [
@@ -68,6 +77,7 @@
                     {label: "游客", value: "visitor"}
                 ],
                 fileMaxSize: 50,
+                validatePassWord: validatePassWord,
                 fileList: [],
             }
         },
@@ -108,6 +118,19 @@
                 let vm = this;
                 if (vm.validateRules(formName, vm)) {
                     // 新增用户  调用接口
+                    // 删除对象中的一个属性 delete
+                    delete vm.formData.repeatPassword;
+                    //console.log(vm.registerForm);
+                    // 注册的时候 对密码进行加密处理sha1
+                    vm.$api.register({...vm.formData, password: sha1(vm.formData.password)}).then(res => {
+                        vm.$emit('update:show', false);
+                        vm.$message.success("注册成功");
+                        // 出现问题  如果注册完新的用户，那么就要更新列表，这个时候调用父组件中的方法，很麻烦,需要组件在绑定父组件的方法
+                        vm.$emit("getData");
+                    }).catch((err) => {
+                        vm.$emit('update:show', false);
+                        vm.$message.success(err);
+                    })
                 }
             }
         }

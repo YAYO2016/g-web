@@ -1,14 +1,15 @@
 <template>
     <div class='EditForm'>
         <el-form ref="formData" :model="formData" label-width="100px">
-            <el-form-item label="用户名：" class="fl" prop="username" :rules="$rules.NotEmpty">
+            <el-form-item label="用户名：" class="fl" prop="username" :rules="[{...$rules.NotEmpty[0],message:'用户名不能为空'}]">
                 <el-input v-model="formData.username" style="width: 175px" disabled></el-input>
             </el-form-item>
-            <el-form-item label="邮箱：" class="fl" prop="email" :rules="$rules.NotEmpty">
+            <el-form-item label="邮箱：" class="fl" prop="email" :rules="$rules.EmailRule">
                 <el-input v-model="formData.email" style="width: 175px" disabled></el-input>
             </el-form-item>
             <div class="clearfix"></div>
             <el-form-item label="头像：" class="upload" prop="avatar" :rules="$rules.NotEmpty">
+                <el-input v-show="false" v-model="formData.avatar"/>
                 <el-upload
                         class="avatar-uploader"
                         action=""
