@@ -18,6 +18,8 @@
                 tooltip-effect="light"
         >
             <!-- stripe:是否是斑马纹-->
+            <!--empty-text 默认 暂无数据  空数据时显示的文本内容，也可以通过 slot="empty" 设置-->
+            <span slot="empty"><svg-icon icon-class="nodata" style="font-size: 15px;"></svg-icon> 暂无数据</span>
             <slot></slot>
         </el-table>
     </div>
