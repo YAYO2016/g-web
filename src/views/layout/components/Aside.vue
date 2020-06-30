@@ -132,6 +132,7 @@
                     width: 24px;
                     text-align: center;
                     font-size: 18px;
+                    color: currentColor;
                 }
 
                 .svg-icon {

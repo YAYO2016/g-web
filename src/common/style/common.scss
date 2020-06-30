@@ -59,7 +59,7 @@
 .el-menu-item {
   &.is-active {
     background-color: #f56c6c !important;
-    color: #fff;
+    color: #fff !important;
   }
 
   i {
@@ -74,12 +74,13 @@
     font-size: 18px;
   }
 }
+
 //菜单激活时候展开和收起时候的样式
 .el-submenu {
   &.is-active:not(.is-opened) {
     div {
       background-color: #f56c6c !important;
-      color: #fff;
+      color: #fff !important;
     }
   }
 }

@@ -136,7 +136,7 @@ export const asyncRoutes = [
                 path: '/table/tabledemo',
                 component: () => import('@/views/table/TableDemo'),
                 name: 'TableDemo',
-                meta: {title: '普通表格', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+                meta: {title: '普通表格', icon: 'svg-excel', roles: ["visitor", "admin"]}
             },
             {
                 path: '/table/tableselect',
@@ -170,6 +170,27 @@ export const asyncRoutes = [
                 component: () => import('@/views/meeting/AddMeeting'),
                 name: 'AddMeeting',
                 meta: {title: '自定义表格控件', icon: 'fa fa-calendar', roles: ["admin"]}
+            },
+        ]
+    },
+    {
+        path: '/info',
+        component: Layout,
+        name: 'Info',
+        redirect: '/info/infoList',
+        meta: {title: '信息管理', icon: 'svg-info', roles: ["admin"]},
+        children: [
+            {
+                path: '/info/infoList',
+                component: () => import('@/views/infoManager/InfoList'),
+                name: 'InfoList',
+                meta: {title: '信息列表', icon: 'svg-info-list', roles: ["admin"]}
+            },
+            {
+                path: '/info/infoClassify',
+                component: () => import('@/views/infoManager/InfoClassify'),
+                name: 'InfoClassify',
+                meta: {title: '信息分类', icon: 'svg-info-classify', roles: ["admin"]}
             },
         ]
     },
