@@ -29,7 +29,8 @@ function startLoading() {
             lock: true,
             text: '数据加载中，请稍后...',
             spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.7)'
+            background: 'rgba(0, 0, 0, 0.7)',
+            target:document.querySelector("#content-main")
         });
 
     }

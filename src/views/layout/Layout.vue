@@ -8,7 +8,7 @@
                 <Header/>
             </el-header>
             <Tags></Tags>
-            <el-main>
+            <el-main id="content-main">
                 <router-view/>
             </el-main>
         </el-container>
