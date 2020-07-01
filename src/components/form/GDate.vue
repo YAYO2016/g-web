@@ -9,7 +9,7 @@
                 :placeholder="placeholder"
                 :format="type==='datetimerange'||type==='datetime'?'yyyy-MM-dd HH:mm:ss':dateFormat"
                 :value-format="type==='datetimerange'||type==='datetime'?'yyyy-MM-dd HH:mm:ss':valueFormat"
-                :style="{width: type==='datetimerange'||type==='datetime'?'':width}"
+                :style="{width: type==='datetimerange'||type==='daterange'?'':width}"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
