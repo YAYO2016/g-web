@@ -2,7 +2,9 @@
     <!-- 信息列表页面 -->
     <div class='InfoCategory'>
         <div>
-            <el-button type="primary" @click="addCategoryType='first'">添加一级分类</el-button>
+            <el-button type="primary" @click="categoryForm=categoryFormInit();$refs['categoryForm'].resetFields()">
+                添加一级分类
+            </el-button>
         </div>
         <el-divider></el-divider>
         <el-row :gutter="30">
@@ -13,20 +15,22 @@
                             <svg-icon icon-class="plus"></svg-icon>
                             {{category.infoCategoryName}}
                             <div class="button-group">
-                                <el-button round type="primary" @click="">编辑</el-button>
+                                <el-button round type="primary" @click="handleEditCategory(category)">编辑</el-button>
                                 <el-button round type="success"
                                            @click="handleAddChildCategory(category.infoCategoryId)">添加子级
                                 </el-button>
-                                <el-button round>删除</el-button>
+                                <el-button round @CLICK="deleteCategory(category)">删除</el-button>
                             </div>
                         </h4>
                         <ul>
                             <li v-for="categoryChild in category.children" :key="categoryChild.infoCategoryId">
                                 {{categoryChild.infoCategoryName}}
                                 <div class="button-group">
-                                    <el-button round type="primary">编辑</el-button>
-                                    <el-button round type="success">添加子级</el-button>
-                                    <el-button round>删除</el-button>
+                                    <el-button round type="primary" @click="handleEditCategory(categoryChild)">编辑
+                                    </el-button>
+                                    <!--<el-button round type="success">添加子级</el-button>-->
+                                    <el-button round @click="deleteCategory(categoryChild)">删除
+                                    </el-button>
                                 </div>
                             </li>
                         </ul>
@@ -39,15 +43,27 @@
                     <h4 class="menu-title">一级分类编辑</h4>
                     <el-form ref="categoryForm" :model="categoryForm" label-width="142px"
                              style="width: 410px;padding-top: 26px">
-                        <el-form-item label="一级分类名称" v-if="addCategoryType == 'first' || addCategoryType=='both'"
-                                      prop="firstCategory"
+                        <el-form-item label="一级分类名称" v-if="categoryForm.level == 1"
+                                      prop="infoCategoryName"
                                       :rules="$rules.NotEmpty">
-                            <el-input v-model="categoryForm.firstCategory"></el-input>
+                            <el-input v-model="categoryForm.infoCategoryName"></el-input>
                         </el-form-item>
-                        <el-form-item label="二级分类名称" v-if="addCategoryType == 'child' || addCategoryType=='both'"
-                                      prop="secondCategory"
+                        <div v-if="categoryForm.children && categoryForm.children.length > 0">
+                            <el-form-item
+                                    v-for="(category,index) in categoryForm.children"
+                                    :key="category.infoCategoryId"
+                                    label="二级分类名称"
+                                    :prop="`children.${index}.infoCategoryName`"
+                                    :rules="$rules.NotEmpty">
+                                <el-input v-model="category.infoCategoryName"></el-input>
+                            </el-form-item>
+                        </div>
+
+                        <el-form-item label="二级分类名称"
+                                      v-else-if="categoryForm.level == 2"
+                                      prop="infoCategoryName"
                                       :rules="$rules.NotEmpty">
-                            <el-input v-model="categoryForm.secondCategory"></el-input>
+                            <el-input v-model="categoryForm.infoCategoryName"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="addCategory('categoryForm')">确定</el-button>
@@ -71,12 +87,10 @@
         data() {
             return {
                 categoryList: [],
-                categoryForm: {
-                    firstCategory: "",
-                    secondCategory: ""
-                },
+                categoryForm: this.categoryFormInit(),
                 addCategoryType: 'first',
                 tempChildCategoryParentId: "",
+
 
             }
         },
@@ -85,6 +99,14 @@
             vm.getCategoryData();
         },
         methods: {
+            categoryFormInit() {
+                return {
+                    infoCategoryName: "",
+                    level: 1,
+                    parentId: '',
+                    infoCategoryId: ''
+                }
+            },
             //获取分类信息
             getCategoryData() {
                 let vm = this;
@@ -96,34 +118,107 @@
             addCategory(formName) {
                 let vm = this;
                 if (vm.validateRules(formName, vm)) {
-                    if (vm.categoryForm.firstCategory) {
+                    //存在一级和二级 同时
+                    if (vm.categoryForm.level == 1 && vm.categoryForm.children && vm.categoryForm.children.length > 0) {
+                        // 先处理类别一
                         vm.$api.infoAddCategory({
-                            infoCategoryName: vm.categoryForm.firstCategory,
-                            level: 1
+                            infoCategoryName: vm.categoryForm.infoCategoryName,
+                            level: vm.categoryForm.level,
+                            parentId: vm.categoryForm.parentId,
+                            infoCategoryId: vm.categoryForm.infoCategoryId,
                         }).then(res => {
-                            vm.$message.success("新增一级分类成功！");
-                            vm.getCategoryData();
-                            vm.categoryForm.firstCategory = ""
+                            if (vm.categoryForm.infoCategoryId) {
+                                vm.$message.success("编辑一级分类成功！");
+                            } else {
+                                vm.$message.success("新增一级分类成功！");
+                            }
+                            //vm.getCategoryData();
+                            //vm.categoryForm.firstCategory = ""
+                            //vm.$refs[formName].resetFields();
+                        })
+
+                        //然后循环处理类别二
+                        vm.categoryForm.children.forEach(category => {
+                            vm.$api.infoAddCategory({
+                                infoCategoryName: category.infoCategoryName,
+                                level: category.level,
+                                parentId: category.parentId,
+                                infoCategoryId: category.infoCategoryId,
+                            }).then(res => {
+                                if (category.infoCategoryId) {
+                                    vm.$message.success("编辑二级分类成功！");
+                                } else {
+                                    vm.$message.success("新增二级分类成功！");
+                                }
+                                //vm.getCategoryData();
+                                //vm.categoryForm.firstCategory = ""
+                                //vm.$refs[formName].resetFields();
+                            })
+                        })
+                    } else {
+                        // 只有一级类别或者二级
+                        vm.$api.infoAddCategory({
+                            infoCategoryName: vm.categoryForm.infoCategoryName,
+                            level: vm.categoryForm.level,
+                            parentId: vm.categoryForm.parentId,
+                            infoCategoryId: vm.categoryForm.infoCategoryId,
+                        }).then(res => {
+                            if (vm.categoryForm.infoCategoryId) {
+                                vm.$message.success('编辑' + vm.categoryForm.level == 1 ? '一' : '二' + '级分类成功！');
+                            } else {
+                                vm.$message.success('新增' + vm.categoryForm.level == 1 ? '一' : '二' + '级分类成功！');
+                            }
+                            //vm.getCategoryData();
+                            //vm.categoryForm.firstCategory = ""
+                            //vm.$refs[formName].resetFields();
                         })
                     }
-                    if (vm.categoryForm.secondCategory) {
-                        vm.$api.infoAddCategory({
-                            infoCategoryName: vm.categoryForm.secondCategory,
-                            level: 2,
-                            parentId: vm.tempChildCategoryParentId
-                        }).then(res => {
-                            vm.$message.success("新增二级分类成功！");
-                            vm.getCategoryData();
-                            vm.categoryForm.secondCategory = ""
-                        })
-                    }
+
+                    vm.getCategoryData();
+                    vm.categoryForm = vm.categoryFormInit();
+                    vm.$refs[formName].resetFields();
                 }
             },
             //添加子级别的类别
             handleAddChildCategory(parentId) {
                 let vm = this;
-                vm.tempChildCategoryParentId = parentId;
-                vm.addCategoryType = 'child';
+                vm.categoryForm = {
+                    ...vm.categoryFormInit(),
+                    parentId,
+                    level: 2
+                };
+                vm.$refs['categoryForm'].resetFields();
+
+            },
+            // 编辑分类
+            handleEditCategory(category) {
+                let vm = this;
+                vm.categoryForm = JSON.parse(JSON.stringify(category));
+            },
+            // 删除分类
+            deleteCategory(category) {
+                let vm = this;
+                vm.$confirm(`<span>此操作将永久删除<span> <span style="color:#f56c6c">${category.infoCategoryName}</span> <span>该类别, 是否继续?</span>`, '提示', {
+                    dangerouslyUseHTMLString: true,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    //center: true
+                }).then(() => {
+                    vm.$api.deleteCategory({infoCategoryId: category.infoCategoryId}).then(res => {
+                        vm.$message({
+                            type: 'success',
+                            message: res.message
+                        });
+                        vm.getCategoryData();
+                    })
+
+                }).catch(() => {
+                    vm.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
         }
     }

@@ -12,7 +12,11 @@ const infoApi = {
     //添加分类
     infoAddCategory(params) {
         return post('/info/addCategory', params, {loading: true})
-    }
+    },
+    //删除分类
+    deleteCategory(params) {
+        return post('/info/deleteCategory', params, {loading: true})
+    },
 
 };
 
