@@ -2,7 +2,10 @@
     <div class='InfoList'>
         <el-form ref="searchForm" :model="searchForm" label-width="70px" inline>
             <el-form-item label="类型">
-                <g-select :value.sync="searchForm.type"></g-select>
+                <g-select :value.sync="searchForm.categoryId" :options="$store.state.info.categoryList"
+                          option-key="infoCategoryName"
+                          option-value="infoCategoryId"
+                ></g-select>
             </el-form-item>
             <el-form-item label="日期">
                 <g-date type="daterange" :start-date.sync="searchForm.startDate"
@@ -17,14 +20,14 @@
                 <el-button type="primary">搜索</el-button>
             </el-form-item>
             <el-form-item class="fr">
-                <el-button type="primary">新增</el-button>
+                <el-button type="primary" @click="addInfoVisible=true">新增</el-button>
             </el-form-item>
         </el-form>
         <g-table :table-data="tableData" :select-data.sync="selectData">
             <!-- 多选表格 需要添加selection -->
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="title" label="标题"></el-table-column>
-            <el-table-column prop="type" label="类型"></el-table-column>
+            <el-table-column prop="categoryName" label="类型"></el-table-column>
             <el-table-column prop="date" label="日期"></el-table-column>
             <el-table-column prop="manager" label="管理员"></el-table-column>
             <el-table-column label="操作">
@@ -50,6 +53,30 @@
                 </g-pagination>
             </el-col>
         </el-row>
+
+
+        <div class="dialog">
+            <g-dialog :show.sync="addInfoVisible" title="新增信息">
+                <el-form ref="addInfoForm" :model="addInfoForm" label-width="80px">
+                    <el-form-item label="类别" prop="categoryId" :rules="$rules.NotEmpty">
+                        <g-select :value.sync="addInfoForm.categoryId" :options="$store.state.info.categoryList"
+                                  option-key="infoCategoryName"
+                                  option-value="infoCategoryId"
+                        ></g-select>
+                    </el-form-item>
+                    <el-form-item label="标题" prop="title" :rules="$rules.NotEmpty">
+                        <el-input v-model="addInfoForm.title"></el-input>
+                    </el-form-item>
+                    <el-form-item label="概况" prop="desc" :rules="$rules.NotEmpty">
+                        <el-input type="textarea" v-model="addInfoForm.content"></el-input>
+                    </el-form-item>
+                    <el-form-item align="center" label-width="0">
+                        <el-button @click="addInfoVisible=false">取消</el-button>
+                        <el-button type="primary">确认</el-button>
+                    </el-form-item>
+                </el-form>
+            </g-dialog>
+        </div>
     </div>
 </template>
 
@@ -63,7 +90,7 @@
         data() {
             return {
                 searchForm: {
-                    type: "",
+                    categoryId: "",
                     startDate: "",
                     endDate: "",
                     keywordType: "",
@@ -76,9 +103,25 @@
                     pageSize: 10,
                     total: 0
                 },
+                addInfoVisible: false,
+                addInfoForm: this.infoFormInit(),
+                editInfoVisible: false,
+                editInfoForm: this.infoFormInit(),
             }
         },
-        methods: {}
+        mounted() {
+            let vm = this;
+            vm.$store.dispatch('info/getCategoryList');
+        },
+        methods: {
+            infoFormInit() {
+                return {
+                    categoryId: "",
+                    title: "",
+                    content: ""
+                }
+            }
+        }
     }
 </script>
 
