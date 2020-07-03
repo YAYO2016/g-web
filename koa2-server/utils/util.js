@@ -679,10 +679,10 @@ const util = {
              */
             translateDataToTree(data, id, belongId, keyChildrenName) {
                 //没有父节点的数据
-                let parents = data.filter(value => value[belongId] == 'undefined' || value[belongId] == null);
+                let parents = data.filter(value => value[belongId] == 'undefined' || value[belongId] == null || value[belongId] == "");
                 console.log(parents);
                 //有父节点的数据
-                let childrens = data.filter(value => value[belongId] !== 'undefined' && value[belongId] != null);
+                let childrens = data.filter(value => value[belongId] !== 'undefined' && value[belongId] != null && value[belongId] != "");
                 console.log(childrens);
                 //定义转换方法的具体实现
                 let translator = (parents, childrens) => {

@@ -187,9 +187,9 @@ export const asyncRoutes = [
                 meta: {title: '信息列表', icon: 'svg-info-list', roles: ["admin"]}
             },
             {
-                path: '/info/infoClassify',
-                component: () => import('@/views/infoManager/InfoClassify'),
-                name: 'InfoClassify',
+                path: '/info/infoCategory',
+                component: () => import('@/views/infoManager/InfoCategory'),
+                name: 'InfoCategory',
                 meta: {title: '信息分类', icon: 'svg-info-classify', roles: ["admin"]}
             },
         ]

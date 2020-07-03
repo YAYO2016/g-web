@@ -20,6 +20,7 @@
     "koa-static": "^5.0.0",
     "moment": "^2.27.0",
     "mongoose": "^5.9.16",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "uuid": "^8.2.0"
   }
 }

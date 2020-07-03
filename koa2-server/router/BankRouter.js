@@ -38,7 +38,7 @@ router.post("/getBanks", async (ctx) => {
 router.post("/getBankInfo", async (ctx) => {
     let body = ctx.request.body;
     let {bankName, pageNum, pageSize} = body;
-    console.log(bankName);
+    //console.log(bankName);
     let banks = await Bank.find(bankName ? {bankName: {$regex: `${bankName}`}} : {}).sort("bankId").skip((pageNum - 1) * pageSize).limit(pageSize);
 
     if (banks) {
