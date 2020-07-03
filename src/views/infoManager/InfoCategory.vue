@@ -19,7 +19,7 @@
                                 <el-button round type="success"
                                            @click="handleAddChildCategory(category.infoCategoryId)">添加子级
                                 </el-button>
-                                <el-button round @CLICK="deleteCategory(category)">删除</el-button>
+                                <el-button round @click="deleteCategory(category)">删除</el-button>
                             </div>
                         </h4>
                         <ul>
@@ -88,10 +88,6 @@
             return {
                 categoryList: [],
                 categoryForm: this.categoryFormInit(),
-                addCategoryType: 'first',
-                tempChildCategoryParentId: "",
-
-
             }
         },
         mounted() {
@@ -205,14 +201,39 @@
                     type: 'warning',
                     //center: true
                 }).then(() => {
-                    vm.$api.deleteCategory({infoCategoryId: category.infoCategoryId}).then(res => {
-                        vm.$message({
-                            type: 'success',
-                            message: res.message
-                        });
-                        vm.getCategoryData();
-                    })
+                    //存在一级和二级 同时
+                    if (category.level == 1 && category.children && category.children.length > 0) {
+                        // 先处理类别一
+                        vm.$api.deleteCategory({infoCategoryId: category.infoCategoryId}).then(res => {
+                            if (category.level == 1) {
+                                vm.$message.success('删除一级分类成功！');
+                            } else {
+                                vm.$message.success('删除二级分类成功！');
+                            }
+                        })
 
+                        //然后循环处理类别二
+                        category.children.forEach(categoryChild => {
+                            vm.$api.deleteCategory({infoCategoryId: categoryChild.infoCategoryId}).then(res => {
+                                if (categoryChild.level == 1) {
+                                    vm.$message.success('删除一级分类成功！');
+                                } else {
+                                    vm.$message.success('删除二级分类成功！');
+                                }
+                            })
+                        })
+                    } else {
+                        // 只有一级类别或者二级
+                        vm.$api.deleteCategory({infoCategoryId: category.infoCategoryId}).then(res => {
+                            if (category.level == 1) {
+                                vm.$message.success('删除一级分类成功！');
+                            } else {
+                                vm.$message.success('删除二级分类成功！');
+                            }
+                        })
+                    }
+
+                    vm.getCategoryData();
                 }).catch(() => {
                     vm.$message({
                         type: 'info',
