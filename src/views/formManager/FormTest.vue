@@ -92,6 +92,41 @@
             </el-form-item>
             <div class="clearfix"></div>
             <el-divider></el-divider>
+            <el-form-item label="数字1：" class="fl">
+                <el-input style="width:250px"
+                          oninput="value=value.replace(/[^\d.]/g,'')"
+                          v-model="testForm.sum1"
+                          placeholder="请输入数字">
+
+                </el-input>
+            </el-form-item>
+            <el-form-item label="" class="fl" label-width="20px">
+                <el-select v-model="testForm.calcUse" style="width: 80px">
+                    <el-option label="+" value="add"></el-option>
+                    <el-option label="-" value="subtract"></el-option>
+                    <el-option label="*" value="multiply"></el-option>
+                    <el-option label="/" value="divide"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="数字2：" class="fl">
+                <el-input style="width:250px"
+                          oninput="value=value.replace(/[^\d.]/g,'')"
+                          v-model="testForm.sum2"
+                          placeholder="请输入数字">
+                </el-input>
+            </el-form-item>
+            <el-form-item label="" class="fl">
+                <el-button type="primary" @click="calc">计算(防止精度丢失的mathjs)</el-button>
+            </el-form-item>
+            <el-form-item label="结果：" class="fl">
+                <el-input style="width:250px"
+                          readonly
+                          v-model="testForm.result"
+                          placeholder="">
+                </el-input>
+            </el-form-item>
+            <div class="clearfix"></div>
+            <el-divider></el-divider>
         </el-form>
     </div>
 </template>
@@ -124,6 +159,10 @@
                     selectItems: ["admin", "visitor"],
                     area: "150421",
                     selectMenus: [3, 9],
+                    sum1: '',
+                    calcUse: 'add',
+                    sum2: '',
+                    result: ''
                 },
                 options: [{label: "管理员", value: "admin"}, {label: "游客", value: "visitor"}],
                 menuOptions: [
@@ -170,7 +209,26 @@
                 }]
             }
         },
-        methods: {}
+        methods: {
+            //计算--mathjs实现js的高精度的计算
+            calc() {
+                let vm = this;
+                switch (vm.testForm.calcUse) {
+                    case "add":
+                        //return vm.form.result = vm.$mathjs.add(vm.form.sum1, vm.form.sum2);  //加
+                        return vm.testForm.result = vm.$mathjs.number(vm.$mathjs.evaluate(`${vm.testForm.sum1}+${vm.testForm.sum2}`));
+                    case "subtract":
+                        //return vm.form .result = vm.$mathjs.subtract(vm.form.sum1, vm.form.sum2); //减
+                        return vm.testForm.result = vm.$mathjs.number(vm.$mathjs.evaluate(`${vm.testForm.sum1}-${vm.testForm.sum2}`));
+                    case "multiply":
+                        //return vm.form.result = vm.$mathjs.multiply(vm.form.sum1, vm.form.sum2); //乘
+                        return vm.testForm.result = vm.$mathjs.number(vm.$mathjs.evaluate(`${vm.testForm.sum1}*${vm.testForm.sum2}`));
+                    case "divide":
+                        //return vm.form.result = vm.$mathjs.divide(vm.form.sum1, vm.form.sum2);  //除
+                        return vm.testForm.result = vm.$mathjs.number(vm.$mathjs.evaluate(`${vm.testForm.sum1}/${vm.testForm.sum2}`));
+                }
+            },
+        }
     }
 </script>
 
