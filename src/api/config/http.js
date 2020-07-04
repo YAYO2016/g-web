@@ -4,9 +4,10 @@ import store from "@/store"
 import {Message, Loading} from "element-ui"
 import {getToken} from "../../common/js/auth";
 import util from "@/common/js/util"
-import _ from 'lodash';
+import {debounce} from 'lodash';
 import JSZip from 'jszip'
 import FileSaver from 'file-saver'
+import Vue from "vue";
 
 let loadingInstance;
 let loadingCount = 0;
@@ -22,37 +23,37 @@ const http = axios.create({
 });
 
 function startLoading() {
-    if (loadingCount === 0) {
-
+    if (loadingCount === 0 && !loadingInstance) {
         // 开始加载
         loadingInstance = Loading.service({
             lock: true,
             text: '数据加载中，请稍后...',
             spinner: 'el-icon-loading',
             background: 'rgba(0, 0, 0, 0.7)',
-            target:document.querySelector(".el-main")
+            target: document.querySelector("#GContent")
+            //target: "#GContent"
         });
-
     }
     loadingCount++;
-
 }
 
 //防抖：将 300ms 间隔内的关闭 loading 便合并为一次。防止连续请求时， loading闪烁的问题。
-const toHideLoading = _.debounce(() => {
-    if (loadingCount <= 0) {
-        loadingInstance.close();
-        //loadingInstance = null;
-    }
+const toHideLoading = debounce(() => {
+    loadingInstance.close();
+    loadingInstance = null;
 }, 300);
 
 function endLoading() {
-    if (loadingCount <= 0) return;
-    loadingCount--;
-    if (loadingCount === 0) {
-        // 结束加载
-        toHideLoading();
-    }
+    Vue.nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+        loadingCount--;
+        loadingCount = Math.max(loadingCount, 0); // 保证大于等于0
+        if (loadingCount === 0) {
+            // 结束加载
+            if (loadingInstance) {
+                toHideLoading();
+            }
+        }
+    })
 }
 
 // 添加request拦截器--请求拦截（请求接口触发前，做一些处理）
@@ -66,20 +67,6 @@ http.interceptors.request.use(config => {
         //将cookie中的token添加到header中的Authorization，后台根据Authorization去获取请求中返回的token
         config.headers['Authorization'] = `${getToken()}`;
     }
-
-    //if (config.headers['Content-Type'] === 'application/json;charset=UTF-8') {
-    //    if (config.method === 'post') {
-    //        config.data = {
-    //            ...config.data,
-    //            _t: Date.parse(new Date()) / 1000,
-    //        }
-    //    } else if (config.method === 'get') {
-    //        config.params = {
-    //            _t: Date.parse(new Date()) / 1000,
-    //            ...config.params
-    //        }
-    //    }
-    //}
 
     // get请求因为存在缓存，需要价格时间戳参数解决缓存问题
     if (config.method === 'get') {
