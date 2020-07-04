@@ -156,7 +156,7 @@
                     startDate2: new Date(),
                     endDate2: new Date(),
                     selectItem: "admin",
-                    selectItems: ["admin", "visitor"],
+                    selectItems: "admin,visitor",  //改造后的select多选的value只能是id的字符串，通过逗号连接
                     area: "150421",
                     selectMenus: [3, 9],
                     sum1: '',
