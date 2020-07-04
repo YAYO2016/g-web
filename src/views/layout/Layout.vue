@@ -9,7 +9,13 @@
             </el-header>
             <Tags></Tags>
             <el-main>
-                <router-view/>
+                <!-- loading-area 这边为啥单独写个div loading-area了，
+                 因为http.js中的局部loading绑定一个dom，但是el-main本身的宽度是固定的，里面的dom可以滚动，但是高度不会变化，
+                 这样的话，当里面dom很长的时候，loading的高度是无法完全覆盖住超过el-main高度的dom的，
+                 这个时候就需要创建一个loading-area，并且设置相关的样式 min-height: 100%; 可以解决问题-->
+                <div class="loading-area">
+                    <router-view/>
+                </div>
             </el-main>
         </el-container>
     </el-container>
@@ -53,8 +59,13 @@
 
         .el-main {
             opacity: 0.9;
-            padding: 32px;
             position: relative;
+            padding: 0;
+        }
+
+        .loading-area {
+            min-height: 100%;
+            padding: 32px;
             box-sizing: border-box;
         }
     }

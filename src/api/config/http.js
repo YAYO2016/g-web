@@ -30,7 +30,7 @@ function startLoading() {
             text: '数据加载中，请稍后...',
             spinner: 'el-icon-loading',
             background: 'rgba(0, 0, 0, 0.7)',
-            target: document.querySelector("#GContent")
+            target: document.querySelector(".loading-area"),  //fullscreen才是全局唯一,不然会Loading.service一次创建一次实例
             //target: "#GContent"
         });
     }
