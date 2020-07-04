@@ -99,7 +99,7 @@ http.interceptors.response.use(
             if (response.data.code == 200) {  //业务code OK
                 return Promise.resolve(response.data) //直接返回data字段中的数据
             } else if (response.config.responseType === "blob" && response.data.code === undefined) {  //文件下载
-                //如果是下载接口的话，返回的是bolob二进制数据，没有业务code，直接下载，返回接口返回的二进制码
+                //如果是下载接口的话，返回的是blob二进制数据，没有业务code，直接下载，返回接口返回的二进制码
                 // 获取文件名  后台接口需要返回  -- ctx.set('Content-disposition', 'attachment;filename=' + filename);
                 // 文件名如果是中文的话  需要进行解码
                 let filename = decodeURI(response.headers['content-disposition'].split(";")[1].split("filename=")[1]);

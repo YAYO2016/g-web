@@ -31,4 +31,4 @@ const InfoCategorySchema = new Schema({
     }
 });
 
-module.exports = Bank = mongoose.model('infoCategory', InfoCategorySchema);
+module.exports = InfoCategory = mongoose.model('infoCategory', InfoCategorySchema);

@@ -10,6 +10,9 @@
                 :clearable="clearable"
                 :multiple="multiple||allSelect"
                 :disabled="disabled"
+                @change="changeFun"
+                @clear="clearFun"
+                :value-key="optionKey"
         >
             <!--全选框-->
             <el-checkbox
@@ -21,7 +24,7 @@
             </el-checkbox>
             <el-option v-for="(option,index) in options"
                        :key="index"
-                       :value="option[optionValue]"
+                       :value="returnItem?option:option[optionValue]"
                        :label="option[optionKey]"
             >
             </el-option>
@@ -37,6 +40,9 @@
                 :clearable="clearable"
                 :multiple="multiple||allSelect"
                 :disabled="disabled"
+                @change="changeFun"
+                @clear="clearFun"
+                :value-key="optionKey"
         >
             <!--全选框-->
             <el-checkbox
@@ -49,7 +55,7 @@
             <el-option v-for="(option,index) in options"
                        class="G-CheckBox"
                        :key="index"
-                       :value="option[optionValue]"
+                       :value="returnItem?option:option[optionValue]"
                        :label="option[optionKey]"
             >
                 <span class="check"></span>
@@ -117,6 +123,23 @@
                 type: Boolean,
                 default: null
             },
+            // 传入自定义的change函数，这样是为了在change执行的时候，能够执行更多的操作，而不仅仅只是获取v-model中的id值
+            changeFun: {
+                type: Function,
+                default: () => {
+                }
+            },
+            clearFun: {
+                type: Function,
+                default: () => {
+                }
+            },
+            //el-select 默认返回值是选中item的id啥的，如果想要返回的是item对象本身，设置这个为true
+            //还有设置value-key  作为 value 唯一标识的键名
+            returnItem: {
+                type: Boolean,
+                default: false
+            }
         },
         data() {
             return {

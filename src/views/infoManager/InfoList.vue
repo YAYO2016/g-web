@@ -27,9 +27,13 @@
             <!-- 多选表格 需要添加selection -->
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="title" label="标题"></el-table-column>
-            <el-table-column prop="categoryName" label="类型"></el-table-column>
-            <el-table-column prop="date" label="日期"></el-table-column>
-            <el-table-column prop="manager" label="管理员"></el-table-column>
+            <el-table-column prop="categoryName" label="类型">
+                <template slot-scope="scope">
+                    {{categoryFormat(scope.row.infoCategoryId)}}
+                </template>
+            </el-table-column>
+            <el-table-column prop="createDate" label="日期" :formatter="gRowTimeFormat"></el-table-column>
+            <el-table-column prop="creatorName" label="管理员"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button type="text">编辑</el-button>
@@ -56,23 +60,26 @@
 
 
         <div class="dialog">
-            <g-dialog :show.sync="addInfoVisible" title="新增信息">
+            <g-dialog :show.sync="addInfoVisible" title="新增信息" @closedDialog="addInfoForm=infoFormInit()">
                 <el-form ref="addInfoForm" :model="addInfoForm" label-width="80px">
-                    <el-form-item label="类别" prop="categoryId" :rules="$rules.NotEmpty">
-                        <g-select :value.sync="addInfoForm.categoryId" :options="$store.state.info.categoryList"
+                    <el-form-item label="类别" prop="category" :rules="$rules.NotEmpty">
+                        <g-select :value.sync="addInfoForm.category" :options="$store.state.info.categoryList"
                                   option-key="infoCategoryName"
                                   option-value="infoCategoryId"
-                        ></g-select>
+                                  :returnItem="true"
+                        >
+                            <!--returnItem 设置为true，返回的就是当前选中的item对象本身-->
+                        </g-select>
                     </el-form-item>
                     <el-form-item label="标题" prop="title" :rules="$rules.NotEmpty">
                         <el-input v-model="addInfoForm.title"></el-input>
                     </el-form-item>
-                    <el-form-item label="概况" prop="desc" :rules="$rules.NotEmpty">
+                    <el-form-item label="概况" prop="content" :rules="$rules.NotEmpty">
                         <el-input type="textarea" v-model="addInfoForm.content"></el-input>
                     </el-form-item>
                     <el-form-item align="center" label-width="0">
                         <el-button @click="addInfoVisible=false">取消</el-button>
-                        <el-button type="primary">确认</el-button>
+                        <el-button type="primary" @click="addInfoSure('addInfoForm')">确认</el-button>
                     </el-form-item>
                 </el-form>
             </g-dialog>
@@ -112,13 +119,64 @@
         mounted() {
             let vm = this;
             vm.$store.dispatch('info/getCategoryList');
+
+            vm.getData();
+        },
+        filters: {
+            //过滤器中无法获取当前vue实例，尤雨溪人为filter应该是纯函数，
+            //如果想要使用this的话，可以使用computed去处理
+            //categoryFilter(infoCategoryId) {
+            //    let vm = this;
+            //    return vm.$store.state.info.categoryList.filter(category => {
+            //        return category.infoCategoryId === infoCategoryId;
+            //    })[0].infoCategoryName;
+            //}
         },
         methods: {
+            getData(currentPage = 1, currentSize = 10) {
+                let vm = this;
+                vm.pageInfo.pageNum = currentPage;
+                vm.pageInfo.pageSize = currentSize;
+                vm.$api.getAllInfo({
+                    pageNum: vm.pageInfo.pageNum,
+                    pageSize: vm.pageInfo.pageSize
+                }).then(res => {
+                    //如果输入的页面不是第一页，并且没有数据的话，那就查询第一页的数据返回
+                    if (vm.pageInfo.pageNum !== 1 && res.data === null && res.data.list === []) {
+                        vm.getData(1);
+                    }
+                    vm.tableData = res.data.list;
+                    vm.pageInfo = res.data.pageInfo;
+                })
+            },
             infoFormInit() {
                 return {
-                    categoryId: "",
+                    category: {},
                     title: "",
                     content: ""
+                }
+            },
+            categoryFormat(infoCategoryId) {
+                let vm = this;
+                return vm.$store.state.info.categoryList.filter(category => {
+                    return category.infoCategoryId === infoCategoryId;
+                })[0].infoCategoryName;
+            },
+            addInfoSure(formName) {
+                let vm = this;
+                if (vm.validateRules(formName, vm)) {
+                    vm.$api.addOrEditInfo({
+                        creatorId: vm.$store.state.user.userInfo._id,
+                        creatorName: vm.$store.state.user.userInfo.username,
+                        title: vm.addInfoForm.title,
+                        content: vm.addInfoForm.content,
+                        infoCategoryName: vm.addInfoForm.category.infoCategoryName,
+                        infoCategoryId: vm.addInfoForm.category.infoCategoryId,
+                    }).then(res => {
+                        vm.$message.success("新增信息成功");
+                        vm.addInfoVisible = false;
+                        vm.getData(vm.pageInfo.pageNum, vm.pageInfo.pageSize);
+                    })
                 }
             }
         }
