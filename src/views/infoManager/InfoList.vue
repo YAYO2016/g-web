@@ -43,6 +43,9 @@
                 <template slot-scope="scope">
                     <el-button type="text" @click.stop="">查看</el-button>
                     <el-button type="text" @click.stop="handleEditInfo(scope.row)">编辑</el-button>
+                    <!-- 可以直接编写跳转函数，也可以使用router-link -->
+                    <!--<router-link :to="{path:'/info/infoDetail',query:{infoId:scope.row.infoId}}">编辑详情</router-link>-->
+                    <el-button type="text" @click.stop="handleEditInfoDetail(scope.row)">编辑详情</el-button>
                     <el-button type="text" class="dangerColor" @click.stop="handleDeleteInfo(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -318,6 +321,12 @@
                     })
                 }
             },
+            // 点击编辑详情按钮
+            handleEditInfoDetail(info) {
+                let vm = this;
+                // 跳转到编辑详情页面
+                vm.$router.push({path: "/info/infoDetail", query: {infoId: info.infoId}})
+            }
         }
     }
 </script>

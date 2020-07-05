@@ -192,6 +192,13 @@ export const asyncRoutes = [
                 name: 'InfoCategory',
                 meta: {title: '信息分类', icon: 'svg-info-classify', roles: ["admin"]}
             },
+            {
+                path: '/info/infoDetail',
+                component: () => import('@/views/infoManager/InfoDetail'),
+                hidden: true,
+                name: 'InfoDetail',
+                meta: {title: '信息详情', icon: 'svg-info-classify', roles: ["admin"]}
+            },
         ]
     },
     {
