@@ -68,7 +68,7 @@ http.interceptors.request.use(config => {
         config.headers['Authorization'] = `${getToken()}`;
     }
 
-    // get请求因为存在缓存，需要价格时间戳参数解决缓存问题
+    // get请求因为存在缓存，需要添加时间戳参数解决缓存问题
     if (config.method === 'get') {
         config.params = {
             _t: Date.parse(new Date()) / 1000,
@@ -88,7 +88,7 @@ http.interceptors.request.use(config => {
 
     return Promise.reject(error)
 });
-// 添加respone拦截器--拦截响应
+// 添加response拦截器--拦截响应
 http.interceptors.response.use(
     response => {
         if (response.config.options.loading) {

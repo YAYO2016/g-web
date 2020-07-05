@@ -144,8 +144,21 @@ router.post("/addOrEditInfo", async (ctx) => {
 //获取所有的信息
 router.post("/getAllInfo", async (ctx) => {
     let body = ctx.request.body;
-    let {pageNum, pageSize} = body;
-    let infos = await Info.find({}).skip((pageNum - 1) * pageSize).limit(pageSize);
+    let {startDate, endDate, infoCategoryId, pageNum, pageSize} = body;
+    let infos = await Info.find(
+        {
+            "$and":
+                [startDate ? {"createDate": {"$gt": startDate}} : {},
+                    endDate ? {"createDate": {"$lt": endDate}} : {},
+                    infoCategoryId === '' ? {} : {
+                        infoCategoryId: {
+                            $regex: infoCategoryId,  //正则匹配，模糊查询
+                            $options: 'i'  //忽略大小写
+                        }
+                    }
+                ]
+        }
+    ).skip((pageNum - 1) * pageSize).limit(pageSize);
     let countTotal = await Info.find({}).countDocuments();
     //需要去掉_id,这个对象形式的_id,不然translateDataToTree将无法执行，出现问题
     if (infos) {

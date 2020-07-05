@@ -2,7 +2,7 @@
     <div class='InfoList'>
         <el-form ref="searchForm" :model="searchForm" label-width="70px" inline>
             <el-form-item label="类型">
-                <g-select :value.sync="searchForm.categoryId" :options="$store.state.info.categoryList"
+                <g-select :value.sync="searchForm.infoCategoryId" :options="$store.state.info.categoryList"
                           option-key="infoCategoryName"
                           option-value="infoCategoryId"
                 ></g-select>
@@ -17,7 +17,8 @@
                 <g-input :value.sync="searchForm.keyword"></g-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary">搜索</el-button>
+                <el-button type="primary" @click="handleSearch">搜索</el-button>
+                <el-button @click="searchForm=initSearchForm()">重置</el-button>
             </el-form-item>
             <el-form-item class="fr">
                 <el-button type="primary" @click="addInfoVisible=true">新增</el-button>
@@ -36,8 +37,9 @@
             <el-table-column prop="creatorName" label="管理员"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
+                    <el-button type="text">查看</el-button>
                     <el-button type="text">编辑</el-button>
-                    <el-button type="text">删除</el-button>
+                    <el-button type="text" class="dangerColor">删除</el-button>
                 </template>
             </el-table-column>
         </g-table>
@@ -63,6 +65,7 @@
             <g-dialog :show.sync="addInfoVisible" title="新增信息" @closedDialog="addInfoForm=infoFormInit()">
                 <el-form ref="addInfoForm" :model="addInfoForm" label-width="80px">
                     <el-form-item label="类别" prop="category" :rules="$rules.NotEmpty">
+                        <!-- 技术点：这边的数据传递的是option对象，并不是option中的id -->
                         <g-select :value.sync="addInfoForm.category" :options="$store.state.info.categoryList"
                                   option-key="infoCategoryName"
                                   option-value="infoCategoryId"
@@ -96,13 +99,10 @@
         name: "InfoList",
         data() {
             return {
-                searchForm: {
-                    categoryId: "",
-                    startDate: "",
-                    endDate: "",
-                    keywordType: "",
-                    keyword: ""
-                },
+                searchForm: this.initSearchForm(),
+                //做一个临时的key，是为了当不是点击搜索的时候，比如点击翻页的时候，
+                //如果页面已经将搜索表单数据清空，但是没有点击搜索按钮，那么翻页的时候还是要带上原来表单中的数据去查询的
+                searchKeyForm: this.initSearchForm(),
                 tableData: [],
                 selectData: [],
                 pageInfo: {
@@ -123,7 +123,7 @@
             vm.getData();
         },
         filters: {
-            //过滤器中无法获取当前vue实例，尤雨溪人为filter应该是纯函数，
+            //过滤器中无法获取当前vue实例，尤雨溪认为filter应该是纯函数，
             //如果想要使用this的话，可以使用computed去处理
             //categoryFilter(infoCategoryId) {
             //    let vm = this;
@@ -138,6 +138,7 @@
                 vm.pageInfo.pageNum = currentPage;
                 vm.pageInfo.pageSize = currentSize;
                 vm.$api.getAllInfo({
+                    ...vm.searchKeyForm,
                     pageNum: vm.pageInfo.pageNum,
                     pageSize: vm.pageInfo.pageSize
                 }).then(res => {
@@ -149,9 +150,23 @@
                     vm.pageInfo = res.data.pageInfo;
                 })
             },
+            handleSearch() {
+                let vm = this;
+                vm.searchKeyForm = vm.searchForm;
+                vm.getData(vm.pageInfo.pageNum, vm.pageInfo.pageSize);
+            },
+            initSearchForm() {
+                return {
+                    infoCategoryId: "",
+                    startDate: "",
+                    endDate: "",
+                    keywordType: "",
+                    keyword: ""
+                }
+            },
             infoFormInit() {
                 return {
-                    category: {},
+                    category: "",
                     title: "",
                     content: ""
                 }
