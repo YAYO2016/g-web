@@ -53,6 +53,18 @@
                         :expireStartTime="new Date('2020-7-2').getTime()"
                         :expireEndTime="new Date('2020-7-10').getTime()"></g-date>
             </el-form-item>
+            <el-form-item label="日期区间选择(只能选择2个时间之间的时间)：" class="fl" label-width="300px">
+                <g-date type="daterange" :startDate.sync="testForm.startDate" :endDate.sync="testForm.endDate"
+                        :expireStartTime="new Date('2020-7-2').getTime()"
+                        :expireEndTime="new Date('2020-8-10').getTime()">
+                </g-date>
+            </el-form-item>
+            <el-form-item label="日期区间选择(只能选择2个时间之间的时间)：" class="fl" label-width="300px">
+                <g-date type="datetimerange" :startDate.sync="testForm.startDate2" :endDate.sync="testForm.endDate2"
+                        :expireStartTime="new Date('2020-7-2 12:00:00').getTime()"
+                        :expireEndTime="new Date('2020-8-10 12:00:00').getTime()">
+                </g-date>
+            </el-form-item>
             <div class="clearfix"></div>
             <el-divider></el-divider>
             <el-form-item label="普通选择框：" class="fl">
