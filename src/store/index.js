@@ -22,11 +22,12 @@ const createPersisted = createPersistedState({
     reducer(state) {
         return {
             // 只储存state中的common模块
-            common: state.common
+            common: state.common,
             //如果只想存储state的common模块中的某一个变量isCollapse，就这样写
             //common: {
             //    isCollapse: state.common.isCollapse
             //}
+            info: state.info
         }
     }
 });

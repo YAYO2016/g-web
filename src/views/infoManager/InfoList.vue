@@ -109,7 +109,7 @@
                     <el-form-item label="标题" prop="title" :rules="$rules.NotEmpty">
                         <el-input v-model="editInfoForm.title"></el-input>
                     </el-form-item>
-                    <el-form-item label="概况" prop="content" :rules="$rules.NotEmpty">
+                    <el-form-item label="内容" prop="content" :rules="$rules.NotEmpty">
                         <el-input type="textarea" v-model="editInfoForm.content"></el-input>
                     </el-form-item>
                     <el-form-item align="center" label-width="0">
