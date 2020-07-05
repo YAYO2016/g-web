@@ -39,7 +39,19 @@
             </el-form-item>
             <el-form-item label="日期时间选择：" class="fl">
                 <g-date type="datetimerange" :startDate.sync="testForm.startDate2" :endDate.sync="testForm.endDate2"
-                        width="350px"></g-date>
+                        width="350px">
+                </g-date>
+            </el-form-item>
+            <el-form-item label="日期选择2(只能选择当前时间之后的时间)：" class="fl" label-width="300px">
+                <g-date :value.sync="testForm.date2" :expireStartTime="Date.now()"></g-date>
+            </el-form-item>
+            <el-form-item label="日期选择2(只能选择当前时间之前的时间)：" class="fl" label-width="300px">
+                <g-date :value.sync="testForm.date2" :expireEndTime="Date.now()"></g-date>
+            </el-form-item>
+            <el-form-item label="日期选择2(只能选择2个时间之间的时间)：" class="fl" label-width="300px">
+                <g-date :value.sync="testForm.date2"
+                        :expireStartTime="new Date('2020-7-2').getTime()"
+                        :expireEndTime="new Date('2020-7-10').getTime()"></g-date>
             </el-form-item>
             <div class="clearfix"></div>
             <el-divider></el-divider>
