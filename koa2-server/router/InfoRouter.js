@@ -106,18 +106,23 @@ router.post("/addOrEditInfo", async (ctx) => {
         //编辑
         await Info.updateOne(
             {infoId: body.infoId}, //查询
-            {title: body.title, content: body.content},
+            {
+                title: body.title,
+                content: body.content,
+                infoCategoryName: body.infoCategoryName,
+                infoCategoryId: body.infoCategoryId
+            },
         ).then(result => {
             if (result) {
                 ctx.body = {
                     code: 200,
                     data: result,
-                    message: "编辑信息类别成功",
+                    message: "编辑信息成功",
                 };
             } else {
                 ctx.body = {
                     code: 500,
-                    message: "编辑信息类别失败",
+                    message: "编辑信息失败",
                 };
             }
         })

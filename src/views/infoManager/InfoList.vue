@@ -42,7 +42,7 @@
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button type="text" @click.stop="">查看</el-button>
-                    <el-button type="text" @click.stop="">编辑</el-button>
+                    <el-button type="text" @click.stop="handleEditInfo(scope.row)">编辑</el-button>
                     <el-button type="text" class="dangerColor" @click.stop="handleDeleteInfo(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -64,7 +64,7 @@
             </el-col>
         </el-row>
 
-
+        <!-- 新增信息模态框 -->
         <div class="dialog">
             <g-dialog :show.sync="addInfoVisible" title="新增信息" @closedDialog="addInfoForm=infoFormInit()">
                 <el-form ref="addInfoForm" :model="addInfoForm" label-width="80px">
@@ -87,6 +87,31 @@
                     <el-form-item align="center" label-width="0">
                         <el-button @click="addInfoVisible=false">取消</el-button>
                         <el-button type="primary" @click="addInfoSure('addInfoForm')">确认</el-button>
+                    </el-form-item>
+                </el-form>
+            </g-dialog>
+
+            <!-- 编辑信息模态框 -->
+            <g-dialog :show.sync="editInfoVisible" title="编辑信息" @closedDialog="editInfoForm=infoFormInit()">
+                <el-form ref="editInfoForm" :model="editInfoForm" label-width="80px">
+                    <el-form-item label="类别" prop="category" :rules="$rules.NotEmpty">
+                        <!-- 技术点：这边的数据传递的是option对象，并不是option中的id -->
+                        <g-select :value.sync="editInfoForm.category" :options="$store.state.info.categoryList"
+                                  option-key="infoCategoryName"
+                                  option-value="infoCategoryId"
+                                  :returnItem="true"
+                        >
+                        </g-select>
+                    </el-form-item>
+                    <el-form-item label="标题" prop="title" :rules="$rules.NotEmpty">
+                        <el-input v-model="editInfoForm.title"></el-input>
+                    </el-form-item>
+                    <el-form-item label="概况" prop="content" :rules="$rules.NotEmpty">
+                        <el-input type="textarea" v-model="editInfoForm.content"></el-input>
+                    </el-form-item>
+                    <el-form-item align="center" label-width="0">
+                        <el-button @click="editInfoVisible=false">取消</el-button>
+                        <el-button type="primary" @click="editInfoSure('editInfoForm')">确认</el-button>
                     </el-form-item>
                 </el-form>
             </g-dialog>
@@ -260,7 +285,39 @@
                 } else {
                     vm.$message.info("请选择要删除的数据")
                 }
-            }
+            },
+            // 点击编辑按钮
+            handleEditInfo(info) {
+                let vm = this;
+                // 查询数据，赋值给编辑表单，然后打开编辑模态框
+                vm.$api.getAllInfo({infoId: info.infoId}).then(res => {
+                    vm.editInfoForm = JSON.parse(JSON.stringify(res.data.list[0]));
+                    vm.editInfoForm.category = {
+                        infoCategoryName: vm.editInfoForm.infoCategoryName,
+                        infoCategoryId: vm.editInfoForm.infoCategoryId
+                    };
+                    vm.editInfoVisible = true;
+                })
+            },
+            //编辑确认按钮
+            editInfoSure(formName) {
+                let vm = this;
+                if (vm.validateRules(formName, vm)) {
+                    vm.$api.addOrEditInfo({
+                        infoId: vm.editInfoForm.infoId,
+                        creatorId: vm.editInfoForm.creatorId,
+                        creatorName: vm.editInfoForm.creatorName,
+                        title: vm.editInfoForm.title,
+                        content: vm.editInfoForm.content,
+                        infoCategoryName: vm.editInfoForm.category.infoCategoryName,
+                        infoCategoryId: vm.editInfoForm.category.infoCategoryId,
+                    }).then(res => {
+                        vm.$message.success("编辑信息成功");
+                        vm.editInfoVisible = false;
+                        vm.getData(vm.pageInfo.pageNum, vm.pageInfo.pageSize);
+                    })
+                }
+            },
         }
     }
 </script>
