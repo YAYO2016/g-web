@@ -26,6 +26,10 @@ const infoApi = {
     getAllInfo(params) {
         return post('/info/getAllInfo', params, {loading: true})
     },
+    //删除信息
+    deleteInfo(params){
+        return post('/info/deleteInfo', params, {loading: true})
+    }
 };
 
 export default infoApi;

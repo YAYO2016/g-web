@@ -144,18 +144,42 @@ router.post("/addOrEditInfo", async (ctx) => {
 //获取所有的信息
 router.post("/getAllInfo", async (ctx) => {
     let body = ctx.request.body;
-    let {startDate, endDate, infoCategoryId, pageNum, pageSize} = body;
+    let {startDate, endDate, infoCategoryId, pageNum, pageSize, infoId, title, infoCategoryName, creatorName} = body;
     let infos = await Info.find(
         {
             "$and":
                 [startDate ? {"createDate": {"$gt": startDate}} : {},
                     endDate ? {"createDate": {"$lt": endDate}} : {},
-                    infoCategoryId === '' ? {} : {
+                    !infoCategoryId ? {} : {
                         infoCategoryId: {
                             $regex: infoCategoryId,  //正则匹配，模糊查询
                             $options: 'i'  //忽略大小写
                         }
-                    }
+                    },
+                    !infoId ? {} : {
+                        infoId: {
+                            $regex: infoId,  //正则匹配，模糊查询
+                            $options: 'i'  //忽略大小写
+                        }
+                    },
+                    !infoCategoryName ? {} : {
+                        infoCategoryName: {
+                            $regex: infoCategoryName,  //正则匹配，模糊查询
+                            $options: 'i'  //忽略大小写
+                        }
+                    },
+                    !title ? {} : {
+                        title: {
+                            $regex: title,  //正则匹配，模糊查询
+                            $options: 'i'  //忽略大小写
+                        }
+                    },
+                    !creatorName ? {} : {
+                        creatorName: {
+                            $regex: creatorName,  //正则匹配，模糊查询
+                            $options: 'i'  //忽略大小写
+                        }
+                    },
                 ]
         }
     ).skip((pageNum - 1) * pageSize).limit(pageSize);
@@ -179,6 +203,24 @@ router.post("/getAllInfo", async (ctx) => {
         ctx.body = {
             code: 500,
             message: "查询失败"
+        }
+    }
+});
+
+//删除信息
+router.post("/deleteInfo", async (ctx) => {
+    let body = ctx.request.body;
+    let result = await Info.remove({"infoId": body.infoId});
+    if (result) {
+        ctx.body = {
+            code: 200,
+            message: "删除成功",
+            data: result
+        };
+    } else {
+        ctx.body = {
+            code: 500,
+            message: "删除失败"
         }
     }
 });

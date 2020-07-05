@@ -7,12 +7,16 @@
                           option-value="infoCategoryId"
                 ></g-select>
             </el-form-item>
-            <el-form-item label="日期">
+            <el-form-item label="创建日期">
                 <g-date type="daterange" :start-date.sync="searchForm.startDate"
                         :end-date.sync="searchForm.endDate"></g-date>
             </el-form-item>
             <el-form-item label="关键字">
-                <g-select :value.sync="searchForm.keywordType" width="80px" placeholder=""></g-select>
+                <g-select :value.sync="searchForm.keywordKey" width="80px" placeholder="" :options="[
+                {label:'ID',value:'infoId'},{label:'标题',value:'title'},{label:'类型',value:'infoCategoryName'},{label:'管理员',value:'creatorName'},
+                ]"
+                          :changeFun="()=>searchForm.keyword=''"
+                ></g-select>
                 <g-split-v></g-split-v>
                 <g-input :value.sync="searchForm.keyword"></g-input>
             </el-form-item>
@@ -33,20 +37,20 @@
                     {{categoryFormat(scope.row.infoCategoryId)}}
                 </template>
             </el-table-column>
-            <el-table-column prop="createDate" label="日期" :formatter="gRowTimeFormat"></el-table-column>
+            <el-table-column prop="createDate" label="创建日期" :formatter="gRowTimeFormat"></el-table-column>
             <el-table-column prop="creatorName" label="管理员"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button type="text">查看</el-button>
-                    <el-button type="text">编辑</el-button>
-                    <el-button type="text" class="dangerColor">删除</el-button>
+                    <el-button type="text" @click.stop="">查看</el-button>
+                    <el-button type="text" @click.stop="">编辑</el-button>
+                    <el-button type="text" class="dangerColor" @click.stop="handleDeleteInfo(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </g-table>
         <el-row :gutter="10">
             <el-col :span="6" align="left">
                 <g-split-l></g-split-l>
-                <el-button>批量删除</el-button>
+                <el-button @click="handleDeleteBatchInfo(selectData)">批量删除</el-button>
             </el-col>
             <el-col :span="18">
                 <g-pagination class="fr" :currentPage="pageInfo.pageNum"
@@ -150,9 +154,15 @@
                     vm.pageInfo = res.data.pageInfo;
                 })
             },
+            //点击搜索按钮
             handleSearch() {
                 let vm = this;
-                vm.searchKeyForm = vm.searchForm;
+                //使用深拷贝，不然后面动态生成的key-value也会一直保存在源数据中，影响下一次的搜索
+                vm.searchKeyForm = JSON.parse(JSON.stringify(vm.searchForm));
+                //搜索关键字类型是select选择出来的，这边需要动态生成搜索的key-value
+                if (vm.searchKeyForm.keywordKey) {
+                    vm.searchKeyForm[vm.searchKeyForm.keywordKey] = vm.searchKeyForm.keyword;
+                }
                 vm.getData(vm.pageInfo.pageNum, vm.pageInfo.pageSize);
             },
             initSearchForm() {
@@ -160,7 +170,7 @@
                     infoCategoryId: "",
                     startDate: "",
                     endDate: "",
-                    keywordType: "",
+                    keywordKey: "",
                     keyword: ""
                 }
             },
@@ -192,6 +202,63 @@
                         vm.addInfoVisible = false;
                         vm.getData(vm.pageInfo.pageNum, vm.pageInfo.pageSize);
                     })
+                }
+            },
+            // 删除一个信息
+            handleDeleteInfo(info) {
+                let vm = this;
+                vm.$confirm(`<span>此操作将永久删除<span> <span style="color:#f56c6c">${info.title}</span> <span>该信息, 是否继续?</span>`, '提示', {
+                    dangerouslyUseHTMLString: true,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    //center: true
+                }).then(() => {
+                    vm.$api.deleteInfo({infoId: info.infoId}).then(res => {
+                        vm.$messsage.success("删除信息成功")
+                    });
+                    vm.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    vm.getData(vm.pageInfo.pageNum, vm.pageInfo.pageSize);
+                }).catch(() => {
+                    vm.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            //批量删除信息
+            handleDeleteBatchInfo(infos = []) {
+                let vm = this;
+                if (infos.length > 0) {
+                    let deleteTitles = "";
+                    infos.forEach(info => {
+                        deleteTitles += (info.title + ',');
+                    });
+                    vm.$confirm(`<span>此操作将永久删除<span> <span style="color:#f56c6c">${deleteTitles}</span> <span>该信息, 是否继续?</span>`, '提示', {
+                        dangerouslyUseHTMLString: true,
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                        //center: true
+                    }).then(async () => {
+                        //批量删除  本质上就是一个个的删除
+                        await infos.forEach(info => {
+                            return vm.$api.deleteInfo({infoId: info.infoId}).then(res => {
+                            });
+                        });
+                        vm.$message.success("批量删除信息成功");
+                        vm.getData(vm.pageInfo.pageNum, vm.pageInfo.pageSize);
+                    }).catch(() => {
+                        vm.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+                } else {
+                    vm.$message.info("请选择要删除的数据")
                 }
             }
         }
