@@ -93,3 +93,26 @@
 .ql-editor {
   height: 360px;
 }
+
+//el-upload上传图标的大小
+.el-upload--picture-card {
+  width: 65px;
+  height: 65px;
+  line-height: 65px;
+
+  i {
+    font-size: 20px;
+  }
+}
+
+.el-upload-list--picture-card {
+  li {
+    width: 65px !important;
+    height: 65px !important;
+    line-height: 65px !important;
+  }
+}
+// 上传图片后不显示上传的按钮了
+.hide .el-upload--picture-card {
+  display: none;
+}

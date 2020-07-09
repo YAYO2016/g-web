@@ -14,6 +14,30 @@
             <el-form-item label="标题" prop="title" :rules="$rules.NotEmpty">
                 <el-input v-model="editInfoForm.title"></el-input>
             </el-form-item>
+            <el-form-item label="缩略图">
+                <el-input v-show="false" v-model="editInfoForm.thumbPic"></el-input>
+                <el-upload
+                        :class="{hide:hideUpload}"
+                        list-type="picture-card"
+                        class="upload-demo"
+                        :multiple="false"
+                        :limit="1"
+                        action=""
+                        :auto-upload="true"
+                        :on-change="handleChange"
+                        :on-preview="handlePictureCardPreview"
+                        :on-remove="handleRemove"
+                        :before-upload="beforeUpload"
+                        :http-request="httpRequest">
+                    <i class="el-icon-plus"></i>
+                </el-upload>
+                <!--打开缩略图模版
+                :modal-append-to-body='false' 必须加
+                -->
+                <el-dialog class="upload-detail-img" :visible.sync="thumbPicVisible" :modal-append-to-body='false'>
+                    <img width="100%" :src="editInfoForm.thumbPic" alt="">
+                </el-dialog>
+            </el-form-item>
             <el-form-item label="发布时间" prop="content" :rules="$rules.NotEmpty">
                 <el-date-picker type="datetime" v-model="editInfoForm.createDate" disabled></el-date-picker>
             </el-form-item>
@@ -86,7 +110,9 @@
                         },
                     },
                     placeholder: '请输入正文...'
-                }
+                },
+                hideUpload: false,
+                thumbPicVisible: false,
             }
         },
         created() {
@@ -100,6 +126,7 @@
                     infoCategoryName: vm.editInfoForm.infoCategoryName,
                     infoCategoryId: vm.editInfoForm.infoCategoryId
                 };
+                vm.editInfoForm.thumbPic = "";
             })
         },
         methods: {
@@ -108,8 +135,31 @@
                     category: "",
                     title: "",
                     content: "",
-                    createDate: ""
+                    createDate: "",
+                    thumbPic: ''
                 }
+            },
+            handleChange(file, fileList) {
+                let vm = this;
+                vm.hideUpload = fileList.length >= 1;
+            },
+            handleRemove(file, fileList) {
+                let vm = this;
+                vm.hideUpload = fileList.length >= 1;
+            },
+            handlePictureCardPreview(file) {
+                let vm = this;
+                vm.editInfoForm.thumbPic = file.url;
+                vm.thumbPicVisible = true;
+            },
+            beforeUpload(file) {
+
+
+            },
+            httpRequest(e) {
+                let vm = this;
+                let file = e.file;
+                vm.editInfoForm.thumbPic = file.name;
             },
             //编辑确认按钮
             editInfoSure(formName) {
@@ -134,5 +184,16 @@
 <style lang='scss' scoped>
     .InfoDetail {
         @include content-box;
+
+        .upload-detail-img {
+            text-align: center;
+
+            img {
+                max-width: 100%;
+                width: auto;
+                max-height: 500px;
+                height: auto;
+            }
+        }
     }
 </style>

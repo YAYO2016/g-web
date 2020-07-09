@@ -120,8 +120,9 @@
                 let vm = this;
                 const isLtMax = file.size / 1024 / 1024 < vm.fileMaxSize;
                 const regexFlag = /(^((?![\\/:*?“<>|`!@#$%&()]).)*$)/.test(file.name);
+                const isJPG = file.type === 'image/jpeg';
                 if (!isLtMax) {
-                    vm.$messgae.error(`上传文件不能超过${vm.fileMaxSize}MB`)
+                    vm.$messgae.error(`上传文件不能超过${vm.fileMaxSize}MB`);
                     return;
                 }
                 if (!regexFlag) {
