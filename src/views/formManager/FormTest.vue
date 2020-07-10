@@ -112,7 +112,7 @@
             <div class="clearfix"></div>
             <el-divider></el-divider>
             <el-form-item label="文件上传：">
-                <g-file-upload :file-list.sync="fileList"></g-file-upload>
+                <g-file-upload-table :file-list.sync="fileList"></g-file-upload-table>
             </el-form-item>
             <div class="clearfix"></div>
             <el-divider></el-divider>

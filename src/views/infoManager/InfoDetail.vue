@@ -16,31 +16,39 @@
             </el-form-item>
             <el-form-item label="缩略图" prop="thumbPic" :rules="[{...$rules.NotEmpty[0],message:'上传图片不能为空'}]">
                 <el-input v-show="false" v-model="editInfoForm.thumbPic"></el-input>
-                <el-upload
-                        :class="{hide:hideUpload}"
-                        list-type="picture-card"
-                        class="upload-demo"
-                        :multiple="false"
-                        :limit="1"
-                        action=""
-                        :auto-upload="true"
-                        :on-change="handleChange"
-                        :on-preview="handlePictureCardPreview"
-                        :on-remove="handleRemove"
-                        :before-upload="beforeUpload"
-                        :http-request="httpRequest"
-                        :file-list="fileList"
-                >
-                    <!-- 使用fileList来回显图片 -->
-                    <!--<img v-if="editInfoForm.thumbPic" :src="iobsUrl+editInfoForm.thumbPic" class="avatar">-->
-                    <i class="el-icon-plus"></i>
-                </el-upload>
-                <!--打开缩略图模版
-                :modal-append-to-body='false' 必须加
-                -->
-                <el-dialog class="upload-detail-img" :visible.sync="thumbPicVisible" :modal-append-to-body='false'>
-                    <img width="100%" :src="editInfoForm.thumbPic" alt="">
-                </el-dialog>
+                <!-- 缩略图进行封装 -->
+                <g-file-upload :fileList.sync="editInfoForm.thumbPicList"
+                               :limit="1"
+                               :beforeUpload="beforeUpload"
+                               :httpRequest="httpRequest"
+                ></g-file-upload>
+
+                <!--<el-upload-->
+                <!--:class="{hide:hideUpload}"-->
+                <!--list-type="picture-card"-->
+                <!--class="upload-demo"-->
+                <!--:multiple="false"-->
+                <!--:limit="1"-->
+                <!--action=""-->
+                <!--:auto-upload="true"-->
+                <!--:on-change="handleChange"-->
+                <!--:on-preview="handlePictureCardPreview"-->
+                <!--:on-remove="handleRemove"-->
+                <!--:before-upload="beforeUpload"-->
+                <!--:http-request="httpRequest"-->
+                <!--:file-list="fileList"-->
+                <!--&gt;-->
+                <!--&lt;!&ndash; 使用fileList来回显图片 &ndash;&gt;-->
+                <!--&lt;!&ndash;<img v-if="editInfoForm.thumbPic" :src="iobsUrl+editInfoForm.thumbPic" class="avatar">&ndash;&gt;-->
+                <!--<i class="el-icon-plus"></i>-->
+                <!--</el-upload>-->
+                <!--&lt;!&ndash;打开缩略图模版-->
+                <!--:modal-append-to-body='false' 必须加-->
+                <!--&ndash;&gt;-->
+                <!--<el-dialog class="upload-detail-img" :visible.sync="thumbPicVisible" :modal-append-to-body='false'>-->
+                <!--<img width="100%" :src="editInfoForm.thumbPic" alt="">-->
+                <!--</el-dialog>-->
+
             </el-form-item>
             <el-form-item label="发布时间" prop="content" :rules="$rules.NotEmpty">
                 <el-date-picker type="datetime" v-model="editInfoForm.createDate" disabled></el-date-picker>
@@ -135,6 +143,7 @@
                     let obj = new Object();
                     obj.url = vm.iobsUrl + vm.editInfoForm.thumbPic;
                     vm.fileList.push(obj);
+                    vm.editInfoForm.thumbPicList.push(obj);
                     vm.hideUpload = vm.fileList.length >= 1;
                 }
 
@@ -147,7 +156,8 @@
                     title: "",
                     content: "",
                     createDate: "",
-                    thumbPic: ''
+                    thumbPic: '',
+                    thumbPicList: []
                 }
             },
             handleChange(file, fileList) {

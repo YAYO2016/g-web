@@ -100,12 +100,6 @@
   height: 65px;
   line-height: 65px;
 
-  //img {
-  //  width: 65px;
-  //  height: 65px;
-  //  line-height: 65px;
-  //}
-
   i {
     //z-index: 99;
     font-size: 20px;
@@ -113,11 +107,27 @@
 }
 
 .el-upload-list--picture-card {
+  .el-upload-list__item-status-label {
+    right: -7px;
+    top: -3px;
+    width: 20px;
+    height: 12px;
+
+    i {
+      font-size: 6px;
+      top: 2px;
+      right: 6px;
+      position: absolute;
+      margin-top: 0;
+    }
+  }
+
   li {
     width: 65px !important;
     height: 65px !important;
     line-height: 65px !important;
   }
+
 }
 
 // 上传图片后不显示上传的按钮了
