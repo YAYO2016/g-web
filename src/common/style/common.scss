@@ -100,7 +100,14 @@
   height: 65px;
   line-height: 65px;
 
+  //img {
+  //  width: 65px;
+  //  height: 65px;
+  //  line-height: 65px;
+  //}
+
   i {
+    //z-index: 99;
     font-size: 20px;
   }
 }
@@ -112,6 +119,7 @@
     line-height: 65px !important;
   }
 }
+
 // 上传图片后不显示上传的按钮了
 .hide .el-upload--picture-card {
   display: none;

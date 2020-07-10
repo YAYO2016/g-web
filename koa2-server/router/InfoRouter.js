@@ -110,7 +110,8 @@ router.post("/addOrEditInfo", async (ctx) => {
                 title: body.title,
                 content: body.content,
                 infoCategoryName: body.infoCategoryName,
-                infoCategoryId: body.infoCategoryId
+                infoCategoryId: body.infoCategoryId,
+                thumbPic: body.thumbPic
             },
         ).then(result => {
             if (result) {

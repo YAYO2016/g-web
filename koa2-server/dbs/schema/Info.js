@@ -43,6 +43,10 @@ const InfoSchema = new Schema({
         type: String,
         required: true
     },
+    //缩略图
+    thumbPic: {
+        type: String,
+    }
 }, {
     collection: "info"
 });

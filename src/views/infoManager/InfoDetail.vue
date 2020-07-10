@@ -14,7 +14,7 @@
             <el-form-item label="标题" prop="title" :rules="$rules.NotEmpty">
                 <el-input v-model="editInfoForm.title"></el-input>
             </el-form-item>
-            <el-form-item label="缩略图">
+            <el-form-item label="缩略图" prop="thumbPic" :rules="[{...$rules.NotEmpty[0],message:'上传图片不能为空'}]">
                 <el-input v-show="false" v-model="editInfoForm.thumbPic"></el-input>
                 <el-upload
                         :class="{hide:hideUpload}"
@@ -28,7 +28,11 @@
                         :on-preview="handlePictureCardPreview"
                         :on-remove="handleRemove"
                         :before-upload="beforeUpload"
-                        :http-request="httpRequest">
+                        :http-request="httpRequest"
+                        :file-list="fileList"
+                >
+                    <!-- 使用fileList来回显图片 -->
+                    <!--<img v-if="editInfoForm.thumbPic" :src="iobsUrl+editInfoForm.thumbPic" class="avatar">-->
                     <i class="el-icon-plus"></i>
                 </el-upload>
                 <!--打开缩略图模版
@@ -113,6 +117,7 @@
                 },
                 hideUpload: false,
                 thumbPicVisible: false,
+                fileList: [], //回显图片使用
             }
         },
         created() {
@@ -121,12 +126,18 @@
             vm.infoId = vm.$route.query.infoId;
             //接口获取该信息的具体数据
             vm.$api.getAllInfo({infoId: vm.infoId}).then(res => {
-                vm.editInfoForm = JSON.parse(JSON.stringify(res.data.list[0]));
+                vm.editInfoForm = {...vm.editInfoForm, ...JSON.parse(JSON.stringify(res.data.list[0]))};
                 vm.editInfoForm.category = {
                     infoCategoryName: vm.editInfoForm.infoCategoryName,
                     infoCategoryId: vm.editInfoForm.infoCategoryId
                 };
-                vm.editInfoForm.thumbPic = "";
+                if (vm.editInfoForm.thumbPic) {
+                    let obj = new Object();
+                    obj.url = vm.iobsUrl + vm.editInfoForm.thumbPic;
+                    vm.fileList.push(obj);
+                    vm.hideUpload = vm.fileList.length >= 1;
+                }
+
             })
         },
         methods: {
@@ -152,14 +163,34 @@
                 vm.editInfoForm.thumbPic = file.url;
                 vm.thumbPicVisible = true;
             },
-            beforeUpload(file) {
-
-
+            beforeUpload(file, fileList) {
+                let vm = this;
+                //const isLtMax = file.size / 1024 / 1024 < vm.fileMaxSize;
+                //const regexFlag = /(^((?![\\/:*?“<>|`!@#$%&()]).)*$)/.test(file.name);
+                //if (!isLtMax) {
+                //    vm.$messgae.error(`上传文件不能超过${vm.fileMaxSize}MB`);
+                //    return;
+                //}
+                //if (!regexFlag) {
+                //    vm.$messgae.error("附件名称不能包含特殊字符");
+                //    return;
+                //}
+                //if (isLtMax && regexFlag) {
+                //    fileList.push({...file})
+                //}
+                //return isLtMax && regexFlag;
+                return true
             },
             httpRequest(e) {
                 let vm = this;
                 let file = e.file;
-                vm.editInfoForm.thumbPic = file.name;
+                let formData = new FormData();
+                formData.append("file", file);
+                vm.$api.avatarUpload(formData).then(res => {
+                    vm.editInfoForm.thumbPic = res.data.name;
+                    vm.$forceUpdate();
+                    vm.$message.success("上传成功");
+                })
             },
             //编辑确认按钮
             editInfoSure(formName) {
@@ -169,6 +200,7 @@
                         infoId: vm.editInfoForm.infoId,
                         title: vm.editInfoForm.title,
                         content: vm.editInfoForm.content,
+                        thumbPic: vm.editInfoForm.thumbPic,
                         infoCategoryName: vm.editInfoForm.category.infoCategoryName,
                         infoCategoryId: vm.editInfoForm.category.infoCategoryId,
                     }).then(res => {

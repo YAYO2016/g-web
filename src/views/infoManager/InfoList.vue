@@ -206,7 +206,8 @@
                 return {
                     category: "",
                     title: "",
-                    content: ""
+                    content: "",
+                    thumbPic: ""  //缩略图
                 }
             },
             categoryFormat(infoCategoryId) {
