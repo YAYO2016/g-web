@@ -122,6 +122,18 @@
             }
         }
 
+        /deep/ .el-table__fixed-right {
+            td {
+                text-align: center;
+
+                > div {
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+
         /deep/ .el-form-item {
             padding: 0;
             margin: 0;

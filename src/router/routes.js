@@ -93,12 +93,12 @@ export const asyncRoutes = [
                 name: 'FormTest',
                 meta: {title: '自定义表单元素测试', icon: 'svg-dashboard', roles: ["visitor", "admin"]}
             },
-            //{
-            //    path: '/form/formTable',
-            //    component: () => import('@/views/formManager/FormTable'),
-            //    name: 'FormTable',
-            //    meta: {title: '自定义表格控件', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
-            //},
+            {
+                path: '/form/formTabs',
+                component: () => import('@/views/formManager/FormTabs'),
+                name: 'FormTabs',
+                meta: {title: '自定义tabs控件', icon: 'fa fa-keyboard-o', roles: ["visitor", "admin"]}
+            },
             {
                 path: '/form/formrules',
                 component: () => import('@/views/formManager/FormRules'),

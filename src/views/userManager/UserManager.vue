@@ -1,6 +1,7 @@
 <template>
     <div class='UserManager'>
-        <el-button style="float: right" type="primary" @click="handleAddUser">新增用户</el-button>
+        <el-button type="primary" @click="handleAddUser">新增用户</el-button>
+        <el-divider></el-divider>
         <g-split-l></g-split-l>
         <el-form ref="search" :model="search" label-width="80px" inline>
             <el-form-item label="用户名">
@@ -37,7 +38,21 @@
             <el-table-column prop="roles" label="角色" :formatter="(row,column)=>{
             return  row[column.property]?row[column.property].replace('visitor','游客').replace('admin','管理员'):'';
             }"></el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="禁启用状态">
+                <template slot-scope="scope">
+                    <el-switch
+                            @click.stop.native
+                            v-model="scope.row.status"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949"
+                            active-value="Y"
+                            inactive-value="N"
+                            @change="(status)=>changeUserStatus(status,scope.row)"
+                    >
+                    </el-switch>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" fixed="right" width="150">
                 <template slot-scope="scope">
                     <el-button type="text" @click.stop="handleView(scope.row)">查看</el-button>
                     <el-button type="text" @click.stop="handleEdit(scope.row)">编辑</el-button>
@@ -181,7 +196,9 @@
                     password: "",
                     repeatPassword: "",
                     avatar: "",
-                    roles: ""
+                    roles: "",
+                    status: "Y",
+                    address: ""
                 }
             },
             initSearch() {
@@ -189,7 +206,9 @@
                     input: '',
                     createStartDate: "",
                     createEndDate: "",
-                    roles: ""
+                    roles: "",
+                    status: "",
+                    address: ""
                 }
             },
             resetForm(formName) {
@@ -230,6 +249,14 @@
                         message: '已取消删除'
                     });
                 });
+            },
+            //修改用户的状态
+            changeUserStatus(status, user) {
+                let vm = this;
+                console.log(status);
+                vm.$api.toggleUserStatus({status: status, ...user}).then(res => {
+                    vm.$message.success("用户状态修改成功");
+                })
             }
         }
     }

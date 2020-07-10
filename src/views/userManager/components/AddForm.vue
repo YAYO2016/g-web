@@ -35,6 +35,16 @@
             <el-form-item label="用户角色：" prop="roles" :rules="$rules.NotEmpty">
                 <g-select :value.sync="formData.roles" placeholder="请选择角色" all-select :options="roleOptions"></g-select>
             </el-form-item>
+            <el-form-item label="用户状态：" prop="status" :rules="$rules.NotEmpty">
+                <el-switch
+                        v-model="formData.status"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-value="Y"
+                        inactive-value="N"
+                >
+                </el-switch>
+            </el-form-item>
         </el-form>
         <el-row :gutter="10">
             <el-col :span="24" align="center">

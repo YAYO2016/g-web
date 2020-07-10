@@ -31,7 +31,17 @@ const userSchema = new Schema({
     //头像地址
     avatar: String,
     //用户角色
-    roles: String
+    roles: String,
+    // 用户 禁用和启动
+    status: {
+        type: String,
+        default: "Y"
+    },
+    //地址
+    address: {
+        type: String,
+        default: ""
+    }
 }, {
     collection: "user"  //避免创建的表名变为users
 });

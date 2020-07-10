@@ -31,6 +31,9 @@ const userApi = {
     editUser(params) {
         return post('/user/editUser', params, {loading: true})
     },
+    toggleUserStatus(params) {
+        return post('/user/editUser', params)
+    },
 
 };
 
