@@ -113,7 +113,7 @@
 <style lang='scss' scoped>
     .GFileUpload {
         //el-upload上传图标的大小
-        .el-upload--picture-card {
+        /deep/ .el-upload--picture-card {
             width: 65px;
             height: 65px;
             line-height: 65px;
@@ -124,7 +124,7 @@
             }
         }
 
-        .el-upload-list--picture-card {
+        /deep/  .el-upload-list--picture-card {
             .el-upload-list__item-status-label {
                 right: -7px;
                 top: -3px;
