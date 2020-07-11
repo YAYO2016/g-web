@@ -32,12 +32,24 @@
                 <template slot-scope="scope">{{(pageInfo.pageNum-1)*pageInfo.pageSize+scope.$index+1}}</template>
             </el-table-column>
             <el-table-column prop="username" label="用户名"></el-table-column>
-            <el-table-column prop="email" label="邮箱地址"></el-table-column>
+            <el-table-column prop="avatar" label="头像">
+                <template slot-scope="scope">
+                    <img :src="iobsUrl+scope.row.avatar" alt="">
+                </template>
+            </el-table-column>
+            <el-table-column prop="email" label="邮箱地址" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="address" label="地址" width="300">
+                <template slot-scope="scope">
+                    <g-area :value.sync="scope.row.address" disabled width="270px" placeholder=""></g-area>
+                </template>
+            </el-table-column>
             <el-table-column prop="createDate" label="创建日期" :formatter="gRowTimeFormat"></el-table-column>
             <el-table-column prop="lastLoginDate" label="最后登录日期" :formatter="gRowTimeFormat"></el-table-column>
-            <el-table-column prop="roles" label="角色" :formatter="(row,column)=>{
-            return  row[column.property]?row[column.property].replace('visitor','游客').replace('admin','管理员'):'';
-            }"></el-table-column>
+            <el-table-column prop="roles" label="角色"
+                             :formatter="(row,column)=>{
+                                    return  row[column.property]?row[column.property].replace('visitor','游客').replace('admin','管理员'):'';
+                              }"
+            ></el-table-column>
             <el-table-column label="禁启用状态">
                 <template slot-scope="scope">
                     <el-switch
@@ -54,9 +66,11 @@
             </el-table-column>
             <el-table-column label="操作" fixed="right" width="150">
                 <template slot-scope="scope">
-                    <el-button type="text" @click.stop="handleView(scope.row)">查看</el-button>
-                    <el-button type="text" @click.stop="handleEdit(scope.row)">编辑</el-button>
-                    <el-button type="text" style="color:#F56C6C " @click.stop="deleteUser(scope.row)">删除</el-button>
+                    <div>
+                        <el-button type="text" @click.stop="handleView(scope.row)">查看</el-button>
+                        <el-button type="text" @click.stop="handleEdit(scope.row)">编辑</el-button>
+                        <el-button type="text" style="color:#F56C6C " @click.stop="deleteUser(scope.row)">删除</el-button>
+                    </div>
                 </template>
             </el-table-column>
         </g-table>

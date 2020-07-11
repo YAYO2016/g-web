@@ -119,9 +119,17 @@
                     white-space: nowrap;
                     text-overflow: ellipsis;
                 }
+
+                img {
+                    width: auto;
+                    height: 25px;
+                    vertical-align: middle;
+                }
             }
         }
 
+        /* 为啥要给fixed的也设置样式了，因为fixed是单独画个表格的，和table重叠的，
+        所以上面table的样式，fixed的表格也要重写写一份，不然2者样式会不一致，导出表格错位等问题 */
         /deep/ .el-table__fixed-right {
             td {
                 text-align: center;
@@ -130,6 +138,12 @@
                     overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
+                }
+
+                img {
+                    width: auto;
+                    height: 25px;
+                    vertical-align: middle;
                 }
             }
         }

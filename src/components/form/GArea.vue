@@ -8,6 +8,8 @@
                 v-model="viewValue"
                 :style="{width:width}"
                 :disabled="disabled"
+                :placeholder="placeholder"
+                :readonly="readonly"
         >
         </el-cascader>
     </div>
@@ -41,7 +43,7 @@
             disabled: {
                 type: Boolean,
                 default: null
-            },
+            }
         },
         data() {
             return {
