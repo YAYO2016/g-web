@@ -41,6 +41,10 @@ import 'font-awesome/css/font-awesome.min.css'
 import api from './api/index';
 Vue.prototype.$api = api;
 
+//导入bus总线
+import bus from './common/js/bus.js';
+Vue.prototype.$bus = bus;
+
 //在全局注册一些自定义方法
 import globalFun from './common/js/global-fun';
 Vue.use(globalFun);

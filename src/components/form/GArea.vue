@@ -9,7 +9,6 @@
                 :style="{width:width}"
                 :disabled="disabled"
                 :placeholder="placeholder"
-                :readonly="readonly"
         >
         </el-cascader>
     </div>

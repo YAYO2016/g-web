@@ -19,7 +19,6 @@ const BASE_URL = process.env.VUE_APP_API_URL;
 const http = axios.create({
     baseURL: BASE_URL,
     timeout: 30000, // 请求超时时间
-
 });
 
 function startLoading() {
@@ -88,6 +87,8 @@ http.interceptors.request.use(config => {
 
     return Promise.reject(error)
 });
+
+
 // 添加response拦截器--拦截响应
 http.interceptors.response.use(
     response => {

@@ -76,6 +76,14 @@
                 }
             }
         },
+        mounted() {
+            // 调试bus总线test
+            let vm = this;
+            // 在bus总线上注册方法
+            vm.$bus.$on('showFun', (data) => {
+                console.log(data);
+            })
+        },
         computed: {},
         data() {
             const validatePassWord = (rule, value, callback) => {

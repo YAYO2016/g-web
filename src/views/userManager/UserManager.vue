@@ -1,6 +1,7 @@
 <template>
     <div class='UserManager'>
         <el-button type="primary" @click="handleAddUser">新增用户</el-button>
+        <el-button type="primary" @click="testBus">bus总线事件触发</el-button>
         <el-divider></el-divider>
         <g-split-l></g-split-l>
         <el-form ref="search" :model="search" label-width="80px" inline>
@@ -273,6 +274,13 @@
                 vm.$api.toggleUserStatus({status: status, ...user}).then(res => {
                     vm.$message.success("用户状态修改成功");
                 })
+            },
+            // 测试bus总线 -- 组件之间的通讯
+            testBus() {
+                // bus总线测试
+                let vm = this;
+                // 触发bus总线中注册的事件
+                vm.$bus.$emit('showFun', {name: "testBus"})
             }
         }
     }
