@@ -1,7 +1,7 @@
 <template>
     <div class='UserManager'>
         <el-button type="primary" @click="handleAddUser">新增用户</el-button>
-        <el-button type="primary" @click="testBus">bus总线事件触发</el-button>
+        <!--<el-button type="primary" @click="testBus">bus总线事件触发</el-button>-->
         <el-divider></el-divider>
         <g-split-l></g-split-l>
         <el-form ref="search" :model="search" label-width="80px" inline>
@@ -178,7 +178,7 @@
                 let vm = this;
                 vm.$api.getSingleUser({_id: row._id}).then(res => {
                     let result = res.data;
-                    vm.editForm = result;
+                    vm.editForm = {...vm.editForm, ...result};
                     vm.editFormVisible = true;
                 })
             },
@@ -203,7 +203,11 @@
                     avatar: "",
                     roles: "",
                     status: "",
-                    address: ""
+                    address: "",
+                    //用户在各个模块的按钮操作权限
+                    //按钮权限 新增 查看 编辑 删除
+                    buttons: []
+
                 }
             },
             initAddForm() {

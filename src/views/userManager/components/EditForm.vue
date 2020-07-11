@@ -48,6 +48,16 @@
                 <el-input v-show="false" v-model="formData.address" placeholder="placeholder"></el-input>
                 <g-area :value.sync="formData.address" width="300px"></g-area>
             </el-form-item>
+            <el-form-item label="按钮：">
+                <div v-for="buttonModule in formData.buttons" :key="buttonModule.value">
+                    <div>{{buttonModule.name}}</div>
+                    <el-checkbox-group v-model="buttonModule.selectedButtons">
+                        <el-checkbox v-for="button in buttonModule.buttons" :label="button.value" :key="button.value">
+                            {{button.name}}
+                        </el-checkbox>
+                    </el-checkbox-group>
+                </div>
+            </el-form-item>
         </el-form>
     </div>
 </template>

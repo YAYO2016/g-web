@@ -41,7 +41,36 @@ const userSchema = new Schema({
     address: {
         type: String,
         default: ""
+    },
+//按钮权限
+    buttons: {
+        type: Array,
+        default: () => {
+            return [
+                {
+                    name: "信息管理", value: 'infoManager',
+                    buttons: [
+                        {name: "新增", value: "add"},
+                        {name: "查看", value: "view"},
+                        {name: "编辑", value: "edit"},
+                        {name: "删除", value: "delete"},
+                    ],
+                    selectedButtons: ['view']
+                },
+                {
+                    name: "用户管理", value: 'userManager',
+                    buttons: [
+                        {name: "新增", value: "add"},
+                        {name: "查看", value: "view"},
+                        {name: "编辑", value: "edit"},
+                        {name: "删除", value: "delete"},
+                    ],
+                    selectedButtons: ['view']
+                }
+            ]
+        }
     }
+
 }, {
     collection: "user"  //避免创建的表名变为users
 });

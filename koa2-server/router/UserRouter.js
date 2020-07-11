@@ -239,7 +239,7 @@ router.post('/editUser', async (ctx) => {
     const User = mongoose.model("User");
     await User.updateOne(
         {_id: user._id}, //查询
-        {avatar: user.avatar, roles: user.roles, status: user.status, address: user.address},
+        {avatar: user.avatar, roles: user.roles, status: user.status, address: user.address, buttons: user.buttons},
     ).then(user => {
         if (user) {
             ctx.body = {

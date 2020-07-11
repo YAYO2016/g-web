@@ -41,7 +41,7 @@
             <el-table-column prop="creatorName" label="管理员"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button type="text" @click.stop="">查看</el-button>
+                    <el-button type="text" @click.stop="handleViewInfo(scope.row)">查看</el-button>
                     <el-button type="text" @click.stop="handleEditInfo(scope.row)">编辑</el-button>
                     <!-- 可以直接编写跳转函数，也可以使用router-link -->
                     <!--<router-link :to="{path:'/info/infoDetail',query:{infoId:scope.row.infoId}}">编辑详情</router-link>-->
@@ -67,8 +67,9 @@
             </el-col>
         </el-row>
 
-        <!-- 新增信息模态框 -->
+
         <div class="dialog">
+            <!-- 新增信息模态框 -->
             <g-dialog :show.sync="addInfoVisible" title="新增信息" @closedDialog="addInfoForm=infoFormInit()">
                 <el-form ref="addInfoForm" :model="addInfoForm" label-width="80px">
                     <el-form-item label="类别" prop="category" :rules="$rules.NotEmpty">
@@ -118,6 +119,32 @@
                     </el-form-item>
                 </el-form>
             </g-dialog>
+
+            <!-- 查看模态框 -->
+            <g-dialog :show.sync="viewInfoVisible" title="新增信息" @closedDialog="viewInfoForm=infoFormInit()">
+                <el-form ref="viewInfoForm" :model="viewInfoForm" label-width="80px">
+                    <el-form-item label="类别" prop="category" :rules="$rules.NotEmpty">
+                        <!-- 技术点：这边的数据传递的是option对象，并不是option中的id -->
+                        <g-select :value.sync="viewInfoForm.category" :options="$store.state.info.categoryList"
+                                  option-key="infoCategoryName"
+                                  option-value="infoCategoryId"
+                                  :returnItem="true"
+                                  disabled
+                        >
+                            <!--returnItem 设置为true，返回的就是当前选中的item对象本身-->
+                        </g-select>
+                    </el-form-item>
+                    <el-form-item label="标题" prop="title" :rules="$rules.NotEmpty">
+                        <el-input v-model="viewInfoForm.title" readonly></el-input>
+                    </el-form-item>
+                    <el-form-item label="概况" prop="content" :rules="$rules.NotEmpty">
+                        <el-input type="textarea" v-model="viewInfoForm.content" readonly></el-input>
+                    </el-form-item>
+                    <el-form-item align="center" label-width="0">
+                        <el-button @click="viewInfoVisible=false">取消</el-button>
+                    </el-form-item>
+                </el-form>
+            </g-dialog>
         </div>
     </div>
 </template>
@@ -146,6 +173,8 @@
                 addInfoForm: this.infoFormInit(),
                 editInfoVisible: false,
                 editInfoForm: this.infoFormInit(),
+                viewInfoVisible: false,
+                viewInfoForm: this.infoFormInit(),
             }
         },
         mounted() {
@@ -289,6 +318,19 @@
                 } else {
                     vm.$message.info("请选择要删除的数据")
                 }
+            },
+            // 表格点击查看按钮
+            handleViewInfo(info) {
+                let vm = this;
+                // 查询数据，赋值给编辑表单，然后打开编辑模态框
+                vm.$api.getAllInfo({infoId: info.infoId}).then(res => {
+                    vm.viewInfoForm = JSON.parse(JSON.stringify(res.data.list[0]));
+                    vm.viewInfoForm.category = {
+                        infoCategoryName: vm.viewInfoForm.infoCategoryName,
+                        infoCategoryId: vm.viewInfoForm.infoCategoryId
+                    };
+                    vm.viewInfoVisible = true;
+                })
             },
             // 点击编辑按钮
             handleEditInfo(info) {
