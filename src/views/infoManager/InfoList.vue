@@ -25,7 +25,7 @@
                 <el-button @click="searchForm=initSearchForm()">重置</el-button>
             </el-form-item>
             <el-form-item class="fr">
-                <el-button type="primary" @click="addInfoVisible=true">新增</el-button>
+                <el-button v-btn-perm="'infoManager.add'" type="primary" @click="addInfoVisible=true">新增</el-button>
             </el-form-item>
         </el-form>
         <g-table :table-data="tableData" :select-data.sync="selectData">
@@ -41,12 +41,19 @@
             <el-table-column prop="creatorName" label="管理员"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button type="text" @click.stop="handleViewInfo(scope.row)">查看</el-button>
-                    <el-button type="text" @click.stop="handleEditInfo(scope.row)">编辑</el-button>
+                    <el-button v-btn-perm="'infoManager.view'" type="text" @click.stop="handleViewInfo(scope.row)">查看
+                    </el-button>
+                    <el-button v-btn-perm="'infoManager.edit'" type="text" @click.stop="handleEditInfo(scope.row)">编辑
+                    </el-button>
                     <!-- 可以直接编写跳转函数，也可以使用router-link -->
                     <!--<router-link :to="{path:'/info/infoDetail',query:{infoId:scope.row.infoId}}">编辑详情</router-link>-->
-                    <el-button type="text" @click.stop="handleEditInfoDetail(scope.row)">编辑详情</el-button>
-                    <el-button type="text" class="dangerColor" @click.stop="handleDeleteInfo(scope.row)">删除</el-button>
+                    <el-button v-btn-perm="'infoManager.edit'" type="text"
+                               @click.stop="handleEditInfoDetail(scope.row)">
+                        编辑详情
+                    </el-button>
+                    <el-button v-btn-perm="'infoManager.delete'" type="text" class="dangerColor"
+                               @click.stop="handleDeleteInfo(scope.row)">删除
+                    </el-button>
                 </template>
             </el-table-column>
         </g-table>

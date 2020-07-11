@@ -49,6 +49,9 @@ Vue.prototype.$bus = bus;
 import globalFun from './common/js/global-fun';
 Vue.use(globalFun);
 
+//导入vue的自定义指令
+import "@/common/js/directive";
+
 //导入babel-polyfill，解决ie9和一些低版本的高级浏览器对es6新语法并不支持
 import "babel-polyfill";
 

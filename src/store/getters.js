@@ -3,7 +3,7 @@
  * getter是对state中的数据进行二次处理，然后输出
  */
 const getters = {
-    userRoles: state => state.user.userInfo ? state.user.userInfo.roles.split(",") : null
+    userRoles: state => state.user.userInfo ? state.user.userInfo.roles.split(",") : null,
 };
 export default getters
 

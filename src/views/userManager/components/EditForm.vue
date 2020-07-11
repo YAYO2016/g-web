@@ -48,7 +48,7 @@
                 <el-input v-show="false" v-model="formData.address" placeholder="placeholder"></el-input>
                 <g-area :value.sync="formData.address" width="300px"></g-area>
             </el-form-item>
-            <el-form-item label="按钮：">
+            <el-form-item label="按钮权限：">
                 <div v-for="buttonModule in formData.buttons" :key="buttonModule.value">
                     <div>{{buttonModule.name}}</div>
                     <el-checkbox-group v-model="buttonModule.selectedButtons">

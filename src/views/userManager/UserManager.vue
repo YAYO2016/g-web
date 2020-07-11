@@ -1,6 +1,6 @@
 <template>
     <div class='UserManager'>
-        <el-button type="primary" @click="handleAddUser">新增用户</el-button>
+        <el-button v-btn-perm="'userManager.add'" type="primary" @click="handleAddUser">新增用户</el-button>
         <!--<el-button type="primary" @click="testBus">bus总线事件触发</el-button>-->
         <el-divider></el-divider>
         <g-split-l></g-split-l>
@@ -68,9 +68,13 @@
             <el-table-column label="操作" fixed="right" width="150">
                 <template slot-scope="scope">
                     <div>
-                        <el-button type="text" @click.stop="handleView(scope.row)">查看</el-button>
-                        <el-button type="text" @click.stop="handleEdit(scope.row)">编辑</el-button>
-                        <el-button type="text" style="color:#F56C6C " @click.stop="deleteUser(scope.row)">删除</el-button>
+                        <el-button v-btn-perm="'userManager.view'" type="text" @click.stop="handleView(scope.row)">查看
+                        </el-button>
+                        <el-button v-btn-perm="'userManager.edit'" type="text" @click.stop="handleEdit(scope.row)">编辑
+                        </el-button>
+                        <el-button v-btn-perm="'userManager.delete'" type="text" style="color:#F56C6C "
+                                   @click.stop="deleteUser(scope.row)">删除
+                        </el-button>
                     </div>
                 </template>
             </el-table-column>
@@ -190,6 +194,9 @@
                         vm.editFormVisible = false;
                         vm.$message.success("用户信息编辑成功");
                         vm.getData();
+                        //每次编辑了用户都要调用下重新获取当前用户信息的接口，并且保存到vuex中
+                        //因为有可能修改的就是当前用户的权限
+                        vm.$store.dispatch("user/getUserInfo");
                     })
                 } else {
                     vm.$message.error("输入有误");
