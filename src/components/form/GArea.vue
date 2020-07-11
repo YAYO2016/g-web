@@ -2,12 +2,11 @@
     <div class='GArea'>
         <!--区域选择-->
         <el-cascader
-                v-if="type==='areas'"
                 :clearable="clearable"
                 class="Areas"
                 :options="areaOptions"
                 v-model="viewValue"
-                :style="{width:width }"
+                :style="{width:width}"
                 :disabled="disabled"
         >
         </el-cascader>
@@ -26,11 +25,6 @@
             width: {
                 type: String,
                 default: "175px"
-            },
-            //表单控件的类型
-            type: {
-                type: String,
-                default: "areas"
             },
             //表单控件的值value
             value: {
@@ -57,20 +51,19 @@
         },
         mounted() {
             //回显数据
-            if (this.type === 'areas') {
-                this.areaOptions = this.getAreaList();
-                this.viewValue = this.getArea(this.value);
-            }
+            this.areaOptions = this.getAreaList();
+            this.viewValue = this.getArea(this.value) || "";
         },
         watch: {
+            value(newVal) {
+                this.viewValue = this.getArea(newVal) || "";
+            },
             viewValue(newVal) {
                 //区域选择
-                if (this.type === 'areas') {
-                    if (this.isTrue(newVal)) {
-                        this.$emit("update:value", newVal[newVal.length - 1]);
-                    } else {
-                        this.$emit("update:value", "");
-                    }
+                if (this.isTrue(newVal)) {
+                    this.$emit("update:value", newVal[newVal.length - 1]);
+                } else {
+                    this.$emit("update:value", "");
                 }
             }
         },

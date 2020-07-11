@@ -16,6 +16,10 @@
                     <el-option label="篮球" value="basketball"></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="地址：" prop="address" :rules="validate?$rules.NotEmpty:{}">
+                <el-input v-show="false" v-model="form.address" placeholder="placeholder"></el-input>
+                <g-area :value.sync="form.address" width="300px"></g-area>
+            </el-form-item>
             <el-form-item>
                 <!-- 重置 会清除表单的数据  并且消除已经显示的错误提示 -->
                 <el-button @click="$refs['personForm'].resetFields()">重置</el-button>
@@ -39,7 +43,8 @@
                 form: {
                     name: '',
                     age: '',
-                    favourites: ''
+                    favourites: '',
+                    address: ''
                 },
                 validate: false
             }

@@ -186,7 +186,9 @@
                     username: "",
                     email: "",
                     avatar: "",
-                    roles: ""
+                    roles: "",
+                    status: "",
+                    address: ""
                 }
             },
             initAddForm() {
@@ -197,7 +199,7 @@
                     repeatPassword: "",
                     avatar: "",
                     roles: "",
-                    status: "Y",
+                    status: "",
                     address: ""
                 }
             },

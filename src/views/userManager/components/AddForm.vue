@@ -45,6 +45,11 @@
                 >
                 </el-switch>
             </el-form-item>
+            <el-form-item label="地址：" prop="address" :rules="$rules.NotEmpty">
+                <!-- 这边这样写的原因是g-area中的el-cascader级联选择组件在选中数据的时候会有点延迟，导致校验出现不可控的问题，使用el-input里面放数据的方式进行校验可以解决该问题呢 -->
+                <el-input v-show="false" v-model="formData.address" placeholder="placeholder"></el-input>
+                <g-area :value.sync="formData.address" width="300px"></g-area>
+            </el-form-item>
         </el-form>
         <el-row :gutter="10">
             <el-col :span="24" align="center">
@@ -141,6 +146,18 @@
                         vm.$emit('update:show', false);
                         vm.$message.success(err);
                     })
+                }
+            }
+        },
+        watch: {
+            'formData.roles': {
+                handler(newVal) {
+                    console.log(newVal);
+                }
+            },
+            'formData.address': {
+                handler(newVal) {
+                    console.log(newVal);
                 }
             }
         }
