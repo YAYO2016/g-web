@@ -193,10 +193,10 @@
                     vm.$api.editUser(vm.editForm).then(res => {
                         vm.editFormVisible = false;
                         vm.$message.success("用户信息编辑成功");
-                        vm.getData();
                         //每次编辑了用户都要调用下重新获取当前用户信息的接口，并且保存到vuex中
                         //因为有可能修改的就是当前用户的权限
                         vm.$store.dispatch("user/getUserInfo");
+                        vm.getData();
                     })
                 } else {
                     vm.$message.error("输入有误");

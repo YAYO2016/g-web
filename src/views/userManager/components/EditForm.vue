@@ -51,11 +51,17 @@
             <el-form-item label="按钮权限：">
                 <div v-for="buttonModule in formData.buttons" :key="buttonModule.value">
                     <div>{{buttonModule.name}}</div>
-                    <el-checkbox-group v-model="buttonModule.selectedButtons">
-                        <el-checkbox v-for="button in buttonModule.buttons" :label="button.value" :key="button.value">
-                            {{button.name}}
-                        </el-checkbox>
-                    </el-checkbox-group>
+                    <g-check-box :value.sync="buttonModule.selectedButtons"
+                                 :options="buttonModule.buttons"
+                                 :optionKey="'name'"
+                                 :optionValue="'value'"
+                                 allSelect
+                    ></g-check-box>
+                    <!--<el-checkbox-group v-model="buttonModule.selectedButtons">-->
+                        <!--<el-checkbox v-for="button in buttonModule.buttons" :label="button.value" :key="button.value">-->
+                            <!--{{button.name}}-->
+                        <!--</el-checkbox>-->
+                    <!--</el-checkbox-group>-->
                 </div>
             </el-form-item>
         </el-form>

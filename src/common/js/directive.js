@@ -22,7 +22,7 @@ Vue.directive('btnPerm', {
         // vnode：Vue 编译生成的虚拟节点。移步 VNode API 来了解更多详情。
         // oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
 
-        // 根据权限来修改样式  是否显示   binding.def指令的实例
+        // 根据权限来修改样式  是否显示   binding.def指令的实例本身
         if (binding.def.hasBtnPerm(binding.value)) {
             el.style.display = "inline-block";
         } else {
@@ -49,13 +49,12 @@ Vue.directive('btnPerm', {
     hasBtnPerm: function (permission) {
         const buttons = store.state.user.userInfo.buttons;
         const [modules, buttonName] = permission.split('.');
-        console.log(modules, buttonName);
+        //console.log(modules, buttonName);
         //先过滤出模块中的按钮组   然后判断按钮组中是否有指令的按钮权限
         return buttons.filter(button => (button.value === modules))[0].selectedButtons
             .indexOf(buttonName) !== -1;
     }
-
-})
+});
 
 
 

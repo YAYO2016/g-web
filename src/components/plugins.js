@@ -11,6 +11,7 @@ import GAutoComplete from './form/GAutoComplete'
 import GInput from './form/GInput'
 import GDate from './form/GDate'
 import GSelect from './form/GSelect'
+import GCheckBox from './form/GCheckBox'
 import GArea from './form/GArea'
 import GTree from './form/GTree'
 import GFileUploadTable from './form/GFileUploadTable'
@@ -28,6 +29,7 @@ export default {
         Vue.component('g-input', GInput);
         Vue.component('g-date', GDate);
         Vue.component('g-select', GSelect);
+        Vue.component('g-check-box', GCheckBox);
         Vue.component('g-area', GArea);
         Vue.component('g-tree', GTree);
         Vue.component('g-file-upload-table', GFileUploadTable);
