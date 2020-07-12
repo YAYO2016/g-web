@@ -4,7 +4,7 @@
                 :class="{hide:hideUpload}"
                 list-type="picture-card"
                 class="upload-demo"
-                :multiple="false"
+                :multiple="multiple"
                 action=""
                 :auto-upload="true"
                 :on-change="handleChange"
@@ -59,6 +59,11 @@
             limit: {
                 type: Number,
                 default: 1
+            },
+            // 是否允许多个文件上传
+            multiple: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
@@ -124,7 +129,7 @@
             }
         }
 
-        /deep/  .el-upload-list--picture-card {
+        /deep/ .el-upload-list--picture-card {
             .el-upload-list__item-status-label {
                 right: -7px;
                 top: -3px;

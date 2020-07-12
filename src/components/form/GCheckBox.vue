@@ -4,8 +4,6 @@
         <el-checkbox-group v-model="viewValue" style="display: inline-block"
                            :disabled="disabled"
                            @change="handleCheckedOptionsChange"
-                           :min="min"
-                           :max="max"
         >
             <el-checkbox v-for="(option,index) in options"
                          :key="index"
@@ -52,14 +50,6 @@
             optionValue: {
                 type: String,
                 default: "value"
-            },
-            min: {
-                type: Number,
-                default: null
-            },
-            max: {
-                type: Number,
-                default: null
             },
             //select是否存在全选框
             allSelect: {
