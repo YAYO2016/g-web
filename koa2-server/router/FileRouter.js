@@ -72,7 +72,7 @@ router.get('/downloadFile', async (ctx, next) => {
     try {
         let filename = ctx.query.filename;
         let originName = ctx.query.originName;
-        let filePath = `D:\\YAYO-WEB\\upload\\${filename}`;
+        let filePath = `${FileUploadPath}/${filename}`;
         // 判断文件是否存在
         if (!fs.existsSync(filePath)) {
             ctx.status = 404;
