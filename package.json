@@ -9,7 +9,7 @@
     "dev": "concurrently \"npm run serve\" \"npm run server\""
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.6.4",
     "element-ui": "^2.13.2",
