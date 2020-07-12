@@ -76,7 +76,8 @@ export const asyncRoutes = [
                 path: '/bank/banklist',
                 component: () => import('@/views/bank/BankList'),
                 name: 'BankList',
-                meta: {title: '银行列表', icon: 'fa fa-university', roles: ["visitor", "admin"]}
+                // keepAlive 添加组件缓存
+                meta: {title: '银行列表', icon: 'fa fa-university', roles: ["visitor", "admin"], keepAlive: true}
             },
         ]
     },

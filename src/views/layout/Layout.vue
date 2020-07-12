@@ -14,7 +14,13 @@
                  这样的话，当里面dom很长的时候，loading的高度是无法完全覆盖住超过el-main高度的dom的，
                  这个时候就需要创建一个loading-area，并且设置相关的样式 min-height: 100%; 可以解决问题-->
                 <div class="loading-area">
-                    <router-view/>
+                    <!--keep-alive vue内置组件，能在组件切换过程中将状态保存在内存中，防止重复渲染dom-->
+                    <keep-alive>
+                        <!-- 需要缓存的路由 根据路由组件中meta参数里面的keepAlive进行判断-->
+                        <router-view v-if="$route.meta.keepAlive"/>
+                    </keep-alive>
+                    <!-- 不需要缓存的路由 -->
+                    <router-view v-if="!$route.meta.keepAlive"/>
                 </div>
             </el-main>
         </el-container>
