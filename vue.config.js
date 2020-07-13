@@ -83,7 +83,8 @@ module.exports = {
         hotOnly: false,
         proxy: { // 配置跨域
             [process.env.VUE_APP_API_URL]: {
-                target: 'http://localhost:7005/',
+                //target: 'http://localhost:7005/',
+                target: 'http://121.196.183.67:7005/',
                 ws: true,
                 changOrigin: true,
                 pathRewrite: {
