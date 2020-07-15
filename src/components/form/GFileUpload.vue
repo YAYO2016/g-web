@@ -6,7 +6,7 @@
                 class="upload-demo"
                 :multiple="multiple"
                 action=""
-                :auto-upload="true"
+                :auto-upload="autoUpload"
                 :on-change="handleChange"
                 :on-preview="handlePictureCardPreview"
                 :on-remove="handleRemove"
@@ -64,6 +64,19 @@
             multiple: {
                 type: Boolean,
                 default: false
+            },
+            cropperDialogVisible:{
+                type: Boolean,
+                default: false
+            },
+            autoUpload:{
+                type: Boolean,
+                default: true
+            },
+            changeFun:{
+                type: Function,
+                default: () => {
+                }
             }
         },
         data() {
@@ -84,6 +97,7 @@
         methods: {
             handleChange(file, fileList) {
                 this.viewFileList = fileList;
+                this.changeFun(file,fileList)
                 //this.hideUpload = fileList.length >= this.limit;
             },
             handleRemove(file, fileList) {
