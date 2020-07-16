@@ -39,7 +39,7 @@
             </el-table-column>
             <el-table-column prop="createDate" label="创建日期" :formatter="gRowTimeFormat"></el-table-column>
             <el-table-column prop="creatorName" label="管理员"></el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作"fixed="right" width="200">
                 <template slot-scope="scope">
                     <el-button v-btn-perm="'infoManager.view'" type="text" @click.stop="handleViewInfo(scope.row)">查看
                     </el-button>

@@ -37,7 +37,7 @@
 
 <script>
     /**
-     * 图片裁剪工具类
+     * 图片裁剪工具组件
      * Created by yanyue on 2020/7/15 22:32
      */
     import {VueCropper} from 'vue-cropper';
@@ -68,6 +68,13 @@
                 isDisabled: false,
                 downImg: '#'
             }
+        },
+        watch: {
+            //'option.img': {
+            //    handler(newVal, oldVal) {
+            //        this.$emit('update:imgFile', newVal);
+            //    }
+            //}
         },
         methods: {
             changeScale(num) {

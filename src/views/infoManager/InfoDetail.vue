@@ -16,11 +16,14 @@
             </el-form-item>
             <el-form-item label="缩略图" prop="thumbPic" :rules="[{...$rules.NotEmpty[0],message:'上传图片不能为空'}]">
                 <el-input v-show="false" v-model="editInfoForm.thumbPic"></el-input>
-                <!--缩略图进行封装 -->
+                <!--缩略图进行封装
+                使用了裁剪工具
+                1.autoUpload 需要为false，不能直接通过接口提交文件
+                2.on-change函数中需要打开裁剪的模态框，并且将文件赋值给file变量
+                -->
                 <g-file-upload :fileList.sync="editInfoForm.thumbPicList"
                                :limit="1"
-                               :autoUpload="false"
-                               :changeFun="handleChange"
+                               :cropper-use="true"
                                :beforeUpload="beforeUpload"
                                :httpRequest="httpRequest"
                 ></g-file-upload>
@@ -46,16 +49,16 @@
                 <!--</el-upload>-->
 
                 <!--打开缩略图模版 :modal-append-to-body='false' 必须加-->
-                <el-dialog class="upload-detail-img" :visible.sync="thumbPicVisible" :modal-append-to-body='false'>
-                    <img width="100%" :src="editInfoForm.thumbPic" alt="">
-                </el-dialog>
+                <!--<el-dialog class="upload-detail-img" :visible.sync="thumbPicVisible" :modal-append-to-body='false'>-->
+                <!--<img width="100%" :src="editInfoForm.thumbPic" alt="">-->
+                <!--</el-dialog>-->
 
                 <!-- 剪裁组件弹窗 -->
-                <el-dialog :visible.sync="cropperModel" width="800px" :before-close="beforeClose"
-                           :modal-append-to-body='false'>
-                    <Cropper :img-file="file" ref="vueCropper" :fixedNumber="fixedNumber" @upload="httpRequest">
-                    </Cropper>
-                </el-dialog>
+                <!--<el-dialog :visible.sync="cropperModel" width="800px" :before-close="beforeClose"-->
+                <!--:modal-append-to-body='false'>-->
+                <!--<Cropper :img-file="file" ref="vueCropper" :fixedNumber="fixedNumber" @upload="httpRequest">-->
+                <!--</Cropper>-->
+                <!--</el-dialog>-->
 
             </el-form-item>
             <el-form-item label="发布时间" prop="content" :rules="$rules.NotEmpty">
@@ -88,8 +91,6 @@
     import 'quill/dist/quill.core.css'
     import 'quill/dist/quill.snow.css'
     import 'quill/dist/quill.bubble.css'
-    //图片裁剪组件
-    import Cropper from './Cropper';
 
 
     // 不需要的的选项在这里删掉就好
@@ -116,13 +117,13 @@
 
     export default {
         name: "InfoDetail",
-        components: {quillEditor, Cropper},
+        components: {quillEditor},
         data() {
             return {
-                file: '', // 当前被选择的图片文件
-                cropperModel: false, // 剪裁组件弹窗开关
-                uploadList: [], // 上传图片列表
-                fixedNumber: [1.5, 1], // 截图框比例  (默认:[1:1])
+                //file: '', // 当前被选择的图片文件
+                //cropperModel: false, // 剪裁组件弹窗开关
+                //uploadList: [], // 上传图片列表
+                //fixedNumber: [1.5, 1], // 截图框比例  (默认:[1:1])
 
 
                 infoId: "",
@@ -168,16 +169,16 @@
 
             })
         },
-        updated() {
-            if (this.$refs.vueCropper) {
-                this.$refs.vueCropper.Update()
-            }
-        },
+        //updated() {
+        //    if (this.$refs.vueCropper) {
+        //        this.$refs.vueCropper.Update()
+        //    }
+        //},
         methods: {
-            beforeClose(done) {
-                this.uploadList.pop();
-                this.cropperModel = false;
-            },
+            //beforeClose(done) {
+            //    this.uploadList.pop();
+            //    this.cropperModel = false;
+            //},
             initEditForm() {
                 return {
                     category: "",
@@ -191,10 +192,9 @@
             handleChange(file, fileList) {
                 let vm = this;
                 vm.hideUpload = fileList.length >= 1;
-                console.log("change");
                 // 点击弹出剪裁框
-                this.cropperModel = true
-                this.file = file
+                this.cropperModel = true;
+                this.file = file;
             },
             handleRemove(file, fileList) {
                 let vm = this;
@@ -229,12 +229,13 @@
                 //let file = e.file;
                 let formData = new FormData();
                 formData.append("file", data);
-                vm.$api.avatarUpload(formData).then(res => {
+                return vm.$api.avatarUpload(formData).then(res => {
                     vm.editInfoForm.thumbPic = res.data.name;
-                    vm.$forceUpdate();
                     vm.$message.success("上传成功");
-                    this.cropperModel = false
-
+                    let obj = new Object();
+                    obj.url = vm.iobsUrl + vm.editInfoForm.thumbPic;
+                    return obj;
+                    //this.cropperModel = false
                 })
             },
             //编辑确认按钮

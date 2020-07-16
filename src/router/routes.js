@@ -84,7 +84,7 @@ export const asyncRoutes = [
     {
         path: '/form',
         component: Layout,
-        name: 'Bank',
+        name: 'Form',
         redirect: '/form/formTest',
         meta: {title: '自定义控件', icon: 'fa fa-fort-awesome', roles: ["visitor", "admin"]},
         children: [
